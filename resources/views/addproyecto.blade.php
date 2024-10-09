@@ -127,7 +127,7 @@
                     </ul>
 
                     <!-- Formulario completo -->
-                    <form action="{{ route('proyectos.store') }}" method="POST">
+                    <form action="{{ route('proyectos.store') }}" method="POST" id="formGuardarProyecto">
                         @csrf
                         <div class="tab-content" id="myTabContent">
                             <!-- General Tab -->
@@ -335,7 +335,7 @@
 
                                         <!-- Unidades Table -->
                                         <div class="table-responsive mt-4">
-                                            <table class="table table-bordered">
+                                            <table id="unidadesTable" class="table table-bordered">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Nombre</th>
@@ -349,12 +349,13 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Local 01</td>
-                                                        <td>120</td>
-                                                        <td>$250.00</td>
-                                                        <td>$4,500.00</td>
-                                                        <td>Planta Baja</td>
-                                                        <td><span class="badge bg-success">Disponible</span></td>
+                                                        <td class="nombre">Local 01</td>
+                                                        <td class="metros_cuadrados">120</td>
+                                                        <td class="precio_por_hora">$250.00</td>
+                                                        <td class="precio_por_mes">$4,500.00</td>
+                                                        <td class="nivel">Planta Baja</td>
+                                                        <td class="estatus"><span
+                                                                class="badge bg-success">Disponible</span></td>
                                                         <td>
                                                             <button class="btn btn-primary btn-sm"><i
                                                                     class="bi bi-eye"></i></button>
@@ -365,12 +366,13 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Local 02</td>
-                                                        <td>125</td>
-                                                        <td>$250.00</td>
-                                                        <td>$4,900.00</td>
-                                                        <td>Planta Baja</td>
-                                                        <td><span class="badge bg-warning text-dark">Comprometido</span>
+                                                        <td class="nombre">Local 02</td>
+                                                        <td class="metros_cuadrados">150</td>
+                                                        <td class="precio_por_hora">$300.00</td>
+                                                        <td class="precio_por_mes">$5,000.00</td>
+                                                        <td class="nivel">Nivel 1</td>
+                                                        <td class="estatus"><span
+                                                                class="badge bg-warning text-dark">Comprometido</span>
                                                         </td>
                                                         <td>
                                                             <button class="btn btn-primary btn-sm"><i
@@ -381,13 +383,15 @@
                                                                     class="bi bi-trash"></i></button>
                                                         </td>
                                                     </tr>
+
                                                     <tr>
-                                                        <td>Local 03</td>
-                                                        <td>250</td>
-                                                        <td>$250.00</td>
-                                                        <td>$6,900.00</td>
-                                                        <td>Nivel 02</td>
-                                                        <td><span class="badge bg-info text-dark">Rentado</span></td>
+                                                        <td class="nombre">Local 03</td>
+                                                        <td class="metros_cuadrados">200</td>
+                                                        <td class="precio_por_hora">$350.00</td>
+                                                        <td class="precio_por_mes">$6,000.00</td>
+                                                        <td class="nivel">Planta Baja</td>
+                                                        <td class="estatus"><span
+                                                                class="badge bg-info text-dark">Rentado</span></td>
                                                         <td>
                                                             <button class="btn btn-primary btn-sm"><i
                                                                     class="bi bi-eye"></i></button>
@@ -412,7 +416,7 @@
                                         <div class="card-body text-center">
                                             <h5 class="card-title">Nueva Imagen o Imágenes</h5>
                                             <div class="mb-4">
-                                                <img src="media/Uploading.svg" alt="Upload Illustration" width="150">
+                                                <img src="/media/Uploading.svg" alt="Upload Illustration" width="150">
                                             </div>
                                             <p class="card-text">Arrastra un archivo para subir<br>o selecciona uno de
                                                 tu
@@ -457,7 +461,7 @@
                                                     <tr>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                <img src="media/download.jpg" alt="PDF Icon" width="40"
+                                                                <img src="/media/download.jpg" alt="PDF Icon" width="40"
                                                                     class="me-2">
                                                                 <span>Frente_01.pdf</span>
                                                             </div>
@@ -472,7 +476,7 @@
                                                     <tr>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                <img src="media/download.jpg" alt="PDF Icon" width="40"
+                                                                <img src="/media/download.jpg" alt="PDF Icon" width="40"
                                                                     class="me-2">
                                                                 <span>Baño_01.pdf</span>
                                                             </div>
@@ -487,7 +491,7 @@
                                                     <tr>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                <img src="media/download.jpg" alt="PDF Icon" width="40"
+                                                                <img src="/media/download.jpg" alt="PDF Icon" width="40"
                                                                     class="me-2">
                                                                 <span>Pasillo_01.pdf</span>
                                                             </div>
@@ -509,7 +513,7 @@
                                         <div class="card-body text-center">
                                             <h5 class="card-title">Nueva Imagen o Imágenes</h5>
                                             <div class="mb-4">
-                                                <img src="media/Uploading.svg" alt="Upload Illustration" width="150">
+                                                <img src="/media/Uploading.svg" alt="Upload Illustration" width="150">
                                             </div>
                                             <p class="card-text">Arrastra un archivo para subir<br>o selecciona uno de
                                                 tu
@@ -532,38 +536,12 @@
             </div>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script>
-        var quillReglamento, quillTerminos;
+    <script src="/assets/proyecto.js"></script>
 
-        document.addEventListener("DOMContentLoaded", function () {
-            quillReglamento = new Quill("#reglamento", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ["bold", "italic", "underline"],
-                        [{ list: "ordered" }, { list: "bullet" }],
-                        ["link"]
-                    ]
-                }
-            });
-
-            quillTerminos = new Quill("#terminos", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ["bold", "italic", "underline"],
-                        [{ list: "ordered" }, { list: "bullet" }],
-                        ["link"]
-                    ]
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

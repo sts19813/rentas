@@ -43,6 +43,7 @@ class ProyectoController extends Controller
             'codigoPostal' => 'required|string',
             'amenidades' => 'array',
             'servicios' => 'array',
+            'unidades' => 'required|json'
         ]);
 
           // Guardar el proyecto en la base de datos
@@ -61,6 +62,13 @@ class ProyectoController extends Controller
             'ciudad' => $validatedData['ciudad'],
             'codigo_postal' => $validatedData['codigoPostal'],
         ]);
+
+        $unidades = json_decode($request->unidades, true);
+
+        foreach ($unidades as $unidad) {
+            $proyecto->unidades()->create($unidad);
+        }
+    
 
         $proyecto->amenidades()->sync($request->input('amenidades', []));
         $proyecto->servicios()->sync($request->input('servicios', []));

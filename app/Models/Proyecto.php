@@ -37,4 +37,10 @@ class Proyecto extends Model
      {
          return $this->belongsToMany(Servicio::class, 'proyecto_servicio');
      }
+
+     //relacion con las unidades
+     public function unidades()
+    {
+        return $this->hasMany(Unidad::class);
+    }
 }
