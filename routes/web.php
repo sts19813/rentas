@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProyectoController;
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -17,10 +18,10 @@ Route::get('/proyectos', function () {
     return view('proyecto');
 });
 
-Route::get('/add-proyecto', function () {
-    return view('addproyecto');
-});
 
+
+Route::get('/proyectos/create', [ProyectoController::class, 'create'])->name('proyectos.create');
+Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
 
 
 Route::get('/clientes', function () {
