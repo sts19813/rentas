@@ -329,8 +329,10 @@
                                     <div>
                                         <!-- Action Buttons -->
                                         <div class="d-flex justify-content-between mt-3">
-                                            <button class="btn btn-outline-secondary">Descargar Demo</button>
-                                            <button class="btn btn-dark">Subir Excel</button>
+                                            <a href="/plantillas/Plantilla Unidades.xlsx" class="btn btn-outline-secondary">Descargar Demo</a>
+                                            <div>
+                                                <input class="form-control" type="file" id="excelFile">
+                                            </div>
                                         </div>
 
                                         <!-- Unidades Table -->
@@ -348,59 +350,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="nombre">Local 01</td>
-                                                        <td class="metros_cuadrados">120</td>
-                                                        <td class="precio_por_hora">$250.00</td>
-                                                        <td class="precio_por_mes">$4,500.00</td>
-                                                        <td class="nivel">Planta Baja</td>
-                                                        <td class="estatus"><span
-                                                                class="badge bg-success">Disponible</span></td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm"><i
-                                                                    class="bi bi-eye"></i></button>
-                                                            <button class="btn btn-warning btn-sm"><i
-                                                                    class="bi bi-pencil"></i></button>
-                                                            <button class="btn btn-danger btn-sm"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="nombre">Local 02</td>
-                                                        <td class="metros_cuadrados">150</td>
-                                                        <td class="precio_por_hora">$300.00</td>
-                                                        <td class="precio_por_mes">$5,000.00</td>
-                                                        <td class="nivel">Nivel 1</td>
-                                                        <td class="estatus"><span
-                                                                class="badge bg-warning text-dark">Comprometido</span>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm"><i
-                                                                    class="bi bi-eye"></i></button>
-                                                            <button class="btn btn-warning btn-sm"><i
-                                                                    class="bi bi-pencil"></i></button>
-                                                            <button class="btn btn-danger btn-sm"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td class="nombre">Local 03</td>
-                                                        <td class="metros_cuadrados">200</td>
-                                                        <td class="precio_por_hora">$350.00</td>
-                                                        <td class="precio_por_mes">$6,000.00</td>
-                                                        <td class="nivel">Planta Baja</td>
-                                                        <td class="estatus"><span
-                                                                class="badge bg-info text-dark">Rentado</span></td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm"><i
-                                                                    class="bi bi-eye"></i></button>
-                                                            <button class="btn btn-warning btn-sm"><i
-                                                                    class="bi bi-pencil"></i></button>
-                                                            <button class="btn btn-danger btn-sm"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </td>
-                                                    </tr>
+                                                
                                                 </tbody>
                                             </table>
                                         </div>
@@ -414,6 +364,8 @@
                                     <!-- Upload Section -->
                                     <div class="card mt-4">
                                         <div class="card-body text-center">
+                                        <input type="file" id="mapas" name="mapas[]" multiple>
+
                                             <h5 class="card-title">Nueva Imagen o Imágenes</h5>
                                             <div class="mb-4">
                                                 <img src="/media/Uploading.svg" alt="Upload Illustration" width="150">
@@ -536,10 +488,15 @@
             </div>
         </div>
     </div>
+
+
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="/assets/proyecto.js"></script>
 
 </body>

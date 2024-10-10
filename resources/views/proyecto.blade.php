@@ -75,7 +75,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Proyectos</h2>
 
-            <a type="button" class="btn btn-dark" href="/add-proyecto">
+            <a type="button" class="btn btn-dark" href="/proyectos/create">
                 + Nuevo proyecto
             </a>
         </div>

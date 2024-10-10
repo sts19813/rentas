@@ -69,7 +69,7 @@ $(document).ready(function () {
         
         e.preventDefault();
 
-        // Crear un array de objetos con los datos de las unidades
+        let formData = new FormData(this); 
         let unidades = [];
         $('#unidadesTable tbody tr').each(function () {
             let unidad = {
@@ -83,16 +83,16 @@ $(document).ready(function () {
             unidades.push(unidad);
         });
 
-        // Crear el payload del formulario para enviar
-        let formData = $(this).serializeArray();
 
-        formData.push({ name: 'unidades', value: JSON.stringify(unidades) });
-
+        formData.append('unidades', JSON.stringify(unidades));
+       
         // Enviar el formulario con AJAX
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
             data: formData,
+            processData: false, 
+            contentType: false,
             success: function (response) {
                 debugger
                 alert('Proyecto guardado exitosamente.');
@@ -105,5 +105,68 @@ $(document).ready(function () {
             }
         });
     });
+
+    document.getElementById('excelFile').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const data = new Uint8Array(event.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+
+            // Leer la primera hoja del archivo
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            // Convertir a JSON
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+            debugger
+
+            insertDataToTable(jsonData);
+
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+
+
+    function insertDataToTable(data) {
+
+        debugger
+        const tableBody = document.querySelector("#unidadesTable tbody");
+
+        // Limpiar el contenido del tbody antes de agregar nuevas filas
+        tableBody.innerHTML = "";
+
+        // Iterar sobre los registros del JSON
+        data.forEach(item => {
+            const row = document.createElement("tr");
+
+            // Crear columnas con los datos
+            row.innerHTML = `
+                <td class="nombre">${item.Nombre || ''}</td>
+                <td class="metros_cuadrados">${item.M2 || ''}</td>
+                <td class="precio_por_hora">${item['Precio x Hora'] || ''}</td>
+                <td class="precio_por_mes">${item['Precio x Mes'] || ''}</td>
+                <td class="nivel">${item.Nivel || ''}</td>
+                <td class="estatus"><span class="badge ${item.Estatus === 'Disponible' ? 'bg-success' : 'bg-danger'}">${item.Estatus || ''}</span></td>
+                <td>
+                    <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
+                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                </td>
+            `;
+
+            // Agregar la fila al cuerpo de la tabla
+            tableBody.appendChild(row);
+        });
+    }
+
+
 });
 
