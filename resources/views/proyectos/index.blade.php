@@ -72,47 +72,43 @@
     <x-header />
 
     <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Proyectos</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Proyectos</h2>
 
-            <a type="button" class="btn btn-dark" href="/proyectos/create">
-                + Nuevo proyecto
-            </a>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card project-card">
-                    <img src="media/plaza-arbol.png" alt="Plaza Árbol">
-                    <div class="card-body">
-                        <h5 class="card-title">Plaza Árbol</h5>
-                        <h6 class="card-subtitle mb-2">20 Unidades</h6>
-                        <p class="status">100% Ocupado</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card project-card">
-                    <img src="https://via.placeholder.com/400x200" alt="Plaza Árbol">
-                    <div class="card-body">
-                        <h5 class="card-title">Plaza Árbol</h5>
-                        <h6 class="card-subtitle mb-2">20 Unidades</h6>
-                        <p class="status">100% Ocupado</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card project-card">
-                    <img src="https://via.placeholder.com/400x200" alt="Plaza Árbol">
-                    <div class="card-body">
-                        <h5 class="card-title">Plaza Árbol</h5>
-                        <h6 class="card-subtitle mb-2">20 Unidades</h6>
-                        <p class="status">100% Ocupado</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <a type="button" class="btn btn-dark" href="/proyectos/create">
+            + Nuevo proyecto
+        </a>
     </div>
+
+    <div class="row">
+        @foreach($proyectos as $proyecto)
+            <div class="col-md-4">
+                <div class="card project-card">
+                    <!-- Mostrar la imagen si existe, de lo contrario, una imagen por defecto -->
+                    @if($proyecto->mapas->isNotEmpty())
+                        <img src="{{ Storage::url($proyecto->mapas->first()->ruta_imagen) }}" alt="{{ $proyecto->nombre }}" class="card-img-top">
+                    @else
+                        <img src="https://via.placeholder.com/400x200" alt="Imagen por defecto" class="card-img-top">
+                    @endif
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $proyecto->nombre }}</h5>
+                        <h6 class="card-subtitle mb-2">{{ $proyecto->unidades->count() }} Unidades</h6>
+
+                        <!-- Puedes agregar lógica para mostrar el estatus -->
+                        <p class="status">
+                            {{ $proyecto->unidades->where('estatus', 'Rentado')->count() == $proyecto->unidades->count() ? '100% Ocupado' : 'Disponible' }}
+                        </p>
+
+                        <!-- Enlace al detalle del proyecto -->
+                        <a href="{{ route('proyectos.show', $proyecto->id) }}" class="btn btn-primary">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 

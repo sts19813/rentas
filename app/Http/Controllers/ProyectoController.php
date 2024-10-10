@@ -9,15 +9,33 @@ use App\Models\Servicio;
 
 class ProyectoController extends Controller
 {
-    /**
-     * Muestra el formulario de creación de proyectos.
-     */
+
+    //vista principal de proyectos, lista de los proyectos ya creados
+    public function index()
+    {
+        // Recuperar todos los proyectos
+        $proyectos = Proyecto::with('unidades')->get();
+
+        // Pasar los proyectos a la vista
+        return view('proyectos.index', compact('proyectos'));
+    }
+
+    //visualizar un proyecto con la informacion ya registrada
+    public function show($id)
+    {
+        // Recuperar el proyecto con las relaciones necesarias
+        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios'])->findOrFail($id);
+
+        // Pasar el proyecto a la vista
+        return view('proyectos.show', compact('proyecto'));
+    }
+
     public function create()
     {
         $amenidades = Amenidades::all();
         $servicios = Servicio::all();
 
-        return view('addproyecto', compact('amenidades', 'servicios'));
+        return view('proyectos.addproyecto', compact('amenidades', 'servicios'));
     }
 
     /**

@@ -18,10 +18,11 @@ Route::get('/proyectos', function () {
     return view('proyecto');
 });
 
-
-
+Route::get('/proyectos', [ProyectoController::class, 'index'])->name('proyectos.index');
 Route::get('/proyectos/create', [ProyectoController::class, 'create'])->name('proyectos.create');
 Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
+Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('proyectos.show');
+
 
 
 Route::get('/clientes', function () {
