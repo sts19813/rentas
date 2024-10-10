@@ -1,76 +1,18 @@
 
 $(document).ready(function () {
 
-    var quillReglamento, quillTerminos;
-
-
-    quillReglamento = new Quill("#reglamento", {
-        theme: "snow",
-        modules: {
-            toolbar: [
-                [{ header: [1, 2, false] }],
-                ["bold", "italic", "underline"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["link"]
-            ]
-        }
-    });
-
-    quillTerminos = new Quill("#terminos", {
-        theme: "snow",
-        modules: {
-            toolbar: [
-                [{ header: [1, 2, false] }],
-                ["bold", "italic", "underline"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["link"]
-            ]
-        }
-    });
-
-
-
-    let rowIdx = 0;
-
-    // Agregar nueva fila
-    $('#addRow').on('click', function () {
-        debugger
-        $('#unidadesTable tbody').append(`
-            <tr id="R${++rowIdx}">
-                <td><input type="number" name="metros_cuadrados" class="form-control metros_cuadrados" required /></td>
-                <td><input type="number" step="0.01" name="precio_por_hora" class="form-control precio_por_hora" required /></td>
-                <td><input type="number" step="0.01" name="precio_por_mes" class="form-control precio_por_mes" required /></td>
-                <td><input type="text" name="nivel" class="form-control nivel" required /></td>
-                <td>
-                    <select name="planta" class="form-control planta">
-                        <option value="baja">Baja</option>
-                        <option value="alta">Alta</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="estatus" class="form-control estatus">
-                        <option value="disponible">Disponible</option>
-                        <option value="comprometido">Comprometido</option>
-                        <option value="rentado">Rentado</option>
-                    </select>
-                </td>
-                <td><button type="button" class="btn btn-danger removeRow">Eliminar</button></td>
-            </tr>
-        `);
-    });
-
-    // Eliminar una fila
-    $('#unidadesTable').on('click', '.removeRow', function () {
-        $(this).closest('tr').remove();
-    });
+    let quillReglamento, quillTerminos;
 
     // Enviar formulario y extraer los datos de las unidades
     $('#formGuardarProyecto').on('submit', function (e) {
-        
+
         e.preventDefault();
 
-        let formData = new FormData(this); 
+        let formData = new FormData(this);
+        let reglamento = $('#reglamento .ql-editor').html();
+        let terminos = $('#terminos .ql-editor').html();
         let unidades = [];
+        
         $('#unidadesTable tbody tr').each(function () {
             let unidad = {
                 nombre: $(this).find('.nombre').text().trim(),
@@ -83,15 +25,17 @@ $(document).ready(function () {
             unidades.push(unidad);
         });
 
-
         formData.append('unidades', JSON.stringify(unidades));
-       
+        formData.append( 'reglamento', reglamento);
+        formData.append( 'terminos', terminos);
+
+
         // Enviar el formulario con AJAX
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
             data: formData,
-            processData: false, 
+            processData: false,
             contentType: false,
             success: function (response) {
                 debugger
@@ -106,6 +50,8 @@ $(document).ready(function () {
         });
     });
 
+
+    //carga las unidades de un archivo de excel y los agrega en la tabla
     document.getElementById('excelFile').addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (!file) {
@@ -135,6 +81,7 @@ $(document).ready(function () {
     });
 
 
+    //inserta cada registro de unidades a la tabla para ser guardado en la  base de datos
     function insertDataToTable(data) {
 
         debugger
@@ -156,9 +103,9 @@ $(document).ready(function () {
                 <td class="nivel">${item.Nivel || ''}</td>
                 <td class="estatus"><span class="badge ${item.Estatus === 'Disponible' ? 'bg-success' : 'bg-danger'}">${item.Estatus || ''}</span></td>
                 <td>
-                    <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button>
-                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                    <!--button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
+                    <button class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></button -->
+                    <a class="btn btn-danger btn-sm removeRow"><i class="bi bi-trash"></i></a>
                 </td>
             `;
 
@@ -167,6 +114,93 @@ $(document).ready(function () {
         });
     }
 
+
+    let rowIdx = 0;
+
+    // Agregar nueva fila
+    $('#addRow').on('click', function () {
+        $('#unidadesTable tbody').append(`
+            <tr id="R${++rowIdx}">
+                <td><input type="number" name="metros_cuadrados" class="form-control metros_cuadrados" required /></td>
+                <td><input type="number" step="0.01" name="precio_por_hora" class="form-control precio_por_hora" required /></td>
+                <td><input type="number" step="0.01" name="precio_por_mes" class="form-control precio_por_mes" required /></td>
+                <td><input type="text" name="nivel" class="form-control nivel" required /></td>
+                <td>
+                    <select name="planta" class="form-control planta">
+                        <option value="baja">Baja</option>
+                        <option value="alta">Alta</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="estatus" class="form-control estatus">
+                        <option value="disponible">Disponible</option>
+                        <option value="comprometido">Comprometido</option>
+                        <option value="rentado">Rentado</option>
+                    </select>
+                </td>
+                <td><a type="button" class="btn btn-danger removeRow" id="EliminarRow">Eliminar</a></td>
+            </tr>
+        `);
+    });
+
+    // Eliminar una fila
+    $('#unidadesTable').on('click', '.removeRow', function () {
+        $(this).closest('tr').remove();
+    });
+
+
+    //visualizador de los mapas
+    $('#mapas').on('change', function (event) {
+        let previewContainer = $('#preview');
+        previewContainer.empty(); // Limpiar las imágenes previas
+
+        let files = event.target.files; // Obtener archivos seleccionados
+        if (files) {
+            $.each(files, function (index, file) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    let img = $('<img />', {
+                        src: e.target.result,
+                        width: '200px', // Ajustar tamaño miniatura
+                        class: 'rounded border',
+                        css: {
+                            margin: '5px',
+                            objectFit: 'cover'
+                        }
+                    });
+
+                    previewContainer.append(img); // Añadir imagen al contenedor
+                };
+
+                reader.readAsDataURL(file); // Leer el archivo como URL
+            });
+        }
+    });
+
+    quillReglamento = new Quill("#reglamento", {
+        theme: "snow",
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ["bold", "italic", "underline"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["link"]
+            ]
+        }
+    });
+
+    quillTerminos = new Quill("#terminos", {
+        theme: "snow",
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ["bold", "italic", "underline"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["link"]
+            ]
+        }
+    });
 
 });
 

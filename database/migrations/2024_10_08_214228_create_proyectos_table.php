@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -26,6 +25,8 @@ return new class extends Migration
             $table->string('estado'); // Relación con tabla de estados
             $table->string('ciudad'); // Relación con tabla de ciudades
             $table->string('codigo_postal'); // Código postal
+            $table->text('reglamento')->nullable();// reglamento del proyecto 
+            $table->text('terminos')->nullable(); // terminos y condiciones del proyecto
             $table->timestamps(); // Timestamps para created_at y updated_at
         });
     }

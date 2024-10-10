@@ -44,7 +44,9 @@ class ProyectoController extends Controller
             'amenidades' => 'array',
             'servicios' => 'array',
             'unidades' => 'required|json',
-            'mapas.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'  // Validar las imágenes
+            'mapas.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'reglamento' => 'required|string',
+            'terminos' => 'required|string',
 
         ]);
 
@@ -63,6 +65,8 @@ class ProyectoController extends Controller
             'estado' => $validatedData['estado'],
             'ciudad' => $validatedData['ciudad'],
             'codigo_postal' => $validatedData['codigoPostal'],
+            'reglamento' => $validatedData['reglamento'],
+            'terminos' => $validatedData['terminos'],
         ]);
 
         $unidades = json_decode($request->unidades, true);
@@ -86,10 +90,10 @@ class ProyectoController extends Controller
                 $extension = $mapa->getClientOriginalExtension();
                 // Generar un nombre único con la fecha y hora actual
                 $filename = $originalName . '_' . now()->format('Ymd_His') . '.' . $extension;
-                
+
                 // Guardar el archivo en 'public/mapas'
                 $mapa->move(public_path('mapas'), $filename);
-        
+
                 // Guardar la ruta del archivo en la base de datos
                 $proyecto->mapas()->create(['ruta_imagen' => 'mapas/' . $filename]);
             }

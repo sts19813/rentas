@@ -23,7 +23,9 @@ class Proyecto extends Model
         'pais',
         'estado',
         'ciudad',
-        'codigo_postal'
+        'codigo_postal',
+        'reglamento',
+        'terminos',
     ];
 
     // Relación muchos a muchos con Amenidades

@@ -63,6 +63,10 @@
         .navbar-brand {
             color: #5cb85c;
         }
+
+        #reglamento, #terminos{
+            height: 175px;
+        }
     </style>
 </head>
 
@@ -70,7 +74,7 @@
     <x-header></x-header>
     <div class="container mt-5">
         <div class="content w-100">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex justify-content-between align-items-center">
                 <h2>Proyecto</h2>
             </div>
 
@@ -243,7 +247,7 @@
                                 <div class="container mt-4">
 
                                     <!-- Sección de Amenidades -->
-                                    <div class="card mb-4">
+                                    <div class="card mb-4" style="display:inline-block; width:49%">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="mb-0">Amenidades</h5>
                                             <button type="button" class="btn btn-outline-primary btn-sm">
@@ -258,7 +262,7 @@
                                                         <th scope="col" class="text-end">Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @foreach($amenidades as $amenidad)
                                                         <tr>
 
@@ -282,7 +286,7 @@
                                     </div>
 
                                     <!-- Sección de servicios -->
-                                    <div class="card mb-4">
+                                    <div class="card mb-4" style="display:inline-block; width:49%">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="mb-0">Servicios</h5>
                                             <button type="button" class="btn btn-outline-primary btn-sm"
@@ -298,7 +302,7 @@
                                                         <th scope="col" class="text-end">Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody  style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @foreach($servicios as $servicio)
                                                         <tr>
                                                             <td>
@@ -329,7 +333,8 @@
                                     <div>
                                         <!-- Action Buttons -->
                                         <div class="d-flex justify-content-between mt-3">
-                                            <a href="/plantillas/Plantilla Unidades.xlsx" class="btn btn-outline-secondary">Descargar Demo</a>
+                                            <a href="/plantillas/Plantilla Unidades.xlsx"
+                                                class="btn btn-outline-secondary">Descargar Demo</a>
                                             <div>
                                                 <input class="form-control" type="file" id="excelFile">
                                             </div>
@@ -350,7 +355,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -364,18 +369,17 @@
                                     <!-- Upload Section -->
                                     <div class="card mt-4">
                                         <div class="card-body text-center">
-                                        <input type="file" id="mapas" name="mapas[]" multiple>
-
-                                            <h5 class="card-title">Nueva Imagen o Imágenes</h5>
-                                            <div class="mb-4">
-                                                <img src="/media/Uploading.svg" alt="Upload Illustration" width="150">
+                                            <div>
+                                                <h5 class="card-title">Nueva Imagen o Imágenes</h5>
+                                                <input class="form-control" type="file" id="mapas" name="mapas[]"
+                                                    multiple>
                                             </div>
-                                            <p class="card-text">Arrastra un archivo para subir<br>o selecciona uno de
-                                                tu
-                                                computadora</p>
-                                            <button class="btn btn-primary">
-                                                <i class="bi bi-upload"></i> Subir Archivo
-                                            </button>
+                                            <div>
+                                                <div id="preview" class="mt-2 d-flex flex-wrap"></div>
+
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
