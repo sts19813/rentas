@@ -12,7 +12,7 @@ $(document).ready(function () {
         let reglamento = $('#reglamento .ql-editor').html();
         let terminos = $('#terminos .ql-editor').html();
         let unidades = [];
-        
+
         $('#unidadesTable tbody tr').each(function () {
             let unidad = {
                 nombre: $(this).find('.nombre').text().trim(),
@@ -152,6 +152,34 @@ $(document).ready(function () {
     //visualizador de los mapas
     $('#mapas').on('change', function (event) {
         let previewContainer = $('#preview');
+        previewContainer.empty(); // Limpiar las imágenes previas
+
+        let files = event.target.files; // Obtener archivos seleccionados
+        if (files) {
+            $.each(files, function (index, file) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    let img = $('<img />', {
+                        src: e.target.result,
+                        width: '200px', // Ajustar tamaño miniatura
+                        class: 'rounded border',
+                        css: {
+                            margin: '5px',
+                            objectFit: 'cover'
+                        }
+                    });
+
+                    previewContainer.append(img); // Añadir imagen al contenedor
+                };
+
+                reader.readAsDataURL(file); // Leer el archivo como URL
+            });
+        }
+    });
+
+    $('#multimedias').on('change', function (event) {
+        let previewContainer = $('#preview-multimedias');
         previewContainer.empty(); // Limpiar las imágenes previas
 
         let files = event.target.files; // Obtener archivos seleccionados

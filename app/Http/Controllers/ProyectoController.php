@@ -98,6 +98,24 @@ class ProyectoController extends Controller
                 $proyecto->mapas()->create(['ruta_imagen' => 'mapas/' . $filename]);
             }
         }
+
+
+        if ($request->hasFile('multimedias')) {
+            foreach ($request->file('multimedias') as $multimedia) {
+                // Obtener el nombre original del archivo sin la extensión
+                $originalName = pathinfo($multimedia->getClientOriginalName(), PATHINFO_FILENAME);
+                // Obtener la extensión del archivo
+                $extension = $multimedia->getClientOriginalExtension();
+                // Generar un nombre único con la fecha y hora actual
+                $filename = $originalName . '_' . now()->format('Ymd_His') . '.' . $extension;
+
+                // Guardar el archivo en 'public/multimedias'
+                $multimedia->move(public_path('multimedias'), $filename);
+
+                // Guardar la ruta del archivo en la base de datos
+                $proyecto->multimedias()->create(['ruta_multimedia' => 'multimedias/' . $filename]);
+            }
+        }
         // Redirigir con un mensaje de éxito
         return redirect()->back()->with('success', 'Proyecto creado con éxito');
     }

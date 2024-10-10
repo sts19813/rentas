@@ -51,4 +51,10 @@ class Proyecto extends Model
     {
         return $this->hasMany(Mapa::class);
     }
+
+    //relacion con multimedia
+    public function multimedias()
+    {
+        return $this->hasMany(Multimedia::class);
+    }
 }

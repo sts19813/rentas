@@ -376,8 +376,6 @@
                                             </div>
                                             <div>
                                                 <div id="preview" class="mt-2 d-flex flex-wrap"></div>
-
-
                                             </div>
 
                                         </div>
@@ -402,81 +400,18 @@
                             <!-- Contenido de la pestaña Multimedia -->
                             <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
                                 <div class="container mt-5">
-                                    <!-- Multimedia Section -->
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Multimedia</h5>
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-10">Archivo</th>
-                                                        <th class="col-2">Opciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="/media/download.jpg" alt="PDF Icon" width="40"
-                                                                    class="me-2">
-                                                                <span>Frente_01.pdf</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm me-2"><i
-                                                                    class="bi bi-download"></i></button>
-                                                            <button class="btn btn-danger btn-sm"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="/media/download.jpg" alt="PDF Icon" width="40"
-                                                                    class="me-2">
-                                                                <span>Baño_01.pdf</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm me-2"><i
-                                                                    class="bi bi-download"></i></button>
-                                                            <button class="btn btn-danger btn-sm"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="/media/download.jpg" alt="PDF Icon" width="40"
-                                                                    class="me-2">
-                                                                <span>Pasillo_01.pdf</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm me-2"><i
-                                                                    class="bi bi-download"></i></button>
-                                                            <button class="btn btn-danger btn-sm"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
                                     <!-- Upload Section -->
                                     <div class="card mt-4">
                                         <div class="card-body text-center">
-                                            <h5 class="card-title">Nueva Imagen o Imágenes</h5>
-                                            <div class="mb-4">
-                                                <img src="/media/Uploading.svg" alt="Upload Illustration" width="150">
+                                            <div>
+                                                <h5 class="card-title">sube las imagenes de multimedia</h5>
+                                                <input class="form-control" type="file" id="multimedias" name="multimedias[]"
+                                                    multiple>
                                             </div>
-                                            <p class="card-text">Arrastra un archivo para subir<br>o selecciona uno de
-                                                tu
-                                                computadora</p>
-                                            <button class="btn btn-primary">
-                                                <i class="bi bi-upload"></i> Subir Archivo
-                                            </button>
+                                            <div>
+                                                <div id="preview-multimedias" class="mt-2 d-flex flex-wrap"></div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
