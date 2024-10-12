@@ -76,7 +76,8 @@
     <div class="container mt-5">
         <div class="content w-100">
             <div class="d-flex justify-content-between align-items-center">
-                <h2>Proyecto - visualizar</h2>
+                <h2>Proyecto - {{ $proyecto->nombre }} ({{ $textTitle }})</h2>
+                <a href="{{ route('proyectos.edit', $proyecto->id) }}" class="btn btn-primary">Editar</a>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -113,8 +114,10 @@
                     </ul>
 
                     <!-- Formulario completo -->
-                    <form action="{{-- route('proyectos.store') --}}" method="POST" id="formGuardarProyecto">
-
+                    <form action="{{ route('proyectos.update', $proyecto->id) }}" id="formActualizarProyecto"
+                        method="POST">
+                        @csrf
+                        @method('PUT')
                         <div class="tab-content" id="myTabContent">
                             <!-- General Tab -->
                             <div class="tab-pane fade show active" id="general" role="tabpanel"
@@ -125,14 +128,14 @@
                                         <div class="col-md-6">
                                             <label for="nombrePlaza" class="form-label">Nombre de la plaza *</label>
                                             <input type="text" class="form-control" id="nombrePlaza"
-                                                name="nombrePlaza" value={{ $proyecto->nombre }}
+                                                name="nombrePlaza" value="{{ $proyecto->nombre }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="cantidadLocales" class="form-label">Cantidad de Locales
                                                 *</label>
                                             <input type="number" class="form-control" id="cantidadLocales"
-                                                name="cantidadLocales" value={{ $proyecto->cantidad_locales }}
+                                                name="cantidadLocales" value="{{ $proyecto->cantidad_locales }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
@@ -141,13 +144,13 @@
                                             <label for="cantidadCajones" class="form-label">Cantidad Cajones de
                                                 Estacionamiento *</label>
                                             <input type="number" class="form-control" id="cantidadCajones"
-                                                name="cantidadCajones" value={{ $proyecto->cantidad_cajones }}
+                                                name="cantidadCajones" value="{{ $proyecto->cantidad_cajones }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="precioRenta" class="form-label">Precio Renta Promedio</label>
                                             <input type="text" class="form-control" id="precioRenta"
-                                                value={{ $proyecto->precio_renta }} name="precioRenta"
+                                                value="{{ $proyecto->precio_renta }}" name="precioRenta"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
@@ -157,13 +160,13 @@
                                             <label for="cuotaMantenimiento" class="form-label">Cuota de Mantenimiento
                                                 *</label>
                                             <input type="text" class="form-control" id="cuotaMantenimiento"
-                                                name="cuotaMantenimiento" value={{ $proyecto->cuota_mantenimiento }}
+                                                name="cuotaMantenimiento" value="{{ $proyecto->cuota_mantenimiento }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="nivelesPlaza" class="form-label">Niveles de la plaza *</label>
                                             <input type="number" class="form-control" id="nivelesPlaza"
-                                                name="nivelesPlaza" value={{ $proyecto->niveles }}
+                                                name="nivelesPlaza" value="{{ $proyecto->niveles }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
@@ -171,14 +174,14 @@
                                         <div class="col-md-6">
                                             <label for="horaApertura" class="form-label">Hora Apertura *</label>
                                             <input type="time" class="form-control" id="horaApertura"
-                                                name="horaApertura" value={{ $proyecto->hora_apertura }}
+                                                name="horaApertura" value="{{ $proyecto->hora_apertura }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="horaCierre" class="form-label">Hora Cierre *</label>
                                             <input type="time" class="form-control"
-                                                value={{ $proyecto->hora_cierre }} id="horaCierre" name="horaCierre"
-                                                @if ($isViewMode) disabled @endif>
+                                                value="{{ $proyecto->hora_cierre }}" id="horaCierre"
+                                                name="horaCierre" @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
                                     <!-- Ubicación de la Plaza -->
@@ -187,7 +190,7 @@
                                         <div class="col-md-12">
                                             <label for="direccion1" class="form-label">Dirección línea 1 *</label>
                                             <input type="text" class="form-control" id="direccion1"
-                                                value={{ $proyecto->direccion1 }} name="direccion1"
+                                                value="{{ $proyecto->direccion1 }}" name="direccion1"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
@@ -195,13 +198,13 @@
                                         <div class="col-md-6">
                                             <label for="pais" class="form-label">País *</label>
                                             <input type="text" class="form-control" id="pais" name="pais"
-                                                value={{ $proyecto->pais }}
+                                                value="{{ $proyecto->pais }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="estado" class="form-label">Estado *</label>
                                             <input type="text" class="form-control" id="estado" name="estado"
-                                                value={{ $proyecto->estado }}
+                                                value="{{ $proyecto->estado }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
@@ -209,13 +212,13 @@
                                         <div class="col-md-6">
                                             <label for="ciudad" class="form-label">Ciudad *</label>
                                             <input type="text" class="form-control" id="ciudad" name="ciudad"
-                                                value={{ $proyecto->ciudad }}
+                                                value="{{ $proyecto->ciudad }}"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="codigoPostal" class="form-label">Código Postal *</label>
                                             <input type="text" class="form-control" id="codigoPostal"
-                                                value={{ $proyecto->codigo_postal }} name="codigoPostal"
+                                                value="{{ $proyecto->codigo_postal }}" name="codigoPostal"
                                                 @if ($isViewMode) disabled @endif>
                                         </div>
                                     </div>
@@ -245,13 +248,35 @@
                                                 </thead>
                                                 <tbody
                                                     style="display:table-caption; height:200px; overflow-y: scroll;">
-                                                    @foreach ($proyecto->amenidades as $amenidad)
-                                                        <tr>
-                                                            <td>
-                                                                <li>{{ $amenidad->nombre }}</li>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                    @if ($isViewMode)
+                                                        @foreach ($proyecto->amenidades as $amenidad)
+                                                            <tr>
+                                                                <td>
+                                                                    <li>{{ $amenidad->nombre }}</li>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($amenidades as $amenidad)
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="form-check-label"
+                                                                        for="amenidad{{ $amenidad->id }}">
+                                                                        {{ $amenidad->nombre }}
+                                                                    </label>
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        name="amenidades[]"
+                                                                        value="{{ $amenidad->id }}"
+                                                                        id="amenidad{{ $amenidad->id }}"
+                                                                        @if ($proyecto->amenidades->contains('id', $amenidad->id)) checked @endif>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -276,13 +301,34 @@
                                                 </thead>
                                                 <tbody
                                                     style="display:table-caption; height:200px; overflow-y: scroll;">
-                                                    @foreach ($proyecto->servicios as $servicio)
-                                                        <tr>
-                                                            <td>
-                                                                <li>{{ $servicio->nombre }}</li>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                    @if ($isViewMode)
+                                                        @foreach ($proyecto->servicios as $servicio)
+                                                            <tr>
+                                                                <td>
+                                                                    <li>{{ $servicio->nombre }}</li>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($servicios as $servicio)
+                                                            <tr>
+                                                                <td>
+                                                                    <label class="form-check-label"
+                                                                        for="servicio{{ $servicio->id }}">
+                                                                        {{ $servicio->nombre }}
+                                                                    </label>
+                                                                </td>
+                                                                <td class="text-end">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        name="servicios[]"
+                                                                        value="{{ $servicio->id }}"
+                                                                        id="servicio{{ $servicio->id }}"
+                                                                        @if ($proyecto->servicios->contains('id', $servicio->id)) checked @endif>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -366,9 +412,10 @@
                                             <div>
                                                 <div id="preview" class="mt-2 d-flex flex-wrap"></div>
                                                 <div class="row">
-                                                    @foreach($proyecto->mapas as $mapa)
+                                                    @foreach ($proyecto->mapas as $mapa)
                                                         <div class="col-md-4">
-                                                            <img src="{{ asset(  $mapa->ruta_imagen) }}" alt="{{ $proyecto->nombre }}" class="img-fluid">
+                                                            <img src="{{ asset($mapa->ruta_imagen) }}"
+                                                                alt="{{ $proyecto->nombre }}" class="img-fluid">
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -403,28 +450,29 @@
                             <!-- Contenido de la pestaña Multimedia -->
                             <div class="tab-pane fade" id="multimedia" role="tabpanel"
                                 aria-labelledby="multimedia-tab">
-                                <div class="container mt-5">
-                                    <!-- Upload Section -->
-                                    <div class="card mt-4">
-                                        <div class="card-body text-center">
-                                            <div>
-                                                <h5 class="card-title">sube las imagenes de multimedia</h5>
-                                                <input class="form-control" type="file" id="multimedias"
-                                                    name="multimedias[]" multiple
-                                                    @if ($isViewMode) disabled @endif>
-                                            </div>
-                                            <div>
-                                                <div class="row">
-                                                    @foreach($proyecto->multimedias as $multimedia)
-                                                        <div class="col-md-4">
-                                                            <img src="{{ asset( $multimedia->ruta_multimedia) }}" alt="{{ $proyecto->nombre }}" class="img-fluid">
-                                                        </div>
-                                                    @endforeach
-                                                </div>
+
+                                <!-- Upload Section -->
+                                <div class="card mt-4">
+                                    <div class="card-body text-center">
+                                        <div>
+                                            <h5 class="card-title">sube las imagenes de multimedia</h5>
+                                            <input class="form-control" type="file" id="multimedias"
+                                                name="multimedias[]" multiple
+                                                @if ($isViewMode) disabled @endif>
+                                        </div>
+                                        <div>
+                                            <div class="row mt-2 d-flex flex-wrap">
+                                                @foreach ($proyecto->multimedias as $multimedia)
+                                                    <div class="col-md-4">
+                                                        <img src="{{ asset($multimedia->ruta_multimedia) }}"
+                                                            alt="{{ $proyecto->nombre }}" class="img-fluid">
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
                             <!-- Botón de enviar al final -->

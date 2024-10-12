@@ -24,11 +24,33 @@ class ProyectoController extends Controller
     public function show($id)
     {
         // Recuperar el proyecto con las relaciones necesarias
-        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios','multimedias'])->findOrFail($id);
+        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios', 'multimedias'])->findOrFail($id);
         $isViewMode = true;
+        $textTitle = 'Visualizar';
+
+        $amenidades = Amenidades::all();
+        $servicios = Servicio::all();
+
         // Pasar el proyecto a la vista
-        return view('proyectos.show', compact('proyecto', 'isViewMode'));
+        return view('proyectos.show', compact('proyecto', 'isViewMode', 'textTitle', 'amenidades', 'servicios'));
     }
+
+    //edita un proyecto mostrando su informacion actual
+    public function edit($id)
+    {
+        // Recuperar el proyecto con las relaciones necesarias
+        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios', 'multimedias'])->findOrFail($id);
+        $isViewMode = false;
+        $textTitle = 'Editar';
+
+        $amenidades = Amenidades::all();
+        $servicios = Servicio::all();
+
+
+        // Pasar el proyecto a la vista
+        return view('proyectos.show', compact('proyecto', 'isViewMode', 'textTitle', 'amenidades', 'servicios'));
+    }
+
 
     public function create()
     {
@@ -137,4 +159,93 @@ class ProyectoController extends Controller
         // Redirigir con un mensaje de éxito
         return redirect()->back()->with('success', 'Proyecto creado con éxito');
     }
+
+    //actualizar el proyecto
+    public function update(Request $request, $id)
+    {
+        // Validar los datos entrantes
+        $validatedData = $request->validate([
+            'nombrePlaza' => 'required|string|max:255',
+            'cantidadLocales' => 'required|integer',
+            'cantidadCajones' => 'required|integer',
+            'precioRenta' => 'nullable|numeric',
+            'cuotaMantenimiento' => 'required|numeric',
+            'nivelesPlaza' => 'required|integer',
+            'horaApertura' => 'required',
+            'horaCierre' => 'required',
+            'direccion1' => 'required|string',
+            'pais' => 'required',
+            'estado' => 'required',
+            'ciudad' => 'required',
+            'codigoPostal' => 'required|string',
+            'amenidades' => 'array',
+            'servicios' => 'array',
+            'unidades' => 'required|json',
+            'mapas.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'multimedias.*' => 'image|mimes:jpeg,png,jpg,gif,svg,mp4,avi|max:2048',
+            'reglamento' => 'required|string',
+            'terminos' => 'required|string',
+        ]);
+
+        // Buscar el proyecto por ID
+        $proyecto = Proyecto::findOrFail($id);
+
+        // Actualizar los datos del proyecto en la base de datos
+        $proyecto->update([
+            'nombre' => $validatedData['nombrePlaza'],
+            'cantidad_locales' => $validatedData['cantidadLocales'],
+            'cantidad_cajones' => $validatedData['cantidadCajones'],
+            'precio_renta' => $validatedData['precioRenta'],
+            'cuota_mantenimiento' => $validatedData['cuotaMantenimiento'],
+            'niveles' => $validatedData['nivelesPlaza'],
+            'hora_apertura' => $validatedData['horaApertura'],
+            'hora_cierre' => $validatedData['horaCierre'],
+            'direccion1' => $validatedData['direccion1'],
+            'pais' => $validatedData['pais'],
+            'estado' => $validatedData['estado'],
+            'ciudad' => $validatedData['ciudad'],
+            'codigo_postal' => $validatedData['codigoPostal'],
+            'reglamento' => $validatedData['reglamento'],
+            'terminos' => $validatedData['terminos'],
+        ]);
+
+        // Actualizar las unidades del proyecto
+        $unidades = json_decode($request->unidades, true);
+        $proyecto->unidades()->delete(); // Elimina las unidades existentes
+        foreach ($unidades as $unidad) {
+            $proyecto->unidades()->create($unidad); // Reagrega las nuevas unidades
+        }
+
+        // Sincronizar las amenidades y servicios
+        $proyecto->amenidades()->sync($request->input('amenidades', []));
+        $proyecto->servicios()->sync($request->input('servicios', []));
+
+        // Guardar las nuevas imágenes de mapas si se suben
+        if ($request->hasFile('mapas')) {
+            foreach ($request->file('mapas') as $mapa) {
+                $originalName = pathinfo($mapa->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $mapa->getClientOriginalExtension();
+                $filename = $originalName . '_' . now()->format('Ymd_His') . '.' . $extension;
+
+                $mapa->move(public_path('mapas'), $filename);
+                $proyecto->mapas()->create(['ruta_imagen' => 'mapas/' . $filename]);
+            }
+        }
+
+        // Guardar las nuevas imágenes/multimedia si se suben
+        if ($request->hasFile('multimedias')) {
+            foreach ($request->file('multimedias') as $multimedia) {
+                $originalName = pathinfo($multimedia->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $multimedia->getClientOriginalExtension();
+                $filename = $originalName . '_' . now()->format('Ymd_His') . '.' . $extension;
+
+                $multimedia->move(public_path('multimedias'), $filename);
+                $proyecto->multimedias()->create(['ruta_multimedia' => 'multimedias/' . $filename]);
+            }
+        }
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', 'Proyecto actualizado con éxito');
+    }
+
 }

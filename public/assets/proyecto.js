@@ -26,8 +26,8 @@ $(document).ready(function () {
         });
 
         formData.append('unidades', JSON.stringify(unidades));
-        formData.append( 'reglamento', reglamento);
-        formData.append( 'terminos', terminos);
+        formData.append('reglamento', reglamento);
+        formData.append('terminos', terminos);
 
 
         // Enviar el formulario con AJAX
@@ -49,6 +49,52 @@ $(document).ready(function () {
             }
         });
     });
+
+    //envia el form para actualizar la info de un proyecto
+    $('#formActualizarProyecto').on('submit', function (e) {
+        e.preventDefault(); 
+        debugger
+
+        let formData = new FormData(this);
+        let reglamento = $('#reglamento .ql-editor').html();
+        let terminos = $('#terminos .ql-editor').html();
+        let unidades = [];
+
+        // Recopilar las unidades como en el código anterior
+        $('#unidadesTable tbody tr').each(function () {
+            let unidad = {
+                nombre: $(this).find('.nombre').text().trim(),
+                metros_cuadrados: $(this).find('.metros_cuadrados').text().trim(),
+                precio_por_hora: $(this).find('.precio_por_hora').text().trim().replace('$', '').replace(',', ''),
+                precio_por_mes: $(this).find('.precio_por_mes').text().trim().replace('$', '').replace(',', ''),
+                nivel: $(this).find('.nivel').text().trim(),
+                estatus: $(this).find('.estatus').text().trim()
+            };
+            unidades.push(unidad);
+        });
+
+        formData.append('unidades', JSON.stringify(unidades));
+        formData.append('reglamento', reglamento);
+        formData.append('terminos', terminos);
+
+        // Enviar el formulario con AJAX para actualizar
+        $.ajax({
+            url: $(this).attr('action'), // Asegúrate de que tenga el endpoint correcto con el ID, ej. '/proyectos/1'
+            method: 'POST', // Usa POST pero define el método PUT/PATCH con un _method en Laravel
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert('Proyecto actualizado exitosamente.');
+                window.location.href = '/proyectos'; // Redirigir a la lista de proyectos
+            },
+            error: function (error) {
+                console.log(error);
+                alert('Error al actualizar el proyecto.');
+            }
+        });
+    });
+
 
 
     //carga las unidades de un archivo de excel y los agrega en la tabla

@@ -20,8 +20,11 @@ Route::get('/proyectos', function () {
 
 Route::get('/proyectos', [ProyectoController::class, 'index'])->name('proyectos.index');
 Route::get('/proyectos/create', [ProyectoController::class, 'create'])->name('proyectos.create');
-Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
 Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('proyectos.show');
+Route::get('/proyectos/edit/{id}', [ProyectoController::class, 'edit'])->name('proyectos.edit');
+
+Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
+Route::put('/proyectos/{id}', [ProyectoController::class, 'update'])->name('proyectos.update');
 
 
 

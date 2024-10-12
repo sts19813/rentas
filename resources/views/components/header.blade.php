@@ -14,7 +14,7 @@
                 <li class="nav-item"><a class="nav-link" href="#">Configuración</a></li>
             </ul>
             <div class="d-flex">
-                <img src="https://via.placeholder.com/30" class="rounded-circle" alt="User Profile">
+                <img src="#" class="rounded-circle" alt="User Profile">
             </div>
         </div>
     </div>
