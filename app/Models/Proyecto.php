@@ -10,6 +10,7 @@ class Proyecto extends Model
     use HasFactory;
 
     // Campos asignables en la creación masiva
+    
     protected $fillable = [
         'nombre',
         'cantidad_locales',

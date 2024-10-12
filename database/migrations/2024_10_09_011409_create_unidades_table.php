@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('unidades', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('proyecto_id'); // Relación con proyecto
+            $table->string('nombre');
             $table->integer('metros_cuadrados');
             $table->decimal('precio_por_hora', 8, 2);
             $table->decimal('precio_por_mes', 10, 2);

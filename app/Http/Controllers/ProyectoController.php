@@ -24,10 +24,10 @@ class ProyectoController extends Controller
     public function show($id)
     {
         // Recuperar el proyecto con las relaciones necesarias
-        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios'])->findOrFail($id);
-
+        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios','multimedias'])->findOrFail($id);
+        $isViewMode = true;
         // Pasar el proyecto a la vista
-        return view('proyectos.show', compact('proyecto'));
+        return view('proyectos.show', compact('proyecto', 'isViewMode'));
     }
 
     public function create()

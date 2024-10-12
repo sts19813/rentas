@@ -86,7 +86,7 @@
                 <div class="card project-card">
                     <!-- Mostrar la imagen si existe, de lo contrario, una imagen por defecto -->
                     @if($proyecto->mapas->isNotEmpty())
-                        <img src="{{ Storage::url($proyecto->mapas->first()->ruta_imagen) }}" alt="{{ $proyecto->nombre }}" class="card-img-top">
+                        <img src="{{ asset($proyecto->mapas->first()->ruta_imagen) }}" alt="{{ $proyecto->nombre }}" class="card-img-top">
                     @else
                         <img src="https://via.placeholder.com/400x200" alt="Imagen por defecto" class="card-img-top">
                     @endif
