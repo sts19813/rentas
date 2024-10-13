@@ -28,6 +28,9 @@ Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos
 Route::put('/proyectos/{id}', [ProyectoController::class, 'update'])->name('proyectos.update');
 Route::get('/proyectos/{id}/unidades', [ProyectoController::class, 'getUnidades'])->name('proyectos.unidades');
 
+Route::get('/proyectos/find/{id}', [ProyectoController::class, 'find'])->name('proyectos.find');
+
+
 
 
 Route::get('/clientes', function () {

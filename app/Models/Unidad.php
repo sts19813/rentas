@@ -11,7 +11,7 @@ class Unidad extends Model
 
     use HasFactory;
     protected $fillable = [
-        'proyecto_id', 'nombre', 'metros_cuadrados', 'precio_por_hora', 'precio_por_mes', 'nivel', 'estatus'
+        'proyecto_id', 'nombre', 'metros_cuadrados', 'precio_por_hora', 'precio_por_mes', 'precio_primer_pago', 'nivel', 'estatus'
     ];
 
     public function proyecto()

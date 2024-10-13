@@ -362,6 +362,7 @@
                                                         <th>M2</th>
                                                         <th>Precio x Hora</th>
                                                         <th>Precio x Mes</th>
+                                                        <th>Precio Primer pago</th>
                                                         <th>Nivel</th>
                                                         <th>Estatus</th>
                                                         <th>Opciones</th>
@@ -377,6 +378,8 @@
                                                                 {{ number_format($unidad->precio_por_hora, 2) }}</td>
                                                             <td class="precio_por_mes">
                                                                 {{ number_format($unidad->precio_por_mes, 2) }}</td>
+                                                            <td class="precio_primer_pago">
+                                                                {{ number_format($unidad->precio_primer_pago, 2) }}</td>
                                                             <td class="nivel">{{ $unidad->nivel }}</td>
                                                             <td class="estatus">
                                                                 <span

@@ -21,6 +21,7 @@ $(document).ready(function () {
                 metros_cuadrados: $(this).find('.metros_cuadrados').text().trim(),
                 precio_por_hora: $(this).find('.precio_por_hora').text().trim().replace('$', '').replace(',', ''),
                 precio_por_mes: $(this).find('.precio_por_mes').text().trim().replace('$', '').replace(',', ''),
+                precio_primer_pago: $(this).find('.precio_primer_pago').text().trim().replace('$', '').replace(',', ''),
                 nivel: $(this).find('.nivel').text().trim(),
                 estatus: $(this).find('.estatus').text().trim()
             };
@@ -69,6 +70,7 @@ $(document).ready(function () {
                 metros_cuadrados: $(this).find('.metros_cuadrados').text().trim(),
                 precio_por_hora: $(this).find('.precio_por_hora').text().trim().replace('$', '').replace(',', ''),
                 precio_por_mes: $(this).find('.precio_por_mes').text().trim().replace('$', '').replace(',', ''),
+                precio_primer_pago: $(this).find('.precio_primer_pago').text().trim().replace('$', '').replace(',', ''),
                 nivel: $(this).find('.nivel').text().trim(),
                 estatus: $(this).find('.estatus').text().trim()
             };
@@ -148,6 +150,7 @@ $(document).ready(function () {
                 <td class="metros_cuadrados">${item.M2 || ''}</td>
                 <td class="precio_por_hora">${item['Precio x Hora'] || ''}</td>
                 <td class="precio_por_mes">${item['Precio x Mes'] || ''}</td>
+                <td class="precio_primer_pago">${item['Precio primer pago'] || ''}</td>
                 <td class="nivel">${item.Nivel || ''}</td>
                 <td class="estatus"><span class="badge ${item.Estatus === 'Disponible' ? 'bg-success' : 'bg-danger'}">${item.Estatus || ''}</span></td>
                 <td>

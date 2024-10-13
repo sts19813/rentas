@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('metros_cuadrados');
             $table->decimal('precio_por_hora', 8, 2);
             $table->decimal('precio_por_mes', 10, 2);
+            $table->decimal('precio_primer_pago', 10, 2);
             $table->string('nivel'); // Planta Baja, Alta
             $table->enum('estatus', ['disponible', 'comprometido', 'rentado'])->default('disponible');
             $table->timestamps();

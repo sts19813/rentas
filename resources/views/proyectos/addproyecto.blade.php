@@ -343,6 +343,7 @@
                                                         <th>M2</th>
                                                         <th>Precio x Hora</th>
                                                         <th>Precio x Mes</th>
+                                                        <th>Precio primer pago</th>
                                                         <th>Nivel</th>
                                                         <th>Estatus</th>
                                                         <th>Opciones</th>

@@ -35,6 +35,14 @@ class ProyectoController extends Controller
         return view('proyectos.show', compact('proyecto', 'isViewMode', 'textTitle', 'amenidades', 'servicios'));
     }
 
+    public function find($id)
+    {
+        // Recuperar el proyecto con las relaciones necesarias
+        $proyecto = Proyecto::with(['unidades', 'mapas', 'amenidades', 'servicios', 'multimedias'])->findOrFail($id);
+
+        return $proyecto;
+    }
+
     //edita un proyecto mostrando su informacion actual
     public function edit($id)
     {
@@ -253,23 +261,32 @@ class ProyectoController extends Controller
     public function getUnidades($id)
     {
         // Obtener el proyecto por su ID
-         $proyecto = Proyecto::findOrFail($id);
-
+        $proyecto = Proyecto::with(['unidades', 'servicios', 'amenidades'])->findOrFail($id);
+    
         // Obtener las unidades del proyecto
-        $unidades = $proyecto->unidades->map(function ($unidad) {
+        $unidades = $proyecto->unidades->map(function ($unidad) use ($proyecto) {
             return [
                 'nombre' => $unidad->nombre,
                 'metros_cuadrados' => $unidad->metros_cuadrados,
                 'precio_por_hora' => $unidad->precio_por_hora,
                 'precio_por_mes' => $unidad->precio_por_mes,
+                'precio_primer_pago' => $unidad->precio_primer_pago,
                 'nivel' => $unidad->nivel,
                 'estatus' => $unidad->estatus,
                 'id' => $unidad->id,
+                'servicios' => $proyecto->servicios->map(function ($servicio) {
+                    return $servicio->nombre; 
+                })->implode(','), 
+                'amenidades' => $proyecto->amenidades->map(function ($amenidad) {
+                    return $amenidad->nombre; 
+                })->implode(','), 
             ];
         });
-
+    
+        // Formatear la respuesta para DataTables
         return response()->json(['data' => $unidades]);
     }
+    
 
 
 }
