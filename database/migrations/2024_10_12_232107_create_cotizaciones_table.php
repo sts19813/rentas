@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('cotizacions', function (Blueprint $table) {
+        Schema::create('cotizaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proyecto_id')->constrained('proyectos')->onDelete('cascade');
             $table->foreignId('unidad_id')->constrained('unidades')->onDelete('cascade');
@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('celular');
             $table->string('correo');
             $table->decimal('primer_pago', 10, 2);
-            $table->enum('tipo_renta', ['hora', 'día', 'mes']);
+            $table->enum('tipo_renta', ['hora', 'dia', 'mes', 'año']);
             $table->integer('duracion')->nullable(); // Cantidad de horas, días o meses según el tipo de renta
             $table->date('fecha_inicio'); // Fecha de inicio de la renta
             $table->decimal('total', 8, 2);

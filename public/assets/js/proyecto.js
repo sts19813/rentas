@@ -7,6 +7,7 @@ $(document).ready(function () {
 
     // Enviar formulario y extraer los datos de las unidades
     $('#formGuardarProyecto').on('submit', function (e) {
+        
 
         e.preventDefault();
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Proyecto;
 use Illuminate\Http\Request;
-use App\Models\Amenidades;
-use App\Models\Servicio;
+use App\Models\Proyecto;
+use App\Models\Cotizacion;
+use App\Models\Cliente;
 
 class CotizacionController extends Controller
 {
@@ -24,5 +24,46 @@ class CotizacionController extends Controller
         $proyectos = Proyecto::with('unidades')->get();
 
         return view('cotizacion.addcotizacion', compact('proyectos'));
+    }
+
+    //genera la cotizacion, 
+    //crea el registro en cliente como prospecto
+    //guarda el registro en cotizacion para reinprimir y notificar
+    public function store(Request $request)
+    {
+
+        // Validar los datos que vienen en la solicitud
+        $validatedData = $request->validate([
+            'proyecto_id' => 'required|exists:proyectos,id',
+            'unidad_id' => 'required|exists:unidades,id',
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'tipo_cliente' => 'required|in:persona_fisica,persona_moral',
+            'celular' => 'required|string|max:20',
+            'correo' => 'required',
+            'primer_pago' => 'required|numeric',
+            'tipo_renta' => 'required|in:hora,dia,mes,año',
+            'duracion' => 'nullable|integer',
+            'fecha_inicio' => 'required|date',
+            'total' => 'required|numeric',
+        ]);
+
+        // Guardar el cliente como prospecto
+        $cliente = Cliente::create([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'tipo_cliente' => $request->tipo_cliente,
+            'celular' => $request->celular,
+            'correo' => $request->correo,
+            'fecha_nacimiento' => '1900-01-01',
+            'ciudad' => '', 
+            'nacionalidad' => '',
+        ]);
+
+        $cotizacion = Cotizacion::create($validatedData);
+
+        // Retornar una respuesta de éxito
+        return response()->json(['message' => 'Cotización creada exitosamente'], 201);
+
     }
 }

@@ -6,8 +6,9 @@ let servicios_Proyecto;
 let amenidades_Proyecto;
 let total;//total aprox de toda la cotizacion
 
+
 //cotizacion
-let mesRenta, horaRenta, primerPago, nombreUnidad;
+let mesRenta, horaRenta, primerPago, nombreUnidad, tipoRenta, duracion, fechaInicio;
 
 //prospecto
 let nombre, apellido, tipoCliente, correo, celular;
@@ -100,12 +101,9 @@ $(document).ready(function () {
 
     });
 
-
-
-
     //seleccion de una unidad
     $('#unitsTable').on('click', '.seleccionar-unidad', function () {
-        debugger
+        
         $('#prospecto-tab').prop('disabled', false);
         $('#prospecto-tab').tab('show');
 
@@ -150,10 +148,7 @@ $(document).ready(function () {
         document.getElementById('contenedorServicios').innerHTML = listaServiciosHtml;
     });
 
-
-
     //boton de siguiente, pasa al reporte
-
     $('#nextTabButtonReporte').on('click', function () {
         //validar form antes de eso
         $('#reporte-tab').prop('disabled', false);
@@ -187,14 +182,14 @@ $(document).ready(function () {
                 let servicios = servicios_Proyecto + ',' + amenidades_Proyecto;
                 // Separar los servicios por comas
                 let serviciosArray = servicios.split(',');
-        
+
                 // Crear la lista de servicios en HTML
                 let listaServiciosHtml = '<ul class="list-unstyled">';
                 serviciosArray.forEach(function (servicio) {
                     listaServiciosHtml += `<li><i class="bi bi-check-circle-fill text-success"></i> ${servicio.trim()}</li>`;
                 });
                 listaServiciosHtml += '</ul>';
-        
+
                 // Agregar la lista al contenedor deseado en tu HTML
                 document.getElementById('contenedorServicios2').innerHTML = listaServiciosHtml;
 
@@ -204,14 +199,44 @@ $(document).ready(function () {
                 console.error('Error al obtener el proyecto:', error);
             }
         });
-
-
-
-
-
     });
 
 
+    //guardado de la informacion
+    $('#guardarCotizacion').on('submit', function (e) {
+        debugger
+        e.preventDefault();
+
+        let fechaInicio = $('#fechaInicio').val();
+        // Enviar los datos usando AJAX
+        $.ajax({
+            url: $(this).attr('action'), // Ajusta la URL para que coincida con tu ruta
+            method: $(this).attr('method'),
+            data: {
+                proyecto_id: id_proyecto,
+                unidad_id: unidadId,
+                nombre: nombre,
+                apellido: apellido,
+                tipo_cliente: tipoCliente,
+                celular: celular,
+                correo: correo,
+                primer_pago: primerPago,
+                tipo_renta: convertirTipoRenta(tipoRenta),
+                duracion: duracion,
+                fecha_inicio: fechaInicio,
+                total: total,
+                _token: $('meta[name="csrf-token"]').attr('content') // Asegúrate de incluir el token CSRF
+            },
+            success: function (response) {
+                alert('Cotización creada exitosamente.');
+                window.location.href = '/cotizacion'; // Redirigir a la lista de proyectos
+
+            },
+            error: function (xhr) {
+                alert('Hubo un error al crear la cotización.');
+            }
+        });
+    });
 
 
     // Detectar cambios en el select
@@ -222,23 +247,41 @@ $(document).ready(function () {
     $('#inputTiempoCotizacion').on('input', function () {
         calcularCotizacion();
     });
+
+
 });
 
 
+//hace el calculo de la cotizacion aproximada
 function calcularCotizacion() {
-    debugger
-    let tiempo = $('#tiempo').val()  //define si es año, hora o mes
-    let TiempoCotizacion = $('#inputTiempoCotizacion').val()
+    tipoRenta = $('#tiempo').val(); // Define si es año, hora o mes
+    duracion = parseFloat($('#inputTiempoCotizacion').val());
+    total = 0;
 
-    if (tiempo == "años")
-        total = (mesRenta * 12) * TiempoCotizacion;
+    if (tipoRenta == "años")
+        total = (parseFloat(mesRenta) * 12) * duracion;
 
-    if (tiempo == "horas")
-        total = horaRenta * TiempoCotizacion;
 
-    if (tiempo == "meses")
-        total = mesRenta * TiempoCotizacion;
+    if (tipoRenta == "horas")
+        total = parseFloat(horaRenta) * duracion;
 
-    $('#Txtcotizacion').text('$' + total);
+    if (tipoRenta == "meses")
+        total = parseFloat(mesRenta) * duracion;
 
+    $('#Txtcotizacion').text('$' + total.toFixed(2));
+}
+
+
+//parseo /conversion al correcto como esta en el enumerador de base
+function convertirTipoRenta(tipoRenta) {
+    switch(tipoRenta) {
+        case 'años':
+            return 'año'; // Asumiendo que no necesitas "año" en tu validación
+        case 'horas':
+            return 'hora';
+        case 'meses':
+            return 'mes';
+        default:
+            return tipoRenta; 
+    }
 }

@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 
     <style>
@@ -66,7 +68,7 @@
             color: #5cb85c;
         }
 
-        .img-report{
+        .img-report {
             max-height: 200px;
         }
     </style>
@@ -108,8 +110,8 @@
                                 aria-selected="false">Cotización</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="reporte-tab" data-bs-toggle="tab"
-                                data-bs-target="#reporte" type="button" role="tab" aria-controls="reporte"
+                            <button class="nav-link" id="reporte-tab" data-bs-toggle="tab" data-bs-target="#reporte"
+                                type="button" role="tab" aria-controls="reporte"
                                 aria-selected="false">Reporte</button>
                         </li>
                     </ul>
@@ -233,7 +235,7 @@
                                             </div>
                                             <div class="col-auto">
                                                 <input type="text" id="inputmesRenta" class="form-control"
-                                                    aria-describedby="passwordHelpInline" disabled >
+                                                    aria-describedby="passwordHelpInline" disabled>
                                             </div>
                                             <div class="col-auto">
                                                 <label for="inputRentaHr" class="col-form-label">Hr</label>
@@ -270,20 +272,21 @@
                                                     <option selected>meses</option>
                                                 </select>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="fechaInicio" class="form-label">Fecha Inicio *</label>
-                                        <input type="datetime-local" class="form-control" id="primerPago" >
+                                        <input type="datetime-local" class="form-control" id="fechaInicio">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <span>cotización aproximada de todo el periodo de renta <span id="Txtcotizacion">100</span></span>
+                                    <span>cotización aproximada de todo el periodo de renta <span
+                                            id="Txtcotizacion">100</span></span>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-12" id="contenedorServicios">
-                                       
+
                                     </div>
                                 </div>
 
@@ -302,7 +305,7 @@
                                 <div class="container my-5">
                                     <div class="row">
                                         <div class="col-12">
-                                            <h3>Cotización: <span id="nombreCotizacion"> David Sabido</span>   </h3>
+                                            <h3>Cotización: <span id="nombreCotizacion"> David Sabido</span> </h3>
                                         </div>
                                     </div>
                                     <div class="row align-items-start">
@@ -311,25 +314,31 @@
                                             <p>LOGO</p>
                                         </div>
                                         <div class="col-md-5">
-                                            <img src="#" id="mapaCotizacion"  alt="Imagen Plaza" class="img-fluid mb-3 img-report">
+                                            <img src="#" id="mapaCotizacion" alt="Imagen Plaza"
+                                                class="img-fluid mb-3 img-report">
                                         </div>
                                         <div class="col-md-5">
-                                            <img src="#" id="mapaMultimedia" alt="Mapa Plaza" class="img-fluid mb-3 img-report">
+                                            <img src="#" id="mapaMultimedia" alt="Mapa Plaza"
+                                                class="img-fluid mb-3 img-report">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <p><strong>Plaza:</strong> <span id="namePlaza"> </span></p>
                                             <p><strong>Unidad:</strong> <span id="nombreUnidad"> </span></p>
-                                            <p><strong>Precio de Renta mes:</strong> $ <span id="PrecioRentaMes"> </span> </p>
-                                            <p><strong>Precio de Renta hr:</strong> $ <span id="PrecioRentaHr"> </span> </p>
-                                            <p><strong>Primer Pago:</strong> $ <span id="primerPagoC"> </span>  </p>
-                                            <p><strong>Tiempo de Renta:</strong><span id="tiempoRentaC"> </span>  1 año</p>
+                                            <p><strong>Precio de Renta mes:</strong> $ <span id="PrecioRentaMes">
+                                                </span> </p>
+                                            <p><strong>Precio de Renta hr:</strong> $ <span id="PrecioRentaHr"> </span>
+                                            </p>
+                                            <p><strong>Primer Pago:</strong> $ <span id="primerPagoC"> </span> </p>
+                                            <p><strong>Tiempo de Renta:</strong><span id="tiempoRentaC"> </span> 1 año
+                                            </p>
                                         </div>
                                         <div class="col-md-8">
                                             <p><strong>Horarios:</strong></p>
                                             <ul class="list-unstyled">
-                                                <li><strong>hora Apertura:</strong> <span id="horaApertura"> </span> </li>
+                                                <li><strong>hora Apertura:</strong> <span id="horaApertura"> </span>
+                                                </li>
                                                 <li><strong>hora cierre:</strong> <span id="horaCierre"> </span> </li>
                                             </ul>
                                         </div>
@@ -338,7 +347,7 @@
                                         <div class="col-12">
                                             <h5>Incluye:</h5>
                                             <ul class="list-unstyled" id="contenedorServicios2">
-                                                
+
                                         </div>
                                     </div>
                                 </div>
@@ -350,14 +359,17 @@
                                         <div class="col-auto text-center">
                                             <button type="button" class="btn btn-success">descargar</button>
                                         </div>
+
                                         <div class="col-auto text-right">
-                                            <button type="button" class="btn btn-warning">Guardar</button>
+                                            <form action="{{ route('cotizacion.store') }}" method="POST"
+                                                id="guardarCotizacion">
+                                                @csrf
+                                                <button type="submit" class="btn btn-warning">Guardar</button>
+                                            </form>
                                         </div>
+
                                     </div>
                                 </div>
-                                
-                                
-                               
                             </div>
 
                         </div>
