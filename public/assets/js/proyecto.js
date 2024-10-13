@@ -2,6 +2,8 @@
 $(document).ready(function () {
 
     let quillReglamento, quillTerminos;
+    
+    let rowIdx = 0;
 
     // Enviar formulario y extraer los datos de las unidades
     $('#formGuardarProyecto').on('submit', function (e) {
@@ -161,7 +163,6 @@ $(document).ready(function () {
     }
 
 
-    let rowIdx = 0;
 
     // Agregar nueva fila
     $('#addRow').on('click', function () {
@@ -275,6 +276,5 @@ $(document).ready(function () {
             ]
         }
     });
-
 });
 

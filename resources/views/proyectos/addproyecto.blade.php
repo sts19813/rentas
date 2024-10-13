@@ -64,7 +64,8 @@
             color: #5cb85c;
         }
 
-        #reglamento, #terminos{
+        #reglamento,
+        #terminos {
             height: 175px;
         }
     </style>
@@ -81,16 +82,16 @@
 
 
             <div class="container mt-3">
-                @if(session('success'))
+                @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
                 @endif
 
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -121,7 +122,8 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="reglas-tab" data-bs-toggle="tab" data-bs-target="#reglas"
-                                type="button" role="tab" aria-controls="reglas" aria-selected="false">Reglas</button>
+                                type="button" role="tab" aria-controls="reglas"
+                                aria-selected="false">Reglas</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="multimedia-tab" data-bs-toggle="tab"
@@ -142,7 +144,8 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="nombrePlaza" class="form-label">Nombre de la plaza *</label>
-                                            <input type="text" class="form-control" id="nombrePlaza" name="nombrePlaza">
+                                            <input type="text" class="form-control" id="nombrePlaza"
+                                                name="nombrePlaza">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="cantidadLocales" class="form-label">Cantidad de Locales
@@ -160,7 +163,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="precioRenta" class="form-label">Precio Renta Promedio</label>
-                                            <input type="text" class="form-control" id="precioRenta" name="precioRenta">
+                                            <input type="text" class="form-control" id="precioRenta"
+                                                name="precioRenta">
                                         </div>
                                     </div>
                                     <!-- Más campos generales -->
@@ -185,7 +189,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="horaCierre" class="form-label">Hora Cierre *</label>
-                                            <input type="time" class="form-control" id="horaCierre" name="horaCierre">
+                                            <input type="time" class="form-control" id="horaCierre"
+                                                name="horaCierre">
                                         </div>
                                     </div>
                                     <!-- Ubicación de la Plaza -->
@@ -193,44 +198,30 @@
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="direccion1" class="form-label">Dirección línea 1 *</label>
-                                            <input type="text" class="form-control" id="direccion1" name="direccion1">
+                                            <input type="text" class="form-control" id="direccion1"
+                                                name="direccion1">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="pais" class="form-label">País *</label>
-                                            <input type="text" class="form-control" id="pais" name="pais">
-                                            {{--
-                                            <select class="form-select" id="pais">
-                                                <option selected>Seleccionar...</option>
-                                                <option value="1">México</option>
-                                                <!-- Agregar más opciones aquí -->
-                                            </select>
-                                            --}}
+                                            <input type="text" class="form-control" id="pais"
+                                                name="pais">
+
                                         </div>
                                         <div class="col-md-6">
                                             <label for="estado" class="form-label">Estado *</label>
-                                            <input type="text" class="form-control" id="estado" name="estado" value="">
-                                            {{--
-                                            <select class="form-select" id="estado">
-                                                <option selected>Seleccionar...</option>
-                                                <option value="Jalisco">Jalisco</option>
-                                                <!-- Agregar más opciones aquí -->
-                                            </select>
-                                            --}}
+                                            <input type="text" class="form-control" id="estado" name="estado"
+                                                value="">
+
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="ciudad" class="form-label">Ciudad *</label>
-                                            <input type="text" class="form-control" id="ciudad" name="ciudad" value="">
-                                            {{--
-                                            <select class="form-select" id="ciudad">
-                                                <option selected>Seleccionar...</option>
-                                                <option value="1">Guadalajara</option>
-                                                <!-- Agregar más opciones aquí -->
-                                            </select>
-                                            --}}
+                                            <input type="text" class="form-control" id="ciudad" name="ciudad"
+                                                value="">
+
                                         </div>
                                         <div class="col-md-6">
                                             <label for="codigoPostal" class="form-label">Código Postal *</label>
@@ -262,8 +253,9 @@
                                                         <th scope="col" class="text-end">Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
-                                                    @foreach($amenidades as $amenidad)
+                                                <tbody
+                                                    style="display:table-caption; height:200px; overflow-y: scroll;">
+                                                    @foreach ($amenidades as $amenidad)
                                                         <tr>
 
                                                             <td>
@@ -302,8 +294,9 @@
                                                         <th scope="col" class="text-end">Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody  style="display:table-caption; height:200px; overflow-y: scroll;">
-                                                    @foreach($servicios as $servicio)
+                                                <tbody
+                                                    style="display:table-caption; height:200px; overflow-y: scroll;">
+                                                    @foreach ($servicios as $servicio)
                                                         <tr>
                                                             <td>
                                                                 <label class="form-check-label"
@@ -328,7 +321,8 @@
                             </div>
 
                             <!-- Unidades Tab -->
-                            <div class="tab-pane fade" id="unidades" role="tabpanel" aria-labelledby="unidades-tab">
+                            <div class="tab-pane fade" id="unidades" role="tabpanel"
+                                aria-labelledby="unidades-tab">
                                 <div class="container mt-4">
                                     <div>
                                         <!-- Action Buttons -->
@@ -371,8 +365,8 @@
                                         <div class="card-body text-center">
                                             <div>
                                                 <h5 class="card-title">Nueva Imagen o Imágenes</h5>
-                                                <input class="form-control" type="file" id="mapas" name="mapas[]"
-                                                    multiple>
+                                                <input class="form-control" type="file" id="mapas"
+                                                    name="mapas[]" multiple>
                                             </div>
                                             <div>
                                                 <div id="preview" class="mt-2 d-flex flex-wrap"></div>
@@ -398,15 +392,16 @@
                                 </div>
                             </div>
                             <!-- Contenido de la pestaña Multimedia -->
-                            <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
+                            <div class="tab-pane fade" id="multimedia" role="tabpanel"
+                                aria-labelledby="multimedia-tab">
                                 <div class="container mt-5">
                                     <!-- Upload Section -->
                                     <div class="card mt-4">
                                         <div class="card-body text-center">
                                             <div>
                                                 <h5 class="card-title">sube las imagenes de multimedia</h5>
-                                                <input class="form-control" type="file" id="multimedias" name="multimedias[]"
-                                                    multiple>
+                                                <input class="form-control" type="file" id="multimedias"
+                                                    name="multimedias[]" multiple>
                                             </div>
                                             <div>
                                                 <div id="preview-multimedias" class="mt-2 d-flex flex-wrap"></div>
@@ -428,15 +423,12 @@
         </div>
     </div>
 
-
-
-
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="/assets/proyecto.js"></script>
+    <script src="/assets/js/proyecto.js"></script>
 
 </body>
 

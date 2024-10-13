@@ -248,4 +248,28 @@ class ProyectoController extends Controller
         return redirect()->back()->with('success', 'Proyecto actualizado con éxito');
     }
 
+
+    //obtiene todas las unidad por proyecto
+    public function getUnidades($id)
+    {
+        // Obtener el proyecto por su ID
+         $proyecto = Proyecto::findOrFail($id);
+
+        // Obtener las unidades del proyecto
+        $unidades = $proyecto->unidades->map(function ($unidad) {
+            return [
+                'nombre' => $unidad->nombre,
+                'metros_cuadrados' => $unidad->metros_cuadrados,
+                'precio_por_hora' => $unidad->precio_por_hora,
+                'precio_por_mes' => $unidad->precio_por_mes,
+                'nivel' => $unidad->nivel,
+                'estatus' => $unidad->estatus,
+                'id' => $unidad->id,
+            ];
+        });
+
+        return response()->json(['data' => $unidades]);
+    }
+
+
 }

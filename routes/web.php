@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\CotizacionController;
+
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -18,13 +20,13 @@ Route::get('/proyectos', function () {
     return view('proyecto');
 });
 
-Route::get('/proyectos', [ProyectoController::class, 'index'])->name('proyectos.index');
+Route::get('/proyectos', action: [ProyectoController::class, 'index'])->name('proyectos.index');
 Route::get('/proyectos/create', [ProyectoController::class, 'create'])->name('proyectos.create');
 Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('proyectos.show');
 Route::get('/proyectos/edit/{id}', [ProyectoController::class, 'edit'])->name('proyectos.edit');
-
 Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
 Route::put('/proyectos/{id}', [ProyectoController::class, 'update'])->name('proyectos.update');
+Route::get('/proyectos/{id}/unidades', [ProyectoController::class, 'getUnidades'])->name('proyectos.unidades');
 
 
 
@@ -48,10 +50,7 @@ Route::get('/reset', function () {
     return view('reset');
 });
 
-Route::get('/cotizacion', function () {
-    return view('cotizacion');
-});
 
-Route::get('/add-cotizacion', function () {
-    return view('addcotizador');
-});
+Route::get('/cotizacion', action: [CotizacionController::class, 'index'])->name('cotizacion.index');
+Route::get('/cotizacion/create', [CotizacionController::class, 'create'])->name('cotizacion.create');
+

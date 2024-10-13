@@ -88,7 +88,7 @@
                     @if($proyecto->mapas->isNotEmpty())
                         <img src="{{ asset($proyecto->mapas->first()->ruta_imagen) }}" alt="{{ $proyecto->nombre }}" class="card-img-top">
                     @else
-                        <img src="https://via.placeholder.com/400x200" alt="Imagen por defecto" class="card-img-top">
+                        <img src="#" alt="Imagen por defecto" class="card-img-top">
                     @endif
 
                     <div class="card-body">
