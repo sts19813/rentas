@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\CotizacionController;
+use App\Http\Controllers\PdfController;
 
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -27,9 +28,11 @@ Route::get('/proyectos/edit/{id}', [ProyectoController::class, 'edit'])->name('p
 Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
 Route::put('/proyectos/{id}', [ProyectoController::class, 'update'])->name('proyectos.update');
 Route::get('/proyectos/{id}/unidades', [ProyectoController::class, 'getUnidades'])->name('proyectos.unidades');
-
 Route::get('/proyectos/find/{id}', [ProyectoController::class, 'find'])->name('proyectos.find');
 
+
+
+Route::get('/pdf', action: [PdfController::class, 'generarPDF'])->name('pdf.generarPDF');
 
 
 
