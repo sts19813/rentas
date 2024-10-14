@@ -56,7 +56,7 @@ class CotizacionController extends Controller
             'celular' => $request->celular,
             'correo' => $request->correo,
             'fecha_nacimiento' => '1900-01-01',
-            'ciudad' => '', 
+            'ciudad' => '',
             'nacionalidad' => '',
         ]);
 
@@ -65,5 +65,29 @@ class CotizacionController extends Controller
         // Retornar una respuesta de éxito
         return response()->json(['message' => 'Cotización creada exitosamente'], 201);
 
+    }
+
+
+    public function getCotizaciones()
+    {
+        $cotizaciones = Cotizacion::with('proyecto', 'unidad')->get();
+
+        // Aquí puedes ajustar los datos para que coincidan con las columnas de la tabla
+        $data = $cotizaciones->map(function ($cotizacion) {
+            return [
+                'cliente' => $cotizacion->nombre . ' ' . $cotizacion->apellido,
+                'negocio' => 'no disponible',
+                'plaza' => $cotizacion->proyecto->nombre, 
+                'local' => $cotizacion->Unidad->nombre,
+                'estatus' => '<span class="badge status-active">Activo</span>',
+                'opciones' => '
+                <button class="btn btn-success btn-sm">Ver</button>
+                <button class="btn btn-primary btn-sm">Reporte</button>
+                <button class="btn btn-warning btn-sm">Correo</button>
+            ',
+            ];
+        });
+
+        return response()->json(['data' => $data]);
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cotizacion extends Model
 {
 
-    protected $table = 'cotizaciones'; 
+    protected $table = 'cotizaciones';
 
     use HasFactory;
 
@@ -26,4 +26,14 @@ class Cotizacion extends Model
         'fecha_inicio',
         'total',
     ];
+
+    public function proyecto()
+    {
+        return $this->belongsTo(Proyecto::class);
+    }
+
+    public function Unidad()
+    {
+        return $this->belongsTo(Unidad::class);
+    }
 }

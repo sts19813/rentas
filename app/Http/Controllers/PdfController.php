@@ -18,9 +18,8 @@ class PdfController extends Controller
 
         // Pasar los proyectos a la vista
 
-        $pdf = PDF::loadView('proyectos.index', compact('proyectos') );
+        $pdf = \Barryvdh\DomPDF\PDF::loadView('proyectos.index', compact('proyectos') );
         
-
         return $pdf->download('test.pdf');
     }
 }

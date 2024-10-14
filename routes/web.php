@@ -35,6 +35,7 @@ Route::get('/proyectos/find/{id}', [ProyectoController::class, 'find'])->name('p
 Route::get('/cotizacion', action: [CotizacionController::class, 'index'])->name('cotizacion.index');
 Route::get('/cotizacion/create', [CotizacionController::class, 'create'])->name('cotizacion.create');
 Route::post('/cotizacion', [CotizacionController::class, 'store'])->name('cotizacion.store');
+Route::get('/cotizacionesList', [CotizacionController::class, 'getCotizaciones'])->name('cotizaciones.list');
 
 
 

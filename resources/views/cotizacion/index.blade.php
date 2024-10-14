@@ -92,34 +92,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample data, replace with dynamic data -->
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Pristia Candra</td>
-                        <td>Miyabi</td>
-                        <td>Plaza Árbol</td>
-                        <td>Local 02, Local 03</td>
-                        <td><span class="badge status-active">Activo</span></td>
-                        <td>
-                            <button class="btn btn-success btn-sm">Ver</button>
-                            <button class="btn btn-primary btn-sm">Editar</button>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Hanna Baptista</td>
-                        <td>El Orden del Caos</td>
-                        <td>Plaza Árbol</td>
-                        <td>Local 11</td>
-                        <td><span class="badge status-warning">Por Vencer</span></td>
-                        <td>
-                            <button class="btn btn-success btn-sm">Ver</button>
-                            <button class="btn btn-primary btn-sm">Editar</button>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows as needed -->
+                   
                 </tbody>
             </table>
         </div>
@@ -131,11 +104,44 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#clientsTable').DataTable({
                 "pageLength": 8,
                 "lengthChange": false,
-                "order": [[1, "asc"]]
+                "order": [
+                    [1, "asc"]
+                ],
+                "ajax": {
+                    "url": "/cotizacionesList",
+                    "type": "GET",
+                    "dataSrc": "data" // Ajuste para leer los datos de la respuesta JSON
+                },
+                "columns": [{
+                        "data": null,
+                        "render": function() {
+                            return '<input type="checkbox">';
+                        }
+                    },
+                    {
+                        "data": "cliente"
+                    },
+                    {
+                        "data": "negocio"
+                    },
+                    {
+                        "data": "plaza"
+                    },
+                    {
+                        "data": "local"
+                    },
+                    {
+                        "data": "estatus"
+                    },
+                    {
+                        "data": "opciones",
+                        "orderable": false
+                    }
+                ]
             });
         });
     </script>
