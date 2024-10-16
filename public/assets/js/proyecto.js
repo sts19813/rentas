@@ -71,9 +71,12 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 
-                showToast("success", "Signed in successfully");
+                showToast("success", "Proyecto guardado correctamente");
 
-                window.location.href = '/proyectos'; // Redirigir a la lista de proyectos
+                setTimeout(function () {
+                    window.location.href = '/proyectos'; 
+                }, 1000);
+               
             },
             error: function (error) {
                 debugger
@@ -311,20 +314,3 @@ $(document).ready(function () {
         }
     });
 });
-
-
-function showToast(icon, message, position = "top-end", timer = 3000) {
-    Swal.fire({
-        icon: icon,
-        title: message,
-        position: position,
-        toast: true,
-        showConfirmButton: false,
-        timer: timer,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-}

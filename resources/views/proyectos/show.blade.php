@@ -5,65 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyectos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <x-link></x-link>
+
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .project-card {
-            border-radius: 8px;
-            border: 1px solid #eaeaea;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-        }
-
-        .project-card img {
-            border-radius: 8px 8px 0 0;
-            object-fit: cover;
-            width: 100%;
-            height: 200px;
-        }
-
-        .project-card .card-body {
-            text-align: center;
-        }
-
-        .project-card .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
-
-        .project-card .card-subtitle {
-            font-size: 1rem;
-            color: #6c757d;
-        }
-
-        .project-card .status {
-            font-size: .875rem;
-            font-weight: 500;
-            color: #28a745;
-        }
-
-        .navbar {
-            padding: .8rem 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            margin-right: 1rem;
-        }
-
-        .navbar-brand {
-            color: #5cb85c;
-        }
-
         #reglamento,
         #terminos {
             height: 175px;
@@ -249,31 +193,31 @@
                                                 <tbody
                                                     style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @if ($isViewMode)
-                                                        @foreach ($proyecto->amenidades as $amenidad)
-                                                            <tr>
-                                                                <td>
-                                                                    <li>{{ $amenidad->nombre }}</li>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    @foreach ($proyecto->amenidades as $amenidad)
+                                                    <tr>
+                                                        <td>
+                                                            <li>{{ $amenidad->nombre }}</li>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
                                                     @else
-                                                        @foreach ($amenidades as $amenidad)
-                                                            <tr>
-                                                                <td>
-                                                                    <label class="form-check-label"
-                                                                        for="amenidad{{ $amenidad->id }}">
-                                                                        {{ $amenidad->nombre }}
-                                                                    </label>
-                                                                </td>
-                                                                <td class="text-end">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        name="amenidades[]"
-                                                                        value="{{ $amenidad->id }}"
-                                                                        id="amenidad{{ $amenidad->id }}"
-                                                                        @if ($proyecto->amenidades->contains('id', $amenidad->id)) checked @endif>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    @foreach ($amenidades as $amenidad)
+                                                    <tr>
+                                                        <td>
+                                                            <label class="form-check-label"
+                                                                for="amenidad{{ $amenidad->id }}">
+                                                                {{ $amenidad->nombre }}
+                                                            </label>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="amenidades[]"
+                                                                value="{{ $amenidad->id }}"
+                                                                id="amenidad{{ $amenidad->id }}"
+                                                                @if ($proyecto->amenidades->contains('id', $amenidad->id)) checked @endif>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
                                                     @endif
 
 
@@ -302,31 +246,31 @@
                                                 <tbody
                                                     style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @if ($isViewMode)
-                                                        @foreach ($proyecto->servicios as $servicio)
-                                                            <tr>
-                                                                <td>
-                                                                    <li>{{ $servicio->nombre }}</li>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    @foreach ($proyecto->servicios as $servicio)
+                                                    <tr>
+                                                        <td>
+                                                            <li>{{ $servicio->nombre }}</li>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
                                                     @else
-                                                        @foreach ($servicios as $servicio)
-                                                            <tr>
-                                                                <td>
-                                                                    <label class="form-check-label"
-                                                                        for="servicio{{ $servicio->id }}">
-                                                                        {{ $servicio->nombre }}
-                                                                    </label>
-                                                                </td>
-                                                                <td class="text-end">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        name="servicios[]"
-                                                                        value="{{ $servicio->id }}"
-                                                                        id="servicio{{ $servicio->id }}"
-                                                                        @if ($proyecto->servicios->contains('id', $servicio->id)) checked @endif>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    @foreach ($servicios as $servicio)
+                                                    <tr>
+                                                        <td>
+                                                            <label class="form-check-label"
+                                                                for="servicio{{ $servicio->id }}">
+                                                                {{ $servicio->nombre }}
+                                                            </label>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="servicios[]"
+                                                                value="{{ $servicio->id }}"
+                                                                id="servicio{{ $servicio->id }}"
+                                                                @if ($proyecto->servicios->contains('id', $servicio->id)) checked @endif>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
                                                     @endif
 
                                                 </tbody>
@@ -370,28 +314,32 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($proyecto->unidades as $unidad)
-                                                        <tr>
-                                                            <td class="nombre">{{ $unidad->nombre }}</td>
-                                                            <td class="metros_cuadrados">
-                                                                {{ $unidad->metros_cuadrados }}</td>
-                                                            <td class="precio_por_hora">
-                                                                {{ number_format($unidad->precio_por_hora, 2) }}</td>
-                                                            <td class="precio_por_mes">
-                                                                {{ number_format($unidad->precio_por_mes, 2) }}</td>
-                                                            <td class="precio_primer_pago">
-                                                                {{ number_format($unidad->precio_primer_pago, 2) }}</td>
-                                                            <td class="nivel">{{ $unidad->nivel }}</td>
-                                                            <td class="estatus">
-                                                                <span
-                                                                    class="badge {{ $unidad->estatus == 'Disponible' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $unidad->estatus }}
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <a class="btn btn-danger btn-sm removeRow"><i
-                                                                        class="bi bi-trash"></i></a>
-                                                            </td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td class="nombre">{{ $unidad->nombre }}</td>
+                                                        <td class="metros_cuadrados">
+                                                            {{ $unidad->metros_cuadrados }}
+                                                        </td>
+                                                        <td class="precio_por_hora">
+                                                            {{ number_format($unidad->precio_por_hora, 2) }}
+                                                        </td>
+                                                        <td class="precio_por_mes">
+                                                            {{ number_format($unidad->precio_por_mes, 2) }}
+                                                        </td>
+                                                        <td class="precio_primer_pago">
+                                                            {{ number_format($unidad->precio_primer_pago, 2) }}
+                                                        </td>
+                                                        <td class="nivel">{{ $unidad->nivel }}</td>
+                                                        <td class="estatus">
+                                                            <span
+                                                                class="badge {{ $unidad->estatus == 'Disponible' ? 'bg-success' : 'bg-danger' }}">
+                                                                {{ $unidad->estatus }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-danger btn-sm removeRow"><i
+                                                                    class="bi bi-trash"></i></a>
+                                                        </td>
+                                                    </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -416,10 +364,10 @@
                                                 <div id="preview" class="mt-2 d-flex flex-wrap"></div>
                                                 <div class="row">
                                                     @foreach ($proyecto->mapas as $mapa)
-                                                        <div class="col-md-4">
-                                                            <img src="{{ asset($mapa->ruta_imagen) }}"
-                                                                alt="{{ $proyecto->nombre }}" class="img-fluid">
-                                                        </div>
+                                                    <div class="col-md-4">
+                                                        <img src="{{ asset($mapa->ruta_imagen) }}"
+                                                            alt="{{ $proyecto->nombre }}" class="img-fluid">
+                                                    </div>
                                                     @endforeach
                                                 </div>
                                             </div>
@@ -466,21 +414,20 @@
                                         <div>
                                             <div class="row mt-2 d-flex flex-wrap">
                                                 @foreach ($proyecto->multimedias as $multimedia)
-                                                    <div class="col-md-4">
-                                                        <img src="{{ asset($multimedia->ruta_multimedia) }}"
-                                                            alt="{{ $proyecto->nombre }}" class="img-fluid">
-                                                    </div>
+                                                <div class="col-md-4">
+                                                    <img src="{{ asset($multimedia->ruta_multimedia) }}"
+                                                        alt="{{ $proyecto->nombre }}" class="img-fluid">
+                                                </div>
                                                 @endforeach
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
-
-                            <!-- Botón de enviar al final -->
-                            <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-primary">Guardar Proyecto</button>
+                                <div class="text-end mt-3">
+                                    @if (!$isViewMode)
+                                    <button type="submit" class="btn btn-primary">Guardar Proyecto</button>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -489,14 +436,7 @@
         </div>
     </div>
 
-
-
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <x-script />
     <script src="/assets/js/proyecto.js"></script>
 
 </body>

@@ -5,67 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyectos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <x-link></x-link>
+
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .project-card {
-            border-radius: 8px;
-            border: 1px solid #eaeaea;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-        }
-
-        .project-card img {
-            border-radius: 8px 8px 0 0;
-            object-fit: cover;
-            width: 100%;
-            height: 200px;
-        }
-
-        .project-card .card-body {
-            text-align: center;
-        }
-
-        .project-card .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
-
-        .project-card .card-subtitle {
-            font-size: 1rem;
-            color: #6c757d;
-        }
-
-        .project-card .status {
-            font-size: .875rem;
-            font-weight: 500;
-            color: #28a745;
-        }
-
-        .navbar {
-            padding: .8rem 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            margin-right: 1rem;
-        }
-
-        .navbar-brand {
-            color: #5cb85c;
-        }
-
         #reglamento,
         #terminos {
             height: 175px;
@@ -234,21 +176,21 @@
                                                 </thead>
                                                 <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @foreach ($amenidades as $amenidad)
-                                                        <tr>
+                                                    <tr>
 
-                                                            <td>
-                                                                <label class="form-check-label"
-                                                                    for="amenidad{{ $amenidad->id }}">
-                                                                    {{ $amenidad->nombre }}
-                                                                </label>
+                                                        <td>
+                                                            <label class="form-check-label"
+                                                                for="amenidad{{ $amenidad->id }}">
+                                                                {{ $amenidad->nombre }}
+                                                            </label>
 
-                                                            </td>
-                                                            <td class="text-end">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="amenidades[]" value="{{ $amenidad->id }}"
-                                                                    id="amenidad{{ $amenidad->id }}">
-                                                            </td>
-                                                        </tr>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="amenidades[]" value="{{ $amenidad->id }}"
+                                                                id="amenidad{{ $amenidad->id }}">
+                                                        </td>
+                                                    </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -274,19 +216,19 @@
                                                 </thead>
                                                 <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @foreach ($servicios as $servicio)
-                                                        <tr>
-                                                            <td>
-                                                                <label class="form-check-label"
-                                                                    for="servicio{{ $servicio->id }}">
-                                                                    {{ $servicio->nombre }}
-                                                                </label>
-                                                            </td>
-                                                            <td class="text-end">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="servicios[]" value="{{ $servicio->id }}"
-                                                                    id="servicio{{ $servicio->id }}">
-                                                            </td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="form-check-label"
+                                                                for="servicio{{ $servicio->id }}">
+                                                                {{ $servicio->nombre }}
+                                                            </label>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="servicios[]" value="{{ $servicio->id }}"
+                                                                id="servicio{{ $servicio->id }}">
+                                                        </td>
+                                                    </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -410,13 +352,8 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <x-script />
     <script src="/assets/js/proyecto.js"></script>
-
 </body>
 
 </html>
