@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -79,25 +81,6 @@
                 <h2>Proyecto</h2>
             </div>
 
-
-
-            <div class="container mt-3">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            </div>
             <div class="card">
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -122,8 +105,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="reglas-tab" data-bs-toggle="tab" data-bs-target="#reglas"
-                                type="button" role="tab" aria-controls="reglas"
-                                aria-selected="false">Reglas</button>
+                                type="button" role="tab" aria-controls="reglas" aria-selected="false">Reglas</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="multimedia-tab" data-bs-toggle="tab"
@@ -144,8 +126,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="nombrePlaza" class="form-label">Nombre de la plaza *</label>
-                                            <input type="text" class="form-control" id="nombrePlaza"
-                                                name="nombrePlaza">
+                                            <input type="text" class="form-control" id="nombrePlaza" name="nombrePlaza">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="cantidadLocales" class="form-label">Cantidad de Locales
@@ -163,8 +144,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="precioRenta" class="form-label">Precio Renta Promedio</label>
-                                            <input type="text" class="form-control" id="precioRenta"
-                                                name="precioRenta">
+                                            <input type="text" class="form-control" id="precioRenta" name="precioRenta">
                                         </div>
                                     </div>
                                     <!-- Más campos generales -->
@@ -189,8 +169,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="horaCierre" class="form-label">Hora Cierre *</label>
-                                            <input type="time" class="form-control" id="horaCierre"
-                                                name="horaCierre">
+                                            <input type="time" class="form-control" id="horaCierre" name="horaCierre">
                                         </div>
                                     </div>
                                     <!-- Ubicación de la Plaza -->
@@ -198,29 +177,25 @@
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="direccion1" class="form-label">Dirección línea 1 *</label>
-                                            <input type="text" class="form-control" id="direccion1"
-                                                name="direccion1">
+                                            <input type="text" class="form-control" id="direccion1" name="direccion1">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="pais" class="form-label">País *</label>
-                                            <input type="text" class="form-control" id="pais"
-                                                name="pais">
+                                            <input type="text" class="form-control" id="pais" name="pais">
 
                                         </div>
                                         <div class="col-md-6">
                                             <label for="estado" class="form-label">Estado *</label>
-                                            <input type="text" class="form-control" id="estado" name="estado"
-                                                value="">
+                                            <input type="text" class="form-control" id="estado" name="estado" value="">
 
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="ciudad" class="form-label">Ciudad *</label>
-                                            <input type="text" class="form-control" id="ciudad" name="ciudad"
-                                                value="">
+                                            <input type="text" class="form-control" id="ciudad" name="ciudad" value="">
 
                                         </div>
                                         <div class="col-md-6">
@@ -229,6 +204,10 @@
                                                 name="codigoPostal">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="text-end mt-3">
+                                    <button type="button" id="btnSiguiente1" class="btn btn-primary">Siguiente</button>
                                 </div>
                             </div>
 
@@ -253,8 +232,7 @@
                                                         <th scope="col" class="text-end">Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody
-                                                    style="display:table-caption; height:200px; overflow-y: scroll;">
+                                                <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @foreach ($amenidades as $amenidad)
                                                         <tr>
 
@@ -294,8 +272,7 @@
                                                         <th scope="col" class="text-end">Opciones</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody
-                                                    style="display:table-caption; height:200px; overflow-y: scroll;">
+                                                <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
                                                     @foreach ($servicios as $servicio)
                                                         <tr>
                                                             <td>
@@ -316,13 +293,16 @@
                                         </div>
                                     </div>
 
+                                    <div class="text-end mt-3">
+                                        <button type="button" id="btnSiguiente2"
+                                            class="btn btn-primary">Siguiente</button>
+                                    </div>
 
                                 </div>
                             </div>
 
                             <!-- Unidades Tab -->
-                            <div class="tab-pane fade" id="unidades" role="tabpanel"
-                                aria-labelledby="unidades-tab">
+                            <div class="tab-pane fade" id="unidades" role="tabpanel" aria-labelledby="unidades-tab">
                                 <div class="container mt-4">
                                     <div>
                                         <!-- Action Buttons -->
@@ -356,6 +336,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" id="btnSiguiente3" class="btn btn-primary">Siguiente</button>
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
@@ -366,8 +349,8 @@
                                         <div class="card-body text-center">
                                             <div>
                                                 <h5 class="card-title">Nueva Imagen o Imágenes</h5>
-                                                <input class="form-control" type="file" id="mapas"
-                                                    name="mapas[]" multiple>
+                                                <input class="form-control" type="file" id="mapas" name="mapas[]"
+                                                    multiple>
                                             </div>
                                             <div>
                                                 <div id="preview" class="mt-2 d-flex flex-wrap"></div>
@@ -375,6 +358,9 @@
 
                                         </div>
                                     </div>
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" id="btnSiguiente4" class="btn btn-primary">Siguiente</button>
                                 </div>
                             </div>
 
@@ -391,10 +377,12 @@
                                         <div id="terminos" class="quill-editor"></div>
                                     </div>
                                 </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" id="btnSiguiente5" class="btn btn-primary">Siguiente</button>
+                                </div>
                             </div>
                             <!-- Contenido de la pestaña Multimedia -->
-                            <div class="tab-pane fade" id="multimedia" role="tabpanel"
-                                aria-labelledby="multimedia-tab">
+                            <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
                                 <div class="container mt-5">
                                     <!-- Upload Section -->
                                     <div class="card mt-4">
@@ -410,12 +398,10 @@
 
                                         </div>
                                     </div>
+                                    <div class="text-end mt-3">
+                                        <button type="submit" class="btn btn-primary">Guardar Proyecto</button>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <!-- Botón de enviar al final -->
-                            <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-primary">Guardar Proyecto</button>
                             </div>
                         </div>
                     </form>

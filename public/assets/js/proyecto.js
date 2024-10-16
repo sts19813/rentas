@@ -2,12 +2,40 @@
 $(document).ready(function () {
 
     let quillReglamento, quillTerminos;
-    
     let rowIdx = 0;
+
+
+    // Botón siguiente
+    $("#btnSiguiente1").on("click", function () {
+        $('#caracteristicas-tab').tab('show');
+    });
+
+    $("#btnSiguiente2").on("click", function () {
+        $('#unidades-tab').tab('show');
+    });
+
+    $("#btnSiguiente3").on("click", function () {
+        $('#mapa-tab').tab('show');
+    });
+
+    $("#btnSiguiente4").on("click", function () {
+        $('#reglas-tab').tab('show');
+    });
+
+    $("#btnSiguiente5").on("click", function () {
+        $('#multimedia-tab').tab('show');
+    });
+
+/*
+
+    showToast("warning", "Check your inputs!", "bottom-left");
+    showToast("info", "Loading data...", "top-end", 5000);
+*/
+
 
     // Enviar formulario y extraer los datos de las unidades
     $('#formGuardarProyecto').on('submit', function (e) {
-        
+
 
         e.preventDefault();
 
@@ -42,22 +70,24 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                debugger
-                alert('Proyecto guardado exitosamente.');
+                
+                showToast("success", "Signed in successfully");
+
                 window.location.href = '/proyectos'; // Redirigir a la lista de proyectos
             },
             error: function (error) {
                 debugger
+                showToast("error", error.responseJSON.message,'top-end' , 5000);
+
                 console.log(error);
-                alert('Error al guardar el proyecto.');
             }
         });
     });
 
     //envia el form para actualizar la info de un proyecto
     $('#formActualizarProyecto').on('submit', function (e) {
-        e.preventDefault(); 
-        debugger
+        e.preventDefault();
+        
 
         let formData = new FormData(this);
         let reglamento = $('#reglamento .ql-editor').html();
@@ -282,3 +312,19 @@ $(document).ready(function () {
     });
 });
 
+
+function showToast(icon, message, position = "top-end", timer = 3000) {
+    Swal.fire({
+        icon: icon,
+        title: message,
+        position: position,
+        toast: true,
+        showConfirmButton: false,
+        timer: timer,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+}
