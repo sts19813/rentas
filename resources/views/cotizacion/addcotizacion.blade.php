@@ -5,73 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyectos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <x-link></x-link>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .project-card {
-            border-radius: 8px;
-            border: 1px solid #eaeaea;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-card img {
-            border-radius: 8px 8px 0 0;
-            object-fit: cover;
-            width: 100%;
-            height: 200px;
-        }
-
-        .project-card .card-body {
-            text-align: center;
-        }
-
-        .project-card .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
-
-        .project-card .card-subtitle {
-            font-size: 1rem;
-            color: #6c757d;
-        }
-
-        .project-card .status {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #28a745;
-        }
-
-        .navbar {
-            padding: 0.8rem 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            margin-right: 1rem;
-        }
-
-        .navbar-brand {
-            color: #5cb85c;
-        }
-
-        .img-report {
-            max-height: 200px;
-        }
-    </style>
 </head>
 
 <body>
@@ -125,33 +62,33 @@
                             <br>
                             <div class="row">
                                 @foreach ($proyectos as $proyecto)
-                                    <div class="col-md-4">
-                                        <div class="card project-card">
-                                            <!-- Mostrar la imagen si existe, de lo contrario, una imagen por defecto -->
-                                            @if ($proyecto->mapas->isNotEmpty())
-                                                <img src="{{ asset($proyecto->mapas->first()->ruta_imagen) }}"
-                                                    alt="{{ $proyecto->nombre }}" class="card-img-top">
-                                            @else
-                                                <img src="https://via.placeholder.com/400x200" alt="Imagen por defecto"
-                                                    class="card-img-top">
-                                            @endif
+                                <div class="col-md-4">
+                                    <div class="card project-card">
+                                        <!-- Mostrar la imagen si existe, de lo contrario, una imagen por defecto -->
+                                        @if ($proyecto->mapas->isNotEmpty())
+                                        <img src="{{ asset($proyecto->mapas->first()->ruta_imagen) }}"
+                                            alt="{{ $proyecto->nombre }}" class="card-img-top">
+                                        @else
+                                        <img src="https://via.placeholder.com/400x200" alt="Imagen por defecto"
+                                            class="card-img-top">
+                                        @endif
 
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ $proyecto->nombre }}</h5>
-                                                <h6 class="card-subtitle mb-2">{{ $proyecto->unidades->count() }}
-                                                    Unidades</h6>
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $proyecto->nombre }}</h5>
+                                            <h6 class="card-subtitle mb-2">{{ $proyecto->unidades->count() }}
+                                                Unidades</h6>
 
-                                                <!-- Lógica para mostrar el estatus -->
-                                                <p class="status">
-                                                    {{ $proyecto->unidades->where('estatus', 'Rentado')->count() == $proyecto->unidades->count() ? '100% Ocupado' : 'Disponible' }}
-                                                </p>
+                                            <!-- Lógica para mostrar el estatus -->
+                                            <p class="status">
+                                                {{ $proyecto->unidades->where('estatus', 'Rentado')->count() == $proyecto->unidades->count() ? '100% Ocupado' : 'Disponible' }}
+                                            </p>
 
-                                                <!-- Enlace al detalle del proyecto -->
-                                                <button class="btn btn-success seleccionar-unidad"
-                                                    data-id="{{ $proyecto->id }}">Seleccionar y Cotizar</button>
-                                            </div>
+                                            <!-- Enlace al detalle del proyecto -->
+                                            <button class="btn btn-success seleccionar-unidad"
+                                                data-id="{{ $proyecto->id }}">Seleccionar y Cotizar</button>
                                         </div>
                                     </div>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -331,10 +268,22 @@
                                             <p><strong>Precio de Renta hr:</strong> $ <span id="PrecioRentaHr"> </span>
                                             </p>
                                             <p><strong>Primer Pago:</strong> $ <span id="primerPagoC"> </span> </p>
-                                            <p><strong>Tiempo de Renta:</strong><span id="tiempoRentaC"> </span> 1 año
+                                            <p><strong>Tiempo de Renta:</strong> <span id="tiempoRentaC"> </span>
+
+                                            <p><strong>Total:</strong> $ <span id="totalRentaC"> </span>
                                             </p>
                                         </div>
                                         <div class="col-md-8">
+
+                                            <p><strong>Fechas de renta:</strong></p>
+                                            <ul class="list-unstyled">
+                                                <li><strong>Fecha Inicio:</strong> <span id="fechaInicioC"> </span></li>
+                                                <li><strong>Fecha Fin:</strong> <span id="fechaFinC"> </span></li>
+
+                                            </ul>
+
+                                            <br>
+
                                             <p><strong>Horarios:</strong></p>
                                             <ul class="list-unstyled">
                                                 <li><strong>hora Apertura:</strong> <span id="horaApertura"> </span>
@@ -357,7 +306,7 @@
                                             <button type="button" class="btn btn-primary">enviar correo</button>
                                         </div>
                                         <div class="col-auto text-center">
-                                            <button type="button" class="btn btn-success">descargar</button>
+                                            <button type="button" class="btn btn-success" id="generarPDF">descargar</button>
                                         </div>
 
                                         <div class="col-auto text-right">
@@ -382,24 +331,8 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-
+    <x-script />
     <script src="/assets/js/cotizador.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#clientsTable').DataTable({
-                "pageLength": 8,
-                "lengthChange": false,
-                "order": [
-                    [1, "asc"]
-                ]
-            });
-        });
-    </script>
 
 </body>
 

@@ -5,60 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotizacion</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    <x-link></x-link>
 
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .table td,
-        .table th {
-            vertical-align: middle;
-        }
-
-        .status-active {
-            background-color: #d1f5d3;
-            color: #28a745;
-        }
-
-        .status-warning {
-            background-color: #fff5cc;
-            color: #ffc107;
-        }
-
-        .status-danger {
-            background-color: #f8d7da;
-            color: #dc3545;
-        }
-
-        .status-info {
-            background-color: #dbe5f1;
-            color: #6c757d;
-        }
-
-        .features-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .features-list li {
-            display: flex;
-            align-items: center;
-        }
-
-        .features-list li::before {
-            content: '✔';
-            color: #28a745;
-            margin-right: 8px;
-        }
-    </style>
 </head>
 
 <body>
@@ -99,52 +48,9 @@
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#clientsTable').DataTable({
-                "pageLength": 8,
-                "lengthChange": false,
-                "order": [
-                    [1, "asc"]
-                ],
-                "ajax": {
-                    "url": "/cotizacionesList",
-                    "type": "GET",
-                    "dataSrc": "data" // Ajuste para leer los datos de la respuesta JSON
-                },
-                "columns": [{
-                        "data": null,
-                        "render": function() {
-                            return '<input type="checkbox">';
-                        }
-                    },
-                    {
-                        "data": "cliente"
-                    },
-                    {
-                        "data": "negocio"
-                    },
-                    {
-                        "data": "plaza"
-                    },
-                    {
-                        "data": "local"
-                    },
-                    {
-                        "data": "estatus"
-                    },
-                    {
-                        "data": "opciones",
-                        "orderable": false
-                    }
-                ]
-            });
-        });
-    </script>
+    <x-script />
+    <script src="/assets/js/cotizador-index.js"></script>
+
 </body>
 
 </html>

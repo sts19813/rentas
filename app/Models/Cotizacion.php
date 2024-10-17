@@ -24,6 +24,7 @@ class Cotizacion extends Model
         'tipo_renta',
         'duracion',
         'fecha_inicio',
+        'fecha_fin',
         'total',
     ];
 

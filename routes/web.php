@@ -40,6 +40,8 @@ Route::get('/cotizacionesList', [CotizacionController::class, 'getCotizaciones']
 
 
 Route::get('/pdf', action: [PdfController::class, 'generarPDF'])->name('pdf.generarPDF');
+Route::post('/generar-pdf', [PdfController::class, 'generarReportePDF']);
+
 
 
 

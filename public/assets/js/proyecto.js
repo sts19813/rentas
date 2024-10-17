@@ -75,7 +75,7 @@ $(document).ready(function () {
 
                 setTimeout(function () {
                     window.location.href = '/proyectos'; 
-                }, 1000);
+                }, 2000);
                
             },
             error: function (error) {

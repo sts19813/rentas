@@ -8,7 +8,7 @@ let total;//total aprox de toda la cotizacion
 
 
 //cotizacion
-let mesRenta, horaRenta, primerPago, nombreUnidad, tipoRenta, duracion, fechaInicio;
+let mesRenta, horaRenta, primerPago, nombreUnidad, tipoRenta, duracion, fechaInicio, fechaFin;
 
 //prospecto
 let nombre, apellido, tipoCliente, correo, celular;
@@ -103,7 +103,7 @@ $(document).ready(function () {
 
     //seleccion de una unidad
     $('#unitsTable').on('click', '.seleccionar-unidad', function () {
-        
+
         $('#prospecto-tab').prop('disabled', false);
         $('#prospecto-tab').tab('show');
 
@@ -153,6 +153,7 @@ $(document).ready(function () {
         //validar form antes de eso
         $('#reporte-tab').prop('disabled', false);
         $('#reporte-tab').tab('show');
+        fechaInicio = $('#fechaInicio').val();
 
 
         $('#nombreCotizacion').text(nombre + ' ' + apellido);//nombre de la cotizacion
@@ -175,9 +176,25 @@ $(document).ready(function () {
                 $('#PrecioRentaMes').text(mesRenta);
                 $('#PrecioRentaHr').text(horaRenta);
                 $('#primerPagoC').text(primerPago);
-
+                $('#tiempoRentaC').text(duracion + " " + tipoRenta);
+                $('#totalRentaC').text(total);
                 $('#horaApertura').text(response.hora_apertura);
                 $('#horaCierre').text(response.hora_cierre);
+
+
+                let fechaFinCotizacion = calcularFechaFin(new Date(fechaInicio), duracion, tipoRenta);
+                let opciones = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+
+
+                fechaFin = fechaFinCotizacion;
+
+                let fechaFinFormateada = new Intl.DateTimeFormat('es-ES', opciones).format(fechaFinCotizacion);
+                let fechaInicioFormateada = new Intl.DateTimeFormat('es-ES', opciones).format(new Date(fechaInicio));
+
+
+                $('#fechaInicioC').text(fechaInicioFormateada);
+                $('#fechaFinC').text(fechaFinFormateada);
+
 
                 let servicios = servicios_Proyecto + ',' + amenidades_Proyecto;
                 // Separar los servicios por comas
@@ -207,7 +224,6 @@ $(document).ready(function () {
         debugger
         e.preventDefault();
 
-        let fechaInicio = $('#fechaInicio').val();
         // Enviar los datos usando AJAX
         $.ajax({
             url: $(this).attr('action'), // Ajusta la URL para que coincida con tu ruta
@@ -224,16 +240,62 @@ $(document).ready(function () {
                 tipo_renta: convertirTipoRenta(tipoRenta),
                 duracion: duracion,
                 fecha_inicio: fechaInicio,
+                fecha_fin: formatearFechaParaGuardar(fechaFin),
                 total: total,
                 _token: $('meta[name="csrf-token"]').attr('content') // Asegúrate de incluir el token CSRF
             },
             success: function (response) {
-                alert('Cotización creada exitosamente.');
-                window.location.href = '/cotizacion'; // Redirigir a la lista de proyectos
+                showToast("success", "Proyecto guardado correctamente");
+
+                setTimeout(function () {
+                    window.location.href = '/cotizacion';
+                }, 2000);
 
             },
-            error: function (xhr) {
-                alert('Hubo un error al crear la cotización.');
+            error: function (error) {
+
+                showToast("error", error.responseJSON.message, 'top-end', 5000);
+            }
+        });
+    });
+
+
+    //generar reporte de cotizacion
+    $('#generarPDF').on('click', function() {
+        let data = {
+            nombreUnidad: $('#nombreUnidad').text(),
+            nombrePlaza: $('#namePlaza').text(),
+            precioRentaMes: $('#PrecioRentaMes').text(),
+            precioRentaHr: $('#PrecioRentaHr').text(),
+            primerPago: $('#primerPagoC').text(),
+            tiempoRenta: $('#tiempoRentaC').text(),
+            total: $('#totalRentaC').text(),
+            horaApertura: $('#horaApertura').text(),
+            horaCierre: $('#horaCierre').text(),
+            mapaCotizacion: $('#mapaCotizacion').attr('src'),
+            mapaMultimedia: $('#mapaMultimedia').attr('src'),
+            servicios: servicios_Proyecto + ',' + amenidades_Proyecto,
+            _token: $('meta[name="csrf-token"]').attr('content') // Asegúrate de incluir el token CSRF
+        };
+    
+        $.ajax({
+            url: '/generar-pdf',
+            method: 'POST',
+            data: data,
+            xhrFields: {
+                responseType: 'blob' // Para manejar la descarga de archivos
+            },
+            success: function(response) {
+                debugger
+                let blob = new Blob([response], { type: 'application/pdf' });
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'cotizacion.pdf';
+                link.click();
+            },
+            error: function(error) {
+                debugger
+                console.log('Error:', error);
             }
         });
     });
@@ -271,17 +333,54 @@ function calcularCotizacion() {
     $('#Txtcotizacion').text('$' + total.toFixed(2));
 }
 
+//calcula la fehca final, con la fehca de inicio, la duracion y el tipo de periodo
+function calcularFechaFin(fecha, duracion, tipoRenta) {
+    switch (tipoRenta) {
+        case "años":
+            fecha.setFullYear(fecha.getFullYear() + duracion);
+            break;
+        case "meses":
+            fecha.setMonth(fecha.getMonth() + duracion);
+            break;
+        case "días":
+            fecha.setDate(fecha.getDate() + duracion);
+            break;
+        case "horas":
+            fecha.setHours(fecha.getHours() + duracion);
+            break;
+        default:
+            console.log("Tipo de renta no válido");
+    }
+    return fecha;
+}
+
+
+
+//se utiliza para guardar las fechas en la base de datos.
+function formatearFechaParaGuardar(date) {
+    let año = date.getFullYear();
+    let mes = String(date.getMonth() + 1).padStart(2, '0');
+    let dia = String(date.getDate()).padStart(2, '0');
+    let horas = String(date.getHours()).padStart(2, '0');
+    let minutos = String(date.getMinutes()).padStart(2, '0');
+
+    return `${año}-${mes}-${dia}T${horas}:${minutos}`;
+}
+
+
 
 //parseo /conversion al correcto como esta en el enumerador de base
 function convertirTipoRenta(tipoRenta) {
-    switch(tipoRenta) {
+    switch (tipoRenta) {
         case 'años':
             return 'año'; // Asumiendo que no necesitas "año" en tu validación
         case 'horas':
             return 'hora';
         case 'meses':
             return 'mes';
+        case 'dias':
+            return 'dia';
         default:
-            return tipoRenta; 
+            return tipoRenta;
     }
 }

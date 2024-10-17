@@ -45,7 +45,9 @@ class CotizacionController extends Controller
             'tipo_renta' => 'required|in:hora,dia,mes,año',
             'duracion' => 'nullable|integer',
             'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'date',
             'total' => 'required|numeric',
+        
         ]);
 
         // Guardar el cliente como prospecto
