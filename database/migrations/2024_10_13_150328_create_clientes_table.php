@@ -14,13 +14,44 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('apellido');
-            $table->enum('tipo_cliente', ['persona_fisica', 'persona_moral'])->default('persona_fisica');
+            $table->string('apellido')->nullable();
             $table->string('celular');
             $table->string('correo');
-            $table->date('fecha_nacimiento');
-            $table->string('nacionalidad');
-            $table->string('ciudad');
+            $table->string('mes_renta')->nullable();
+            $table->string('plaza')->nullable();
+            $table->string('fecha_pago')->nullable();
+            $table->date('fecha_vencimiento')->nullable();
+            $table->string('local')->nullable();
+            $table->decimal('mensualidad', 10, 2)->nullable();
+            $table->date('fecha_nacimiento')->nullable();
+            $table->enum('tipo_cliente', ['persona_fisica', 'persona_moral'])->default('persona_fisica');
+            $table->string('nacionalidad')->nullable();
+            $table->string('celular')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('pais')->nullable();
+            $table->string('estado')->nullable();
+            $table->string('ciudad_cliente')->nullable();
+            $table->string('codigo_postal')->nullable();
+            // Datos del aval
+            $table->string('nombre_aval')->nullable();
+            $table->string('celular_aval')->nullable();
+            $table->string('relacion_aval')->nullable();
+
+            //referencias
+            $table->string('nombreR1');
+            $table->string('celularR1');
+            $table->string('correoR1');
+            $table->string('relacionR1')->nullable();
+
+            $table->string('nombreR2');
+            $table->string('celularR2');
+            $table->string('correoR2');
+            $table->string('relacionR2')->nullable();
+
+            $table->string('nombreR3');
+            $table->string('celularR3');
+            $table->string('correoR3');
+            $table->string('relacionR3')->nullable();
             $table->timestamps();
         });
     }

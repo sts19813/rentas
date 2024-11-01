@@ -11,14 +11,40 @@ class Cliente extends Model
 
     // Especificar los campos que se pueden llenar masivamente
     protected $fillable = [
-        'nombre',
-        'apellido',
-        'tipo_cliente',
-        'celular',
-        'correo',
+        'mes_renta',
+        'plaza',
+        'fecha_pago',
+        'fecha_vencimiento',
+        'local',
+        'mensualidad',
+        'nombre_completo',
         'fecha_nacimiento',
+        'tipo_cliente',
+        'correo',
         'nacionalidad',
+        'celular',
         'ciudad',
+        'direccion',
+        'pais',
+        'estado',
+        'ciudad_cliente',
+        'codigo_postal',
+        'nombre_aval',
+        'celular_aval',
+        'relacion_aval',
+        'nombreR1',
+        'celularR1',
+        'correoR1',
+        'relacionR1',
+        'nombreR2',
+        'celularR2',
+        'correoR2',
+        'relacionR2',
+        'nombreR3',
+        'celularR3',
+        'correoR3',
+        'relacionR3',
+
     ];
 
     // Opcional: puedes definir algunas mutaciones o conversiones
@@ -29,11 +55,6 @@ class Cliente extends Model
     public function negocio()
     {
         return $this->hasOne(Negocio::class);
-    }
-
-    public function referencias()
-    {
-        return $this->hasMany(Referencia::class);
     }
 
     public function documentos()

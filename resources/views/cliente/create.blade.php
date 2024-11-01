@@ -4,68 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyectos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .project-card {
-            border-radius: 8px;
-            border: 1px solid #eaeaea;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-card img {
-            border-radius: 8px 8px 0 0;
-            object-fit: cover;
-            width: 100%;
-            height: 200px;
-        }
-
-        .project-card .card-body {
-            text-align: center;
-        }
-
-        .project-card .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
-
-        .project-card .card-subtitle {
-            font-size: 1rem;
-            color: #6c757d;
-        }
-
-        .project-card .status {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #28a745;
-        }
-
-        .navbar {
-            padding: 0.8rem 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            margin-right: 1rem;
-        }
-
-        .navbar-brand {
-            color: #5cb85c;
-        }
-    </style>
+    <title>Cliente - Agregar</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <x-link></x-link>
 </head>
 
 <body>
@@ -106,7 +47,7 @@
 
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <!-- Contenido de la pestaña General -->
+
                         <div class="tab-pane fade show active" id="general" role="tabpanel"
                             aria-labelledby="general-tab">
                             <!-- Contenido del formulario como el de la imagen -->
@@ -120,8 +61,13 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="plaza" class="form-label">Plaza</label>
-                                            <input type="text" class="form-control" id="plaza"
-                                                value="Plaza Árbol">
+                                            <select name="proyecto_id" id="proyecto_id" class="form-control" required>
+                                                <option value="">Selecciona un proyecto</option>
+                                                @foreach ($proyectos as $proyecto)
+                                                <option value="{{ $proyecto->id }}">{{ $proyecto->nombre }}</option>
+                                                @endforeach
+                                            </select>
+
                                         </div>
                                         <div class="col-md-4">
                                             <label for="fechaPago" class="form-label">Fecha de Pago</label>
@@ -137,7 +83,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="local" class="form-label">Local</label>
-                                            <input type="text" class="form-control" id="local" value="02">
+                                            <select id="unidad" class="form-control" name="unidad_id" required>
+                                                <option value="">Selecciona una unidad</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="mensualidad" class="form-label">Mensualidad</label>
@@ -148,10 +96,15 @@
 
                                     <h6 class="text-primary">Información Personal</h6>
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="nombreCompleto" class="form-label">Nombre Completo</label>
-                                            <input type="text" class="form-control" id="nombreCompleto"
-                                                value="Pristia Candra Nelson">
+                                        <div class="col-md-3">
+                                            <label for="nombreCompleto" class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre"
+                                                value="">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="nombreCompleto" class="form-label">Apellido</label>
+                                            <input type="text" class="form-control" id="apellido"
+                                                value="">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="fechaNacimiento" class="form-label">Fecha de
@@ -188,14 +141,7 @@
                                                 value="089318298493">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="ciudad" class="form-label">Ciudad</label>
-                                            <input type="text" class="form-control" id="ciudad"
-                                                value="Mérida">
-                                        </div>
-                                    </div>
-
+                            
                                     <h6 class="text-primary">Dirección Cliente</h6>
                                     <div class="mb-3">
                                         <label for="direccion" class="form-label">Dirección línea 1</label>
@@ -248,7 +194,6 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- Contenido de la pestaña Características -->
                         <div class="tab-pane fade" id="caracteristicas" role="tabpanel"
                             aria-labelledby="caracteristicas-tab">
                             <div class="container mt-4">
@@ -358,95 +303,92 @@
                             </div>
 
                         </div>
-                        <!-- Contenido de la pestaña Unidades -->
                         <div class="tab-pane fade" id="unidades" role="tabpanel" aria-labelledby="unidades-tab">
                             <div>
-                                <form>
-                                    <!-- Referencia #1 -->
-                                    <h6 class="text-primary">Referencia #1</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="referencia1Nombre" class="form-label">Nombre</label>
-                                            <input type="text" class="form-control" id="referencia1Nombre"
-                                                placeholder="Escribe el nombre de la persona de referencia 1">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="referencia1Celular" class="form-label">Celular</label>
-                                            <input type="text" class="form-control" id="referencia1Celular"
-                                                value="9992292929292">
-                                        </div>
+                                <!-- Referencia #1 -->
+                                <h6 class="text-primary">Referencia #1</h6>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="referencias[0][nombre]" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="referencias[0][nombre]"
+                                            name="referencias[0][nombre]" placeholder="Escribe el nombre de la persona de referencia 1">
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="referencia1Correo" class="form-label">Correo</label>
-                                            <input type="email" class="form-control" id="referencia1Correo"
-                                                value="correo@gmail.com">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="referencia1Relacion" class="form-label">Relación</label>
-                                            <input type="text" class="form-control" id="referencia1Relacion"
-                                                placeholder="Escribe la relación que tiene con el cliente">
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label for="referencias[0][celular]" class="form-label">Celular</label>
+                                        <input type="text" class="form-control" id="referencias[0][celular]"
+                                            name="referencias[0][celular]" value="9992292929292">
                                     </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="referencias[0][correo]" class="form-label">Correo</label>
+                                        <input type="email" class="form-control" id="referencias[0][correo]"
+                                            name="referencias[0][correo]" value="correo@gmail.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="referencias[0][relacion]" class="form-label">Relación</label>
+                                        <input type="text" class="form-control" id="referencias[0][relacion]"
+                                            name="referencias[0][relacion]" placeholder="Escribe la relación que tiene con el cliente">
+                                    </div>
+                                </div>
 
-                                    <!-- Referencia #2 -->
-                                    <h6 class="text-primary">Referencia #2</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="referencia2Nombre" class="form-label">Nombre</label>
-                                            <input type="text" class="form-control" id="referencia2Nombre"
-                                                placeholder="Escribe el nombre de la persona de referencia 2">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="referencia2Celular" class="form-label">Celular</label>
-                                            <input type="text" class="form-control" id="referencia2Celular"
-                                                value="9992292929292">
-                                        </div>
+                                <!-- Referencia #2 -->
+                                <h6 class="text-primary">Referencia #2</h6>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="referencias[1][nombre]" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="referencias[1][nombre]"
+                                            name="referencias[1][nombre]" placeholder="Escribe el nombre de la persona de referencia 2">
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="referencia2Correo" class="form-label">Correo</label>
-                                            <input type="email" class="form-control" id="referencia2Correo"
-                                                value="correo@gmail.com">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="referencia2Relacion" class="form-label">Relación</label>
-                                            <input type="text" class="form-control" id="referencia2Relacion"
-                                                placeholder="Escribe la relación que tiene con el cliente">
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label for="referencias[1][celular]" class="form-label">Celular</label>
+                                        <input type="text" class="form-control" id="referencias[1][celular]"
+                                            name="referencias[1][celular]" value="9992292929292">
                                     </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="referencias[1][correo]" class="form-label">Correo</label>
+                                        <input type="email" class="form-control" id="referencias[1][correo]"
+                                            name="referencias[1][correo]" value="correo@gmail.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="referencias[1][relacion]" class="form-label">Relación</label>
+                                        <input type="text" class="form-control" id="referencias[1][relacion]"
+                                            name="referencias[1][relacion]" placeholder="Escribe la relación que tiene con el cliente">
+                                    </div>
+                                </div>
 
-                                    <!-- Referencia #3 -->
-                                    <h6 class="text-primary">Referencia #3</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="referencia3Nombre" class="form-label">Nombre</label>
-                                            <input type="text" class="form-control" id="referencia3Nombre"
-                                                placeholder="Escribe el nombre de la persona de referencia 3">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="referencia3Celular" class="form-label">Celular</label>
-                                            <input type="text" class="form-control" id="referencia3Celular"
-                                                value="9992292929292">
-                                        </div>
+                                <!-- Referencia #3 -->
+                                <h6 class="text-primary">Referencia #3</h6>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="referencias[2][nombre]" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="referencias[2][nombre]"
+                                            name="referencias[2][nombre]" placeholder="Escribe el nombre de la persona de referencia 3">
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="referencia3Correo" class="form-label">Correo</label>
-                                            <input type="email" class="form-control" id="referencia3Correo"
-                                                value="correo@gmail.com">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="referencia3Relacion" class="form-label">Relación</label>
-                                            <input type="text" class="form-control" id="referencia3Relacion"
-                                                placeholder="Escribe la relación que tiene con el cliente">
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label for="referencias[2][celular]" class="form-label">Celular</label>
+                                        <input type="text" class="form-control" id="referencias[2][celular]"
+                                            name="referencias[2][celular]" value="9992292929292">
                                     </div>
-                                </form>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="referencias[2][correo]" class="form-label">Correo</label>
+                                        <input type="email" class="form-control" id="referencias[2][correo]"
+                                            name="referencias[2][correo]" value="correo@gmail.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="referencias[2][relacion]" class="form-label">Relación</label>
+                                        <input type="text" class="form-control" id="referencias[2][relacion]"
+                                            name="referencias[2][relacion]" placeholder="Escribe la relación que tiene con el cliente">
+                                    </div>
+                                </div>
+
 
                             </div>
                         </div>
-                        <!-- Contenido de la pestaña Mapa -->
                         <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
                             <div class="container">
                                 <!-- Multimedia Section -->
@@ -527,6 +469,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-auto text-right">
+                            <form action="{{ route('cliente.store') }}" method="POST" enctype="multipart/form-data" id="guardarCliente">
+                                @csrf
+                                <button type="submit" class="btn btn-warning">Guardar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -535,11 +483,8 @@
 
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <x-script />
+    <script src="/assets/js/cliente.js"></script>
     <script>
         $(document).ready(function() {
             $('#clientsTable').DataTable({

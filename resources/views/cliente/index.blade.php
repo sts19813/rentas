@@ -5,99 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .table td,
-        .table th {
-            vertical-align: middle;
-        }
-
-        .status-active {
-            background-color: #d1f5d3;
-            color: #28a745;
-        }
-
-        .status-warning {
-            background-color: #fff5cc;
-            color: #ffc107;
-        }
-
-        .status-danger {
-            background-color: #f8d7da;
-            color: #dc3545;
-        }
-
-        .status-info {
-            background-color: #dbe5f1;
-            color: #6c757d;
-        }
-
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .navbar-dark {
-            background-color: #111;
-        }
-
-        .project-card {
-            border-radius: 8px;
-            border: 1px solid #eaeaea;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-card img {
-            border-radius: 8px 8px 0 0;
-            object-fit: cover;
-            width: 100%;
-            height: 200px;
-        }
-
-        .project-card .card-body {
-            text-align: center;
-        }
-
-        .project-card .card-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
-
-        .project-card .card-subtitle {
-            font-size: 1rem;
-            color: #6c757d;
-        }
-
-        .project-card .status {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #28a745;
-        }
-
-        .navbar {
-            padding: 0.8rem 1rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            margin-right: 1rem;
-        }
-
-        .navbar-brand {
-            color: #5cb85c;
-        }
-    </style>
+    <x-link></x-link>
 </head>
 
 <body>
@@ -108,7 +16,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Clientes</h2>
-            <a type="button" class="btn btn-dark" href="add-cliente">
+            <a type="button" class="btn btn-dark" href="/clientes/create">
                 + Nuevo Cliente
             </a>
         </div>

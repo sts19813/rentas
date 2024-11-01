@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use App\Models\Proyecto;
+
 
 class ClienteController extends Controller
 {
@@ -18,37 +20,42 @@ class ClienteController extends Controller
 
     public function create()
     {
-        return view('clientes.create');
+        $proyectos = Proyecto::all();
+
+        return view('cliente.create', compact('proyectos'));
     }
 
 
     // Guardar un nuevo cliente
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|string',
-            'apellido' => 'required|string',
-            'tipo_cliente' => 'required|in:persona_fisica,persona_moral',
-            'celular' => 'required|string',
-            'correo' => 'required|email',
-            'fecha_nacimiento' => 'nullable|date',
-            'nacionalidad' => 'nullable|string',
-            'ciudad' => 'nullable|string',
-        ]);
+    
+        $cliente = Cliente::create($request->only([
+            'mes_renta', 'plaza', 'fecha_pago', 'fecha_vencimiento', 'local', 
+            'mensualidad', 'nombre_completo', 'fecha_nacimiento', 'tipo_cliente',
+            'correo', 'nacionalidad', 'celular', 'ciudad', 'direccion', 
+            'pais', 'estado', 'ciudad_cliente', 'codigo_postal', 
+            'nombre_aval', 'celular_aval', 'relacion_aval'
+        ]));
 
-        $cliente = Cliente::create($request->all());
+        $cliente->negocio()->create($request->only([
+            'razon_social', 'rfc', 'uso_factura', 'regimen_fiscal', 
+            'giro_negocio', 'correo', 'cp', 'direccion_facturacion', 
+            'pais_facturacion', 'estado_facturacion', 'ciudad_facturacion', 
+            'cp_facturacion', 'nombre_representante', 'celular_representante', 
+            'relacion_representante'
+        ]));
 
-        // Guardar referencias
-        foreach (range(1, 3) as $index) {
-            $cliente->referencias()->create([
-                'nombre' => $request->input("referencia{$index}Nombre"),
-                'celular' => $request->input("referencia{$index}Celular"),
-                'correo' => $request->input("referencia{$index}Correo"),
-                'relacion' => $request->input("referencia{$index}Relacion"),
-            ]);
+        foreach ($request->input('referencias', []) as $referencia) {
+            $cliente->referencias()->create($referencia);
         }
 
-        return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente');
+        foreach ($request->file('documentos', []) as $documento) {
+            $ruta = $documento->store('documentos');
+            $cliente->documentos()->create(['ruta' => $ruta]);
+        }
+
+        return redirect()->back()->with('success', 'Cliente guardado correctamente.');
     }
 
 

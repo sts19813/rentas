@@ -11,22 +11,21 @@ class Negocio extends Model
 
     protected $fillable = [
         'cliente_id',
-        'nombre_razon_social',
+        'razon_social',
         'rfc',
         'uso_factura',
         'regimen_fiscal',
         'giro_negocio',
         'correo',
-        'codigo_postal',
-        'ciudad',
-        'direccion_linea1',
-        'pais',
-        'estado',
+        'cp',
+        'direccion_facturacion',
+        'pais_facturacion',
+        'estado_facturacion',
         'ciudad_facturacion',
-        'codigo_postal_facturacion',
-        'nombre_representante_legal',
-        'celular_representante_legal',
-        'relacion_representante_legal',
+        'cp_facturacion', 
+        'nombre_representante',
+        'celular_representante',
+        'relacion_representante'
     ];
 
     public function cliente()
