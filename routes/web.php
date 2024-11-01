@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\CotizacionController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PdfController;
 
 
@@ -44,10 +45,7 @@ Route::post('/generar-pdf', [PdfController::class, 'generarReportePDF']);
 
 
 
-
-Route::get('/clientes', function () {
-    return view('cliente');
-});
+Route::get('/clientes', action: [ClienteController::class, 'index'])->name('clientes.index');
 Route::get('/add-cliente', function () {
     return view('addcliente');
 });

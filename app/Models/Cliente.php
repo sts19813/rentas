@@ -25,4 +25,19 @@ class Cliente extends Model
     protected $casts = [
         'fecha_nacimiento' => 'date', // Asegura que se maneje como una instancia de Carbon
     ];
+
+    public function negocio()
+    {
+        return $this->hasOne(Negocio::class);
+    }
+
+    public function referencias()
+    {
+        return $this->hasMany(Referencia::class);
+    }
+
+    public function documentos()
+    {
+        return $this->hasMany(Documento::class);
+    }
 }
