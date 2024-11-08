@@ -18,6 +18,12 @@ class ClienteController extends Controller
         return view('cliente.index', compact('clientes'));
     }
 
+    public function index2()
+    {
+        $clientes = Cliente::all();
+        return view('cliente.new_index', compact('clientes'));
+    }
+
     public function create()
     {
         $proyectos = Proyecto::all();

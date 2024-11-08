@@ -2,14 +2,15 @@ $(document).ready(function () {
 
     $('#guardarCliente').on('submit', function (e) {
         e.preventDefault();
-        debugger
+        
 
-        // Captura los datos básicos del cliente
+    
         const clienteData = {
             proyecto_id: 1,
             unidad_id: 1,
-            nombre: $('input[name="nombre"]').val(),
-            apellido: $('input[name="apellido"]').val(),
+            nombre: $('#nombre').val(),
+            apellido: $('#apellido').val(),
+            fecha_nacimiento
             tipo_cliente: $('input[name="tipo_cliente"]').val(),
             celular: $('input[name="celular"]').val(),
             correo: $('input[name="correo"]').val(),
@@ -20,6 +21,8 @@ $(document).ready(function () {
             total: $('input[name="total"]').val(),
             _token: $('meta[name="csrf-token"]').attr('content') 
         };
+
+        debugger
 
         // Captura las referencias
         const referencias = [];
@@ -93,7 +96,7 @@ $(document).ready(function () {
 
     // Evento para obtener los datos de una unidad cuando se selecciona
     $('#unidad').on('change', function () {
-        debugger
+        
         var unidadId = $(this).val();
 
         if (unidadId) {

@@ -49,6 +49,8 @@ Route::post('/generar-pdf', [PdfController::class, 'generarReportePDF']);
 
 
 Route::get('/clientes', action: [ClienteController::class, 'index'])->name('cliente.index');
+Route::get('/clientes-new', action: [ClienteController::class, 'index2'])->name('cliente.index2');
+
 Route::get('/clientes/create', action: [ClienteController::class, 'create'])->name('cliente.create');
 Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente.store');
 

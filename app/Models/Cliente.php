@@ -49,7 +49,7 @@ class Cliente extends Model
 
     // Opcional: puedes definir algunas mutaciones o conversiones
     protected $casts = [
-        'fecha_nacimiento' => 'date', // Asegura que se maneje como una instancia de Carbon
+        'fecha_nacimiento' => 'date', 
     ];
 
     public function negocio()
