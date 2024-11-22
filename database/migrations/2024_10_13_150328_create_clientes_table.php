@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('apellido')->nullable();
-            $table->string('celular');
             $table->string('correo');
             $table->string('mes_renta')->nullable();
-            $table->string('plaza')->nullable();
+            $table->foreignId('plaza')->constrained('proyectos')->onDelete('cascade'); // Relación con 'proyectos'
+            $table->foreignId('local')->constrained('unidades')->onDelete('cascade'); // Relación con 'unidades'
+
             $table->string('fecha_pago')->nullable();
             $table->date('fecha_vencimiento')->nullable();
-            $table->string('local')->nullable();
             $table->decimal('mensualidad', 10, 2)->nullable();
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('tipo_cliente', ['persona_fisica', 'persona_moral'])->default('persona_fisica');
@@ -32,6 +32,18 @@ return new class extends Migration
             $table->string('estado')->nullable();
             $table->string('ciudad_cliente')->nullable();
             $table->string('codigo_postal')->nullable();
+
+            $table->enum('status', [
+                'activo', 
+                'inactivo', 
+                'suspendido', 
+                'en_espera', 
+                'cancelado', 
+                'finalizado', 
+                'preaprobado', 
+                'pendiente_de_pago'
+            ])->default('activo');
+
             // Datos del aval
             $table->string('nombre_aval')->nullable();
             $table->string('celular_aval')->nullable();
@@ -53,6 +65,8 @@ return new class extends Migration
             $table->string('correoR3');
             $table->string('relacionR3')->nullable();
             $table->timestamps();
+
+
         });
     }
 

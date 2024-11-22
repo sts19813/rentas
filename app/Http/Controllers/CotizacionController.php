@@ -51,6 +51,7 @@ class CotizacionController extends Controller
         ]);
 
         // Guardar el cliente como prospecto
+        /*
         $cliente = Cliente::create([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -61,7 +62,7 @@ class CotizacionController extends Controller
             'ciudad' => '',
             'nacionalidad' => '',
         ]);
-
+        */
         $cotizacion = Cotizacion::create($validatedData);
 
         // Retornar una respuesta de éxito

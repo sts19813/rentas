@@ -18,4 +18,9 @@ class Unidad extends Model
     {
         return $this->belongsTo(Proyecto::class);
     }
+
+    public function rentPrices()
+    {
+        return $this->hasMany(RentPrice::class);
+    }
 }

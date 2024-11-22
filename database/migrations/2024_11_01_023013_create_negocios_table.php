@@ -31,7 +31,6 @@ return new class extends Migration
             $table->string('celular_representante')->nullable();
             $table->string('relacion_representante')->nullable();
             $table->timestamps();
-            $table->timestamps();
         });
     }
 

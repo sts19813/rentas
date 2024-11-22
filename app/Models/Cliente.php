@@ -10,14 +10,15 @@ class Cliente extends Model
     use HasFactory;
 
     // Especificar los campos que se pueden llenar masivamente
-    protected $fillable = [
+    protected $fillable = [ 
         'mes_renta',
         'plaza',
         'fecha_pago',
         'fecha_vencimiento',
         'local',
         'mensualidad',
-        'nombre_completo',
+        'nombre',
+        'apellido',
         'fecha_nacimiento',
         'tipo_cliente',
         'correo',
@@ -29,6 +30,7 @@ class Cliente extends Model
         'estado',
         'ciudad_cliente',
         'codigo_postal',
+        'status',
         'nombre_aval',
         'celular_aval',
         'relacion_aval',
@@ -49,7 +51,7 @@ class Cliente extends Model
 
     // Opcional: puedes definir algunas mutaciones o conversiones
     protected $casts = [
-        'fecha_nacimiento' => 'date', 
+        'fecha_nacimiento' => 'date',
     ];
 
     public function negocio()
@@ -60,5 +62,10 @@ class Cliente extends Model
     public function documentos()
     {
         return $this->hasMany(Documento::class);
+    }
+
+    public function plaza()
+    {
+        return $this->belongsTo(Unidad::class, 'plaza');
     }
 }

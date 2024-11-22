@@ -1,80 +1,94 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>Configuración de Precios por Rango</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-    <aside class="sidebar" id="sidebar">
-            <nav>
-                <ul>
-                    <li><a href="#">Dashboard</a></li>
-                    <li><a href="#">Rentas</a></li>
-                    <li><a href="#">Cotizaciones</a></li>
-                    <li><a href="#">Propiedades</a></li>
-                    <li><a href="#" class="active">Clientes</a></li>
-                    <li><a href="#">Gastos</a></li>
-                    <li><a href="#">Contratos</a></li>
-                    <li><a href="#">Colaboradores</a></li>
-                </ul>
-            </nav>
-        </aside>
-        <main id="main-content">
-            <header>
-                <button id="toggle-sidebar" class="toggle-button">☰</button>
-                <h1>Clientes</h1>
-                <button class="add-button">+ Agregar Nuevo</button>
-            </header>
-            <div class="search">
-                <input type="text" placeholder="Buscar por nombre o propiedad">
-            </div>
-            <table class="clients-table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>Cliente</th>
-                        <th>Negocio</th>
-                        <th>Renta</th>
-                        <th>Celular</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Repetir para cada cliente -->
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Bessie Cooper</td>
-                        <td>Mobiliario para Oficinas</td>
-                        <td>-</td>
-                        <td>(603) 555-0123</td>
-                        <td><span class="status prospect">Prospecto</span></td>
-                        <td><button class="options">⋮</button></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>Jerome Bell</td>
-                        <td>El Orden del Caos</td>
-                        <td>Plaza Árbol, Local 02</td>
-                        <td>(209) 555-0104</td>
-                        <td><span class="status active">Activo</span></td>
-                        <td><button class="options">⋮</button></td>
-                    </tr>
-                    <!-- Agregar más filas según sea necesario -->
-                </tbody>
-            </table>
-        </main>
+    <div class="container mt-5">
+        <h2>Configurar Precios de Renta por Rango de Fechas</h2>
+        <table class="table table-bordered mt-3" id="rangos-table">
+            <thead>
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="btn btn-primary" id="add-row-btn">Agregar Rango</button>
     </div>
-    
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/customParseFormat.js"></script>
     <script>
-           document.getElementById("toggle-sidebar").addEventListener("click", function() {
-            document.getElementById("sidebar").classList.toggle("hidden");
-            document.getElementById("main-content").classList.toggle("full-width");
+        dayjs.extend(dayjs_plugin_customParseFormat);
+
+        const tableBody = document.querySelector("#rangos-table tbody");
+
+        const validateRanges = () => {
+            const rows = [...tableBody.querySelectorAll("tr")];
+            let lastEndDate = null;
+
+            for (const row of rows) {
+                const startDate = dayjs(row.querySelector(".start-date").value, "YYYY-MM");
+                const endDate = dayjs(row.querySelector(".end-date").value, "YYYY-MM");
+
+                if (!startDate.isValid() || !endDate.isValid()) {
+                    alert("Por favor, ingresa fechas válidas.");
+                    return false;
+                }
+
+                if (startDate.isAfter(endDate)) {
+                    alert("La fecha de inicio no puede ser posterior a la fecha de fin.");
+                    return false;
+                }
+
+                if (lastEndDate && !startDate.isAfter(lastEndDate)) {
+                    alert("Los rangos de fechas no pueden traslaparse.");
+                    return false;
+                }
+
+                if (lastEndDate && !startDate.isSame(lastEndDate.add(1, "month"))) {
+                    alert("Debe haber continuidad entre los rangos.");
+                    return false;
+                }
+
+                lastEndDate = endDate;
+            }
+
+            return true;
+        };
+
+        const addRow = () => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td><input type="month" class="form-control start-date" required></td>
+                <td><input type="month" class="form-control end-date" required></td>
+                <td><input type="number" class="form-control price" min="0" required></td>
+                <td>
+                    <button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button>
+                </td>
+            `;
+
+            row.querySelector(".delete-row-btn").addEventListener("click", () => {
+                row.remove();
+            });
+
+            tableBody.appendChild(row);
+        };
+
+        document.getElementById("add-row-btn").addEventListener("click", () => {
+            addRow();
         });
+
+        document.getElementById("rangos-table").addEventListener("change", validateRanges);
     </script>
 </body>
 </html>
