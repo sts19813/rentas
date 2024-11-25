@@ -105,14 +105,10 @@
                                         </select>
 
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <label for="fechaPago" class="form-label">Fecha de Pago</label>
                                         <select name="fechaPago" id="fechaPago" class="form-control" required>
                                             <option value="">Selecciona un Fecha de pago</option>
-                                            <option value="1-5">1-5 de cada mes</option>
-                                            <option value="1-15">1-15 de cada mes</option>
-                                            <option value="15-30">15-30 de cada mes</option>
-                                            <option value="20-25">20-25 de cada mes</option>
                                             <option value="1">1ro de cada mes</option>
                                             <option value="2">2do de cada mes</option>
                                             <option value="3">3ro de cada mes</option>
@@ -144,6 +140,10 @@
                                             <option value="29">29 de cada mes</option>
                                             <option value="30">30 de cada mes</option>s
                                         </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="fechaTolerancia" class="form-label">Dias Tolerancia</label>
+                                        <input type="number" class="form-control" id="fechaTolerancia" value="0">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -213,6 +213,7 @@
                         <div class="tab-pane fade show" id="general" role="tabpanel"
                             aria-labelledby="general-tab">
                             <div class="container">
+                                <br>
                                 <h6 class="text-primary">Información Personal</h6>
                                 <div class="row mb-3">
                                     <div class="col-md-3">
@@ -606,76 +607,17 @@
     </div>
 
     <x-script />
-    <script src="https://cdn.jsdelivr.net/npm/dayjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/locale/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/isSameOrBefore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/isSameOrAfter.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/customParseFormat.js"></script>
     <script src="/assets/js/cliente.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script>
-        dayjs.extend(dayjs_plugin_customParseFormat);
+    
 
-        const tableBody = document.querySelector("#rangos-table tbody");
-
-        const validateRanges = () => {
-            const rows = [...tableBody.querySelectorAll("tr")];
-            let lastEndDate = null;
-
-            for (const row of rows) {
-                const startDate = dayjs(row.querySelector(".start-date").value, "YYYY-MM");
-                const endDate = dayjs(row.querySelector(".end-date").value, "YYYY-MM");
-
-                if (!startDate.isValid() || !endDate.isValid()) {
-                    alert("Por favor, ingresa fechas válidas.");
-                    return false;
-                }
-
-                if (startDate.isAfter(endDate)) {
-                    alert("La fecha de inicio no puede ser posterior a la fecha de fin.");
-                    return false;
-                }
-
-                if (lastEndDate && !startDate.isAfter(lastEndDate)) {
-                    alert("Los rangos de fechas no pueden traslaparse.");
-                    return false;
-                }
-
-                if (lastEndDate && !startDate.isSame(lastEndDate.add(1, "month"))) {
-                    alert("Debe haber continuidad entre los rangos.");
-                    return false;
-                }
-
-                lastEndDate = endDate;
-            }
-
-            return true;
-        };
-
-        const addRow = () => {
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-        <td><input type="month" class="form-control start-date" required></td>
-        <td><input type="month" class="form-control end-date" required></td>
-        <td><input type="number" class="form-control price" min="0" required></td>
-        <td>
-            <button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button>
-        </td>
-    `;
-
-            row.querySelector(".delete-row-btn").addEventListener("click", () => {
-                row.remove();
-            });
-
-            tableBody.appendChild(row);
-        };
-
-        document.getElementById("add-row-btn").addEventListener("click", () => {
-            addRow();
-        });
-
-        document.getElementById("rangos-table").addEventListener("change", validateRanges);
-    </script>
 
 
 </body>

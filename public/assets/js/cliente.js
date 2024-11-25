@@ -1,57 +1,19 @@
+
+dayjs.locale('es'); 
+dayjs.extend(dayjs_plugin_customParseFormat);
+dayjs.extend(window.dayjs_plugin_isSameOrBefore);
+dayjs.extend(window.dayjs_plugin_isSameOrAfter);
+
+const $tableBody = $("#rangos-table tbody");
+
 $(document).ready(function () {
-
-    function calcularMesDeRenta() {
-        const fechaInicio = new Date($('#fechaInicio').val());
-        const fechaVencimiento = new Date($('#fechaVencimiento').val());
-        const fechaPago = parseInt($('#fechaPago').val(), 10);
-        const hoy = new Date();
-
-        // Validar que las fechas sean correctas
-        if (isNaN(fechaInicio.getTime()) || isNaN(fechaVencimiento.getTime())) {
-            //alert("Por favor, selecciona fechas válidas.");
-            return;
-        }
-
-        // Asegurar que la fecha actual está dentro del rango
-        if (hoy < fechaInicio || hoy > fechaVencimiento) {
-            //alert("La fecha actual está fuera del rango de renta.");
-            return;
-        }
-
-        // Ajustar la fecha de inicio al día de pago
-        const fechaInicioAjustada = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaPago);
-
-        // Si la fecha ajustada es antes de la fecha de inicio original
-        if (fechaInicioAjustada < fechaInicio) {
-            fechaInicioAjustada.setMonth(fechaInicioAjustada.getMonth() + 1);
-        }
-
-        // Calcular el número total de meses de renta
-        const totalMeses = (fechaVencimiento.getFullYear() - fechaInicio.getFullYear()) * 12 +
-            (fechaVencimiento.getMonth() - fechaInicio.getMonth()) + 1;
-
-        // Calcular el mes actual de renta
-        let mesesTranscurridos = (hoy.getFullYear() - fechaInicioAjustada.getFullYear()) * 12 +
-            (hoy.getMonth() - fechaInicioAjustada.getMonth());
-
-        // Ajustar si el día actual es menor al día de pago
-        if (hoy.getDate() < fechaPago) {
-            mesesTranscurridos--;
-        }
-
-        const mesActual = mesesTranscurridos + 1; // Los meses empiezan en 1
-
-        if (mesActual > 0 && mesActual <= totalMeses) {
-           
-            $('#mesRenta').val(`${mesActual} / ${totalMeses}`)
-            
-        } else {
-            //alert("La fecha actual no corresponde a un mes de renta válido.");
-        }
-    }
 
     // Recalcular al cambiar las fechas o el día de pago
     $('#fechaInicio, #fechaVencimiento, #fechaPago').on('change', calcularMesDeRenta);
+
+    //valida las fechas
+    $("#rangos-table").on("change", "input", validateRanges);
+
 
     $('#guardarCliente').on('submit', function (e) {
         e.preventDefault();
@@ -212,3 +174,202 @@ $(document).ready(function () {
         }
     });
 });
+
+
+function calcularMesDeRenta() {
+    const fechaInicio = new Date($('#fechaInicio').val());
+    const fechaVencimiento = new Date($('#fechaVencimiento').val());
+    const fechaPago = parseInt($('#fechaPago').val(), 10);
+    const hoy = new Date();
+
+    // Validar fechas
+    if (isNaN(fechaInicio.getTime()) || isNaN(fechaVencimiento.getTime())) {
+        toastr.error('Por favor, selecciona fechas válidas.');
+        return;
+    }
+
+    if (fechaInicio > fechaVencimiento) {
+        toastr.error('La fecha de inicio no puede ser mayor a la fecha de vencimiento.');
+        return;
+    }
+
+    const fechaInicioAjustada = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaPago);
+
+    if (fechaInicioAjustada < fechaInicio) {
+        fechaInicioAjustada.setMonth(fechaInicioAjustada.getMonth() + 1);
+    }
+
+    const totalMeses = (fechaVencimiento.getFullYear() - fechaInicio.getFullYear()) * 12 +
+        (fechaVencimiento.getMonth() - fechaInicio.getMonth());
+
+    // Caso 1: Fecha de inicio en el futuro
+    if (hoy < fechaInicio) {
+        toastr.info(`Periodo de renta aún no iniciado: 0 / ${totalMeses}`);
+        $('#mesRenta').val(`0 / ${totalMeses}`);
+        return;
+    }
+
+    // Caso 2: Fecha de inicio en el pasado o presente
+    let mesesTranscurridos = (hoy.getFullYear() - fechaInicioAjustada.getFullYear()) * 12 +
+        (hoy.getMonth() - fechaInicioAjustada.getMonth());
+
+    if (hoy.getDate() < fechaPago) {
+        mesesTranscurridos--;
+    }
+
+    // Calcular mes actual
+    const mesActual = Math.min(mesesTranscurridos + 1, totalMeses); // Limitar al total de meses
+
+    if (mesActual > 0) {
+        toastr.success(`${mesActual} / ${totalMeses}`, 'Se configuró correctamente el periodo de renta');
+        $('#mesRenta').val(`${mesActual} / ${totalMeses}`);
+    } else {
+        toastr.error('La fecha actual no corresponde a un mes de renta válido.');
+    }
+}
+
+
+//valida la configuracion de los rangos de fechas
+const validateRanges = () => {
+    const $rows = $tableBody.find("tr");
+    const fechaInicioGlobal = dayjs($('#fechaInicio').val(), "YYYY-MM-DD");
+    const fechaFinGlobal = dayjs($('#fechaVencimiento').val(), "YYYY-MM-DD");
+
+    if (!fechaInicioGlobal.isValid() || !fechaFinGlobal.isValid()) {
+        toastr.error('Por favor, ingresa las fechas de inicio y vencimiento globales válidas.');
+        return false;
+    }
+
+    let lastEndDate = null;
+
+    if ($rows.length === 0) {
+        toastr.error('No se han ingresado rangos de fechas.');
+        return false;
+    }
+
+    for (let i = 0; i < $rows.length; i++) {
+        const $row = $($rows[i]);
+        const startDate = dayjs($row.find(".start-date").val(), "YYYY-MM");
+        const endDate = dayjs($row.find(".end-date").val(), "YYYY-MM");
+
+        if (!startDate.isValid() || !endDate.isValid()) {
+            toastr.error('Por favor, ingresa fechas válidas en los rangos.');
+            return false;
+        }
+
+        if (startDate.isAfter(endDate)) {
+            toastr.error('La fecha de inicio no puede ser posterior a la fecha de fin en un rango.');
+            return false;
+        }
+
+        if (lastEndDate && !startDate.isAfter(lastEndDate)) {
+            toastr.error('Los rangos de fechas no pueden traslaparse.');
+            return false;
+        }
+
+        if (lastEndDate && !startDate.isSame(lastEndDate.add(1, "month"))) {
+            toastr.error('Debe haber continuidad entre los rangos.');
+            return false;
+        }
+
+        lastEndDate = endDate;
+
+        // Validar que la primera fecha de inicio coincida con la fecha global de inicio
+        if (i === 0 && !startDate.isSame(fechaInicioGlobal, "month")) {
+            toastr.error('La primera fecha de inicio debe coincidir con la fecha de inicio configurada.');
+            return false;
+        }
+
+        // Validar que la última fecha de fin coincida con la fecha global de fin
+        if (i === $rows.length - 1 && !endDate.isSame(fechaFinGlobal, "month")) {
+            toastr.error('La última fecha de fin debe coincidir con la fecha de vencimiento configurada.');
+            return false;
+        }
+    }
+
+    toastr.success('Los rangos de fechas son válidos y coinciden con las fechas globales.');
+    return true;
+};
+
+
+//añade una nueva fila apra configurar los rangos de fechas
+const addRow = () => {
+    const $row = $(`
+        <tr>
+            <td><input type="month" class="form-control start-date" required></td>
+            <td><input type="month" class="form-control end-date" required></td>
+            <td><input type="number" class="form-control price" min="0" required></td>
+            <td>
+                <button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button>
+            </td>
+        </tr>
+    `);
+
+    $row.find(".delete-row-btn").on("click", function () {
+        $row.remove();
+    });
+
+    $tableBody.append($row);
+};
+
+
+$("#add-row-btn").on("click", addRow);
+
+
+$("#amortizacion").on("click", function () {
+debugger
+    validateRanges();
+    const $tableBody = $("#amortizacion-table tbody");
+    $tableBody.empty();
+
+    const fechaInicioGlobal = dayjs($("#fechaInicio").val(), "YYYY-MM-DD");
+    const fechaFinGlobal = dayjs($("#fechaVencimiento").val(), "YYYY-MM-DD");
+    const fechaPago = parseInt($("#fechaPago").val(), 10); // Día de pago (ejemplo: 1, 15, 30)
+
+    if (!fechaInicioGlobal.isValid() || !fechaFinGlobal.isValid()) {
+        toastr.error("Las fechas globales de inicio y vencimiento no son válidas.");
+        return;
+    }
+
+    const $ranges = $("#rangos-table tbody tr");
+    if ($ranges.length === 0) {
+        toastr.error("No hay rangos de fechas configurados.");
+        return;
+    }
+
+    let currentMonth = fechaInicioGlobal.clone();
+
+    $ranges.each(function () {
+        const $range = $(this);
+        const rangeStart = dayjs($range.find(".start-date").val(), "YYYY-MM");
+        const rangeEnd = dayjs($range.find(".end-date").val(), "YYYY-MM");
+        const price = parseFloat($range.find(".price").val());
+
+        if (!rangeStart.isValid() || !rangeEnd.isValid() || isNaN(price)) {
+            toastr.error("Hay errores en los rangos de fechas o precios.");
+            return false; // Salir del bucle
+        }
+
+        while (currentMonth.isBefore(rangeEnd) || currentMonth.isSame(rangeEnd)) {
+
+            const fechaPagoMes = currentMonth.date(fechaPago);
+            $tableBody.append(`
+                <tr>
+                    <td>${currentMonth.format("MMMM YYYY")}</td>
+                    <td>${price.toFixed(2)}</td>
+                    <td>${fechaPagoMes.format("DD/MM/YYYY")}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button>
+                    </td>
+                </tr>
+            `);
+            currentMonth = currentMonth.add(1, "month");
+        }
+    });
+
+    if (currentMonth.isBefore(fechaFinGlobal)) {
+        toastr.error("La configuración no cubre todo el rango entre las fechas globales.");
+    }
+});
+
+

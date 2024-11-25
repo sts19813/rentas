@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rent_prices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('local_id')->constrained('locals')->onDelete('cascade'); // Referencia a la tabla de locales
+            $table->foreignId('unidad_id')->constrained('unidades')->onDelete('cascade'); // Referencia a la tabla de locales
             $table->date('start_date'); // Fecha de inicio
             $table->date('end_date');   // Fecha de fin
             $table->decimal('price', 10, 2); // Precio
