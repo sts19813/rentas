@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('apellido')->nullable();
-            $table->string('correo');
-            $table->string('mes_renta')->nullable();
+            $table->string('correo')->nullable();;
             $table->foreignId('plaza')->constrained('proyectos')->onDelete('cascade'); // Relación con 'proyectos'
             $table->foreignId('local')->constrained('unidades')->onDelete('cascade'); // Relación con 'unidades'
 
             $table->string('fecha_pago')->nullable();
             $table->date('fecha_vencimiento')->nullable();
+            $table->date('fecha_inicio')->nullable();
             $table->decimal('mensualidad', 10, 2)->nullable();
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('tipo_cliente', ['persona_fisica', 'persona_moral'])->default('persona_fisica');
@@ -50,19 +50,19 @@ return new class extends Migration
             $table->string('relacion_aval')->nullable();
 
             //referencias
-            $table->string('nombreR1');
-            $table->string('celularR1');
-            $table->string('correoR1');
+            $table->string('nombreR1')->nullable();
+            $table->string('celularR1')->nullable();
+            $table->string('correoR1')->nullable();
             $table->string('relacionR1')->nullable();
 
-            $table->string('nombreR2');
-            $table->string('celularR2');
-            $table->string('correoR2');
+            $table->string('nombreR2')->nullable();
+            $table->string('celularR2')->nullable();
+            $table->string('correoR2')->nullable();
             $table->string('relacionR2')->nullable();
 
-            $table->string('nombreR3');
-            $table->string('celularR3');
-            $table->string('correoR3');
+            $table->string('nombreR3')->nullable();
+            $table->string('celularR3')->nullable();
+            $table->string('correoR3')->nullable();
             $table->string('relacionR3')->nullable();
             $table->timestamps();
 

@@ -84,18 +84,9 @@
                                 <br>
                                 <h6 class="text-primary">Generales</h6>
                                 <div class="row mb-3">
-                                    <div class="col-md-2">
-                                        <label for="fechaInicio" class="form-label">Fecha Inicio</label>
-                                        <input type="date" class="form-control" id="fechaInicio"
-                                            value="">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="fechaVencimiento" class="form-label">Fecha Vencimiento</label>
-                                        <input type="date" class="form-control" id="fechaVencimiento"
-                                            value="">
-                                    </div>
+                                   
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="plaza" class="form-label">Plaza</label>
                                         <select name="proyecto_id" id="proyecto_id" class="form-control" required>
                                             <option value="">Selecciona un proyecto</option>
@@ -105,7 +96,7 @@
                                         </select>
 
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label for="fechaPago" class="form-label">Fecha de Pago</label>
                                         <select name="fechaPago" id="fechaPago" class="form-control" required>
                                             <option value="">Selecciona un Fecha de pago</option>
@@ -138,26 +129,23 @@
                                             <option value="27">27 de cada mes</option>
                                             <option value="28">28 de cada mes</option>
                                             <option value="29">29 de cada mes</option>
-                                            <option value="30">30 de cada mes</option>s
+                                            <option value="30">30 de cada mes</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label for="fechaTolerancia" class="form-label">Dias Tolerancia</label>
                                         <input type="number" class="form-control" id="fechaTolerancia" value="0">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="mesRenta" class="form-label">Mes de Renta</label>
-                                        <input type="text" class="form-control" id="mesRenta" value="">
-                                    </div>
-                                    <div class="col-md-4">
+                                   
+                                    <div class="col-md-6">
                                         <label for="local" class="form-label">Local</label>
                                         <select id="unidad" class="form-control" name="unidad" required>
                                             <option value="">Selecciona una unidad</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="mensualidad" class="form-label">Mensualidad</label>
                                         <input type="text" class="form-control" id="mensualidad"
                                             value="">
@@ -230,7 +218,7 @@
                                         <label for="fechaNacimiento" class="form-label">Fecha de
                                             Nacimiento</label>
                                         <input type="date" class="form-control" id="fechaNacimiento"
-                                            value="1988-12-29">
+                                            value="">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -244,20 +232,20 @@
                                     <div class="col-md-6">
                                         <label for="correo" class="form-label">Correo</label>
                                         <input type="email" class="form-control" id="correo"
-                                            value="lincoln@gmail.com">
+                                            value="">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="nacionalidad" class="form-label">Nacionalidad</label>
                                         <select id="nacionalidad" class="form-select">
-                                            <option selected>Indonesia</option>
+                                            <option selected>Mexicana</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="celular" class="form-label">Celular</label>
-                                        <input type="tel" class="form-control" id="celular"
-                                            value="089318298493">
+                                        <input type="tel" class="form-control solo-numeros" id="celular"
+                                            value="">
                                     </div>
                                 </div>
 
@@ -265,28 +253,28 @@
                                 <div class="mb-3">
                                     <label for="direccion" class="form-label">Dirección línea 1</label>
                                     <input type="text" class="form-control" id="direccion"
-                                        value="Banyumanik Street, Central Java. Semarang Indonesia">
+                                        value="">
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-3">
                                         <label for="pais" class="form-label">País</label>
                                         <input type="text" class="form-control" id="pais"
-                                            value="Indonesia">
+                                            value="">
                                     </div>
                                     <div class="col-md-3">
                                         <label for="estado" class="form-label">Estado</label>
                                         <input type="text" class="form-control" id="estado"
-                                            value="Central Java">
+                                            value="">
                                     </div>
                                     <div class="col-md-3">
                                         <label for="ciudadCliente" class="form-label">Ciudad</label>
                                         <input type="text" class="form-control" id="ciudadCliente"
-                                            value="Semarang">
+                                            value="">
                                     </div>
                                     <div class="col-md-3">
                                         <label for="codigoPostal" class="form-label">Código Postal</label>
                                         <input type="text" class="form-control" id="codigoPostal"
-                                            value="03125">
+                                            value="">
                                     </div>
                                 </div>
 
@@ -295,19 +283,19 @@
                                     <div class="col-md-6">
                                         <label for="nombreAval" class="form-label">Nombre Completo</label>
                                         <input type="text" class="form-control" id="nombreAval"
-                                            value="Albert Jhonson">
+                                            value="">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="celularAval" class="form-label">Celular</label>
-                                        <input type="tel" class="form-control" id="celularAval"
-                                            value="080839140011">
+                                        <input type="tel" class="form-control solo-numeros" id="celularAval"
+                                            value="">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="relacionAval" class="form-label">Relación</label>
                                         <input type="text" class="form-control" id="relacionAval"
-                                            value="Husband">
+                                            value="">
                                     </div>
                                 </div>
 
@@ -323,12 +311,12 @@
                                         <div class="col-md-6">
                                             <label for="razonSocial" class="form-label">Nombre / Razón Social</label>
                                             <input type="text" class="form-control" id="razonSocial"
-                                                value="Locker Agencia Creativa SA de CV">
+                                                value="">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="rfc" class="form-label">RFC</label>
                                             <input type="text" class="form-control" id="rfc"
-                                                value="29 Diciembre 1988">
+                                                value="">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -358,14 +346,14 @@
                                         <div class="col-md-6">
                                             <label for="correoNegocio" class="form-label">Correo</label>
                                             <input type="email" class="form-control" id="correoNegocio"
-                                                value="lincoln@gmail.com">
+                                                value="">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="cpNegocio" class="form-label">C.P.</label>
                                             <input type="text" class="form-control" id="cpNegocio"
-                                                value="Mérida">
+                                                value="">
                                         </div>
                                     </div>
 
@@ -373,28 +361,28 @@
                                     <div class="mb-3">
                                         <label for="direccionFacturacion" class="form-label">Dirección línea 1</label>
                                         <input type="text" class="form-control" id="direccionFacturacion"
-                                            value="Banyumanik Street, Central Java. Semarang Indonesia">
+                                            value="">
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label for="paisFacturacion" class="form-label">País</label>
                                             <input type="text" class="form-control" id="paisFacturacion"
-                                                value="Indonesia">
+                                                value="">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="estadoFacturacion" class="form-label">Estado</label>
                                             <input type="text" class="form-control" id="estadoFacturacion"
-                                                value="Central Java">
+                                                value="">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="ciudadFacturacion" class="form-label">Ciudad</label>
                                             <input type="text" class="form-control" id="ciudadFacturacion"
-                                                value="Semarang">
+                                                value="">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="cpFacturacion" class="form-label">Código Postal</label>
                                             <input type="text" class="form-control" id="cpFacturacion"
-                                                value="03125">
+                                                value="">
                                         </div>
                                     </div>
 
@@ -404,19 +392,19 @@
                                             <label for="nombreRepresentante" class="form-label">Nombre
                                                 Completo</label>
                                             <input type="text" class="form-control" id="nombreRepresentante"
-                                                value="Albert Jhonson">
+                                                value="">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="celularRepresentante" class="form-label">Celular</label>
-                                            <input type="tel" class="form-control" id="celularRepresentante"
-                                                value="080839140011">
+                                            <input type="tel" class="form-control solo-numeros" id="celularRepresentante"
+                                                value="">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="relacionRepresentante" class="form-label">Relación</label>
                                             <input type="text" class="form-control" id="relacionRepresentante"
-                                                value="Husband">
+                                                value="">
                                         </div>
                                     </div>
                                 </form>
@@ -431,24 +419,24 @@
                                     <div class="col-md-6">
                                         <label for="nombreR1" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="nombreR1"
-                                            name="nombreR1" placeholder="Escribe el nombre de la persona de referencia 1">
+                                            name="nombreR1">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="celularR1" class="form-label">Celular</label>
-                                        <input type="text" class="form-control" id="celularR1"
-                                            name="celularR1" value="9992292929292">
+                                        <input type="text" class="form-control solo-numeros" id="celularR1"
+                                            name="celularR1" value="">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="correoR1" class="form-label">Correo</label>
                                         <input type="email" class="form-control" id="correoR1"
-                                            name="correoR1" value="correo@gmail.com">
+                                            name="correoR1" value="">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="relacionR1" class="form-label">Relación</label>
                                         <input type="text" class="form-control" id="relacionR1"
-                                            name="relacionR1" placeholder="Escribe la relación que tiene con el cliente">
+                                            name="relacionR1" >
                                     </div>
                                 </div>
 
@@ -458,24 +446,24 @@
                                     <div class="col-md-6">
                                         <label for="nombreR2" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="nombreR2"
-                                            name="nombreR2" placeholder="Escribe el nombre de la persona de referencia 2">
+                                            name="nombreR2">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="celularR2" class="form-label">Celular</label>
-                                        <input type="text" class="form-control" id="celularR2"
-                                            name="celularR2" value="9992292929292">
+                                        <input type="text" class="form-control solo-numeros" id="celularR2"
+                                            name="celularR2" value="">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="correoR2" class="form-label">Correo</label>
                                         <input type="email" class="form-control" id="correoR2"
-                                            name="correoR2" value="correo@gmail.com">
+                                            name="correoR2" value="">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="relacionR2" class="form-label">Relación</label>
                                         <input type="text" class="form-control" id="relacionR2"
-                                            name="relacionR2" placeholder="Escribe la relación que tiene con el cliente">
+                                            name="relacionR2" >
                                     </div>
                                 </div>
 
@@ -485,28 +473,26 @@
                                     <div class="col-md-6">
                                         <label for="nombreR3" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="nombreR3"
-                                            name="nombreR3" placeholder="Escribe el nombre de la persona de referencia 3">
+                                            name="nombreR3" >
                                     </div>
                                     <div class="col-md-6">
                                         <label for="celularR3" class="form-label">Celular</label>
-                                        <input type="text" class="form-control" id="celularR3"
-                                            name="celularR3" value="9992292929292">
+                                        <input type="text" class="form-control solo-numeros" id="celularR3"
+                                            name="celularR3" value="">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="correoR3" class="form-label">Correo</label>
                                         <input type="email" class="form-control" id="correoR3"
-                                            name="correoR3" value="correo@gmail.com">
+                                            name="correoR3" value="">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="relacionR3" class="form-label">Relación</label>
                                         <input type="text" class="form-control" id="relacionR3"
-                                            name="relacionR3" placeholder="Escribe la relación que tiene con el cliente">
+                                            name="relacionR3">
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                         <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
@@ -515,76 +501,19 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Documentos</h5>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="col-10">Archivo</th>
-                                                    <th class="col-2">Opciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="media/download.jpg" alt="PDF Icon"
-                                                                width="40" class="me-2">
-                                                            <span>Frente_01.pdf</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm me-2"><i
-                                                                class="bi bi-download"></i></button>
-                                                        <button class="btn btn-danger btn-sm"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="media/download.jpg" alt="PDF Icon"
-                                                                width="40" class="me-2">
-                                                            <span>Baño_01.pdf</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm me-2"><i
-                                                                class="bi bi-download"></i></button>
-                                                        <button class="btn btn-danger btn-sm"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="media/download.jpg" alt="PDF Icon"
-                                                                width="40" class="me-2">
-                                                            <span>Pasillo_01.pdf</span>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm me-2"><i
-                                                                class="bi bi-download"></i></button>
-                                                        <button class="btn btn-danger btn-sm"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                        <div class="card mt-4">
+                                        <div class="card-body text-center">
+                                            <div>
+                                                <h5 class="card-title">sube los documentos</h5>
+                                                <input class="form-control" type="file" id="documentos"
+                                                    name="documentos[]" multiple>
+                                            </div>
+                                            <div>
+                                                <div id="preview-documentos" class="mt-2 d-flex flex-wrap"></div>
+                                            </div>
 
-                                <!-- Upload Section -->
-                                <div class="card mt-4">
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title">Nuevo Documento</h5>
-                                        <div class="mb-4">
-                                            <img src="media/Uploading.svg" alt="Upload Illustration" width="150">
                                         </div>
-                                        <p class="card-text">Arrastra un archivo para subir<br>o selecciona uno de tu
-                                            computadora</p>
-                                        <button class="btn btn-primary">
-                                            <i class="bi bi-upload"></i> Subir Archivo
-                                        </button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -615,9 +544,6 @@
     <script src="/assets/js/cliente.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-    
-
 
 
 </body>

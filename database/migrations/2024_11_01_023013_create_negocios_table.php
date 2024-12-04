@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('negocios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cliente_id')->constrained('clientes');
-            $table->string('razon_social');
-            $table->string('rfc');
+            $table->string('razon_social')->nullable();
+            $table->string('rfc')->nullable();
             $table->string('uso_factura')->nullable();
             $table->string('regimen_fiscal')->nullable();
             $table->string('giro_negocio')->nullable();

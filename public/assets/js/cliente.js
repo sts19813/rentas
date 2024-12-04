@@ -1,5 +1,5 @@
 
-dayjs.locale('es'); 
+dayjs.locale('es');
 dayjs.extend(dayjs_plugin_customParseFormat);
 dayjs.extend(window.dayjs_plugin_isSameOrBefore);
 dayjs.extend(window.dayjs_plugin_isSameOrAfter);
@@ -7,10 +7,6 @@ dayjs.extend(window.dayjs_plugin_isSameOrAfter);
 const $tableBody = $("#rangos-table tbody");
 
 $(document).ready(function () {
-
-    // Recalcular al cambiar las fechas o el día de pago
-    $('#fechaInicio, #fechaVencimiento, #fechaPago').on('change', calcularMesDeRenta);
-
     //valida las fechas
     $("#rangos-table").on("change", "input", validateRanges);
 
@@ -18,83 +14,133 @@ $(document).ready(function () {
     $('#guardarCliente').on('submit', function (e) {
         e.preventDefault();
 
-        const clienteData = {
-            plaza: $('#proyecto_id').val(),
-            local: $('#unidad').val(),
+        let lastEndDate = null;
+        let firstStartDate = null;
 
-            mes_renta: $('#mesRenta').val(),
-            nombre: $('#nombre').val(),
-            apellido: $('#apellido').val(),
-            fecha_pago: $('#fechaPago').val(),
-            mensualidad: $('#mensualidad').val(),
-            correo: $('#correo').val(),
-            fecha_vencimiento: $('#fechaVencimiento').val(),
-            tipo_cliente: $('#tipoCliente').val(),
-            celular: $('#celular').val(),
+        // Recorrer las filas y encontrar la fecha más a futuro
+        $('#rangos-table tbody tr').each(function () {
+            const startDate = dayjs($(this).find('.start-date').val(), 'YYYY-MM-DD');
+            const endDate = dayjs($(this).find('.end-date').val(), 'YYYY-MM-DD');
 
-            //direccion cliente
-            direccion: $('#direccion').val(),
-            pais: $('#pais').val(),
-            ciudad_cliente: $('#ciudadCliente').val(),
-            estado: $('#estado').val(),
-            codigo_postal: $('#codigoPostal').val(),
+            if (startDate.isValid()) {
+                if (!firstStartDate || startDate.isBefore(firstStartDate)) {
+                    firstStartDate = startDate;
+                }
+            }
 
-            //aval
-            nombre_aval: $('#nombreAval').val(),
-            celular_aval: $('#celularAval').val(),
-            relacion_aval: $('#relacionAval').val(),
+            if (endDate.isValid()) {
+                // Si no hay una última fecha o la actual es más a futuro, actualizar
+                if (!lastEndDate || endDate.isAfter(lastEndDate)) {
+                    lastEndDate = endDate;
+                }
+            }
+        });
 
-            //referencias
-            nombreR1: $('#nombreR1').val(),
-            celularR1: $('#celularR1').val(),
-            correoR1: $('#correoR1').val(),
-            relacionR1: $('#relacionR1').val(),
-
-            nombreR2: $('#nombreR2').val(),
-            celularR2: $('#celularR2').val(),
-            correoR2: $('#correoR2').val(),
-            relacionR2: $('#relacionR2').val(),
-
-            nombreR3: $('#nombreR3').val(),
-            celularR3: $('#celularR3').val(),
-            correoR3: $('#correoR3').val(),
-            relacionR3: $('#relacionR3').val(),
+        const fechaVencimiento = lastEndDate ? lastEndDate.format('YYYY-MM-DD') : null;
+        const fechaInicio = firstStartDate ? firstStartDate.format('YYYY-MM-DD') : null;
 
 
-            primer_pago: $('input[name="primer_pago"]').val(),
-            tipo_renta: $('input[name="tipo_renta"]').val(),
-            duracion: $('input[name="duracion"]').val(),
-            fecha_inicio: $('input[name="fecha_inicio"]').val(),
-            total: $('input[name="total"]').val(),
+        const formData = new FormData();
+
+        // Agregar campos individuales del clienteData al FormData
+        formData.append('plaza', $('#proyecto_id').val());
+        formData.append('local', $('#unidad').val());
+        formData.append('nombre', $('#nombre').val());
+        formData.append('apellido', $('#apellido').val());
+        formData.append('fecha_pago', $('#fechaPago').val());
+        formData.append('mensualidad', $('#mensualidad').val());
+        formData.append('correo', $('#correo').val());
+        formData.append('fecha_vencimiento', fechaVencimiento);
+        formData.append('fecha_inicio', fechaInicio);
+        formData.append('tipo_cliente', $('#tipoCliente').val());
+        formData.append('celular', $('#celular').val());
+
+        // Dirección del cliente
+        formData.append('direccion', $('#direccion').val());
+        formData.append('pais', $('#pais').val());
+        formData.append('ciudad_cliente', $('#ciudadCliente').val());
+        formData.append('estado', $('#estado').val());
+        formData.append('codigo_postal', $('#codigoPostal').val());
+
+        // Aval
+        formData.append('nombre_aval', $('#nombreAval').val());
+        formData.append('celular_aval', $('#celularAval').val());
+        formData.append('relacion_aval', $('#relacionAval').val());
+
+        // Referencias
+        formData.append('nombreR1', $('#nombreR1').val());
+        formData.append('celularR1', $('#celularR1').val());
+        formData.append('correoR1', $('#correoR1').val());
+        formData.append('relacionR1', $('#relacionR1').val());
+
+        formData.append('nombreR2', $('#nombreR2').val());
+        formData.append('celularR2', $('#celularR2').val());
+        formData.append('correoR2', $('#correoR2').val());
+        formData.append('relacionR2', $('#relacionR2').val());
+
+        formData.append('nombreR3', $('#nombreR3').val());
+        formData.append('celularR3', $('#celularR3').val());
+        formData.append('correoR3', $('#correoR3').val());
+        formData.append('relacionR3', $('#relacionR3').val());
+
+        // Otros datos
+        formData.append('primer_pago', $('input[name="primer_pago"]').val());
+        formData.append('tipo_renta', $('input[name="tipo_renta"]').val());
+        formData.append('duracion', $('input[name="duracion"]').val());
+        formData.append('total', $('input[name="total"]').val());
+
+        // Datos de facturación
+        formData.append('razon_social', $('#razonSocial').val());
+        formData.append('rfc', $('#rfc').val());
+        formData.append('uso_factura', $('#usoFactura').val());
+        formData.append('regimen_fiscal', $('#regimenFiscal').val());
+        formData.append('giro_negocio', $('#giroNegocio').val());
+        formData.append('correo_negocio', $('#correoNegocio').val());
+        formData.append('cp', $('#cpNegocio').val());
+        formData.append('direccion_facturacion', $('#direccionFacturacion').val());
+        formData.append('pais_facturacion', $('#paisFacturacion').val());
+        formData.append('estado_facturacion', $('#estadoFacturacion').val());
+        formData.append('ciudad_facturacion', $('#ciudadFacturacion').val());
+        formData.append('cp_facturacion', $('#cpFacturacion').val());
+        formData.append('nombre_representante', $('#nombreRepresentante').val());
+        formData.append('celular_representante', $('#celularRepresentante').val());
+        formData.append('relacion_representante', $('#relacionRepresentante').val());
+
+        // Token CSRF
+        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+        // Extraer los rangos de fechas
+        $('#rangos-table tbody tr').each(function () {
+            const startDate = $(this).find('.start-date').val();
+            const endDate = $(this).find('.end-date').val();
+            const price = $(this).find('.price').val();
+        
+            if (startDate && endDate && price) {
+                // Cada rango se pasa como un objeto JSON
+                formData.append('rangos[]', JSON.stringify({
+                    start_date: startDate,
+                    end_date: endDate,
+                    price: parseFloat(price)
+                }));
+            }
+        });
 
 
-            razon_social: $('#razonSocial').val(),
-            rfc: $('#rfc').val(),
-            uso_factura: $('#usoFactura').val(),
-            regimen_fiscal: $('#regimenFiscal').val(),
-            giro_negocio: $('#giroNegocio').val(),
-            correo_negocio: $('#correoNegocio').val(),
-            cp: $('#cpNegocio').val(),
-            direccion_facturacion: $('#direccionFacturacion').val(),
-            pais_facturacion: $('#paisFacturacion').val(),
-            estado_facturacion: $('#estadoFacturacion').val(),
-            ciudad_facturacion: $('#ciudadFacturacion').val(),
-            cp_facturacion: $('#cpFacturacion').val(),
-            nombre_representante: $('#nombreRepresentante').val(),
-            celular_representante: $('#celularRepresentante').val(),
-            relacion_representante: $('#relacionRepresentante').val(),
-
-
-            _token: $('meta[name="csrf-token"]').attr('content')
-        };
+        debugger
+        const documentos = document.getElementById('documentos').files;
+        for (let i = 0; i < documentos.length; i++) {
+            formData.append('documentos[]', documentos[i]);
+        }
 
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
-            data: clienteData,
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function (response) {
-                showToast("success", "Proyecto guardado correctamente");
-
+                showToast("success", "Cliente guardado correctamente");
+        
                 setTimeout(function () {
                     window.location.href = '/clientes';
                 }, 2000);
@@ -115,6 +161,36 @@ $(document).ready(function () {
         });
     });
 
+
+    $('#documentos').on('change', function (event) {
+        let previewContainer = $('#preview-documentos');
+        previewContainer.empty(); // Limpiar las imágenes previas
+
+        let files = event.target.files; // Obtener archivos seleccionados
+        if (files) {
+            $.each(files, function (index, file) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    let img = $('<img />', {
+                        src: e.target.result,
+                        width: '200px', // Ajustar tamaño miniatura
+                        class: 'rounded border',
+                        css: {
+                            margin: '5px',
+                            objectFit: 'cover'
+                        }
+                    });
+
+                    previewContainer.append(img); // Añadir imagen al contenedor
+                };
+
+                reader.readAsDataURL(file); // Leer el archivo como URL
+            });
+        }
+    });
+
+
     //traer todas las unidades del proyecto seleccionado
     $('#proyecto_id').on('change', function () {
 
@@ -133,7 +209,9 @@ $(document).ready(function () {
 
                     // Llenar el select de unidades con los datos recibidos
                     response['data'].forEach(function (unidad) {
-                        $('#unidad').append('<option value="' + unidad.id + '">' + unidad.nombre + '</option>');
+
+                        if (unidad.estatus == 'disponible')
+                            $('#unidad').append('<option value="' + unidad.id + '">' + unidad.nombre + '</option>');
                     });
                 },
                 error: function () {
@@ -175,130 +253,70 @@ $(document).ready(function () {
     });
 });
 
-
-function calcularMesDeRenta() {
-    const fechaInicio = new Date($('#fechaInicio').val());
-    const fechaVencimiento = new Date($('#fechaVencimiento').val());
-    const fechaPago = parseInt($('#fechaPago').val(), 10);
-    const hoy = new Date();
-
-    // Validar fechas
-    if (isNaN(fechaInicio.getTime()) || isNaN(fechaVencimiento.getTime())) {
-        toastr.error('Por favor, selecciona fechas válidas.');
-        return;
-    }
-
-    if (fechaInicio > fechaVencimiento) {
-        toastr.error('La fecha de inicio no puede ser mayor a la fecha de vencimiento.');
-        return;
-    }
-
-    const fechaInicioAjustada = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaPago);
-
-    if (fechaInicioAjustada < fechaInicio) {
-        fechaInicioAjustada.setMonth(fechaInicioAjustada.getMonth() + 1);
-    }
-
-    const totalMeses = (fechaVencimiento.getFullYear() - fechaInicio.getFullYear()) * 12 +
-        (fechaVencimiento.getMonth() - fechaInicio.getMonth());
-
-    // Caso 1: Fecha de inicio en el futuro
-    if (hoy < fechaInicio) {
-        toastr.info(`Periodo de renta aún no iniciado: 0 / ${totalMeses}`);
-        $('#mesRenta').val(`0 / ${totalMeses}`);
-        return;
-    }
-
-    // Caso 2: Fecha de inicio en el pasado o presente
-    let mesesTranscurridos = (hoy.getFullYear() - fechaInicioAjustada.getFullYear()) * 12 +
-        (hoy.getMonth() - fechaInicioAjustada.getMonth());
-
-    if (hoy.getDate() < fechaPago) {
-        mesesTranscurridos--;
-    }
-
-    // Calcular mes actual
-    const mesActual = Math.min(mesesTranscurridos + 1, totalMeses); // Limitar al total de meses
-
-    if (mesActual > 0) {
-        toastr.success(`${mesActual} / ${totalMeses}`, 'Se configuró correctamente el periodo de renta');
-        $('#mesRenta').val(`${mesActual} / ${totalMeses}`);
-    } else {
-        toastr.error('La fecha actual no corresponde a un mes de renta válido.');
-    }
-}
-
-
 //valida la configuracion de los rangos de fechas
 const validateRanges = () => {
     const $rows = $tableBody.find("tr");
-    const fechaInicioGlobal = dayjs($('#fechaInicio').val(), "YYYY-MM-DD");
-    const fechaFinGlobal = dayjs($('#fechaVencimiento').val(), "YYYY-MM-DD");
-
-    if (!fechaInicioGlobal.isValid() || !fechaFinGlobal.isValid()) {
-        toastr.error('Por favor, ingresa las fechas de inicio y vencimiento globales válidas.');
-        return false;
-    }
-
-    let lastEndDate = null;
 
     if ($rows.length === 0) {
         toastr.error('No se han ingresado rangos de fechas.');
         return false;
     }
 
+    let lastEndDate = null;
+
     for (let i = 0; i < $rows.length; i++) {
         const $row = $($rows[i]);
-        const startDate = dayjs($row.find(".start-date").val(), "YYYY-MM");
-        const endDate = dayjs($row.find(".end-date").val(), "YYYY-MM");
+        const startDate = dayjs($row.find(".start-date").val(), "YYYY-MM-DD");
+        const endDate = dayjs($row.find(".end-date").val(), "YYYY-MM-DD");
 
         if (!startDate.isValid() || !endDate.isValid()) {
-            toastr.error('Por favor, ingresa fechas válidas en los rangos.');
+            toastr.error(`Por favor, ingresa fechas válidas en los rangos (fila ${i + 1}).`);
             return false;
         }
 
         if (startDate.isAfter(endDate)) {
-            toastr.error('La fecha de inicio no puede ser posterior a la fecha de fin en un rango.');
+            toastr.error(`La fecha de inicio no puede ser posterior a la fecha de fin en el rango de la fila ${i + 1}.`);
             return false;
         }
 
         if (lastEndDate && !startDate.isAfter(lastEndDate)) {
-            toastr.error('Los rangos de fechas no pueden traslaparse.');
+            toastr.error(`Los rangos de fechas no pueden traslaparse (fila ${i + 1}).`);
             return false;
         }
 
-        if (lastEndDate && !startDate.isSame(lastEndDate.add(1, "month"))) {
-            toastr.error('Debe haber continuidad entre los rangos.');
+        if (lastEndDate && !startDate.isSame(lastEndDate.add(1, "day"))) {
+            toastr.error(`Debe haber continuidad diaria entre los rangos (error en la fila ${i + 1}).`);
             return false;
         }
 
         lastEndDate = endDate;
-
-        // Validar que la primera fecha de inicio coincida con la fecha global de inicio
-        if (i === 0 && !startDate.isSame(fechaInicioGlobal, "month")) {
-            toastr.error('La primera fecha de inicio debe coincidir con la fecha de inicio configurada.');
-            return false;
-        }
-
-        // Validar que la última fecha de fin coincida con la fecha global de fin
-        if (i === $rows.length - 1 && !endDate.isSame(fechaFinGlobal, "month")) {
-            toastr.error('La última fecha de fin debe coincidir con la fecha de vencimiento configurada.');
-            return false;
-        }
     }
 
-    toastr.success('Los rangos de fechas son válidos y coinciden con las fechas globales.');
+    const firstRowStartDate = dayjs($rows.first().find(".start-date").val(), "YYYY-MM-DD");
+    const lastRowEndDate = dayjs($rows.last().find(".end-date").val(), "YYYY-MM-DD");
+
+    if (!firstRowStartDate.isValid() || !lastRowEndDate.isValid()) {
+        toastr.error('Las fechas de inicio o fin de los rangos no son válidas.');
+        return false;
+    }
+
+    toastr.success(`Los rangos de fechas son válidos: 
+        Inicio desde ${firstRowStartDate.format("YYYY-MM-DD")} hasta ${lastRowEndDate.format("YYYY-MM-DD")}.`);
     return true;
 };
 
 
+
+
 //añade una nueva fila apra configurar los rangos de fechas
 const addRow = () => {
+    const mensualidadValue = $('#mensualidad').val() || 0;
+
     const $row = $(`
         <tr>
-            <td><input type="month" class="form-control start-date" required></td>
-            <td><input type="month" class="form-control end-date" required></td>
-            <td><input type="number" class="form-control price" min="0" required></td>
+            <td><input type="date" class="form-control start-date" required></td>
+            <td><input type="date" class="form-control end-date" required></td>
+            <td><input type="number" class="form-control price" min="0" value="${mensualidadValue}" required></td>
             <td>
                 <button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button>
             </td>
@@ -317,32 +335,58 @@ $("#add-row-btn").on("click", addRow);
 
 
 $("#amortizacion").on("click", function () {
-debugger
-    validateRanges();
+    // Validar rangos configurados
+    if (!validateRanges()) return;
+
     const $tableBody = $("#amortizacion-table tbody");
     $tableBody.empty();
 
-    const fechaInicioGlobal = dayjs($("#fechaInicio").val(), "YYYY-MM-DD");
-    const fechaFinGlobal = dayjs($("#fechaVencimiento").val(), "YYYY-MM-DD");
-    const fechaPago = parseInt($("#fechaPago").val(), 10); // Día de pago (ejemplo: 1, 15, 30)
-
-    if (!fechaInicioGlobal.isValid() || !fechaFinGlobal.isValid()) {
-        toastr.error("Las fechas globales de inicio y vencimiento no son válidas.");
-        return;
-    }
-
+    // Obtener fechas mínimas y máximas de los rangos configurados
     const $ranges = $("#rangos-table tbody tr");
     if ($ranges.length === 0) {
         toastr.error("No hay rangos de fechas configurados.");
         return;
     }
 
+    // Calcular fecha mínima (inicio global) y máxima (fin global) de los rangos
+    let fechaInicioGlobal = null;
+    let fechaFinGlobal = null;
+
+    $ranges.each(function () {
+        const rangeStart = dayjs($(this).find(".start-date").val(), "YYYY-MM-DD");
+        const rangeEnd = dayjs($(this).find(".end-date").val(), "YYYY-MM-DD");
+
+        if (!rangeStart.isValid() || !rangeEnd.isValid()) {
+            toastr.error("Hay errores en los rangos de fechas configurados.");
+            return false; // Salir del bucle
+        }
+
+        if (!fechaInicioGlobal || rangeStart.isBefore(fechaInicioGlobal)) {
+            fechaInicioGlobal = rangeStart;
+        }
+        if (!fechaFinGlobal || rangeEnd.isAfter(fechaFinGlobal)) {
+            fechaFinGlobal = rangeEnd;
+        }
+    });
+
+    if (!fechaInicioGlobal || !fechaFinGlobal) {
+        toastr.error("No se pudo determinar las fechas de inicio y fin.");
+        return;
+    }
+
+    const fechaPago = parseInt($("#fechaPago").val(), 10); // Día de pago (ejemplo: 1, 15, 30)
+    if (isNaN(fechaPago)) {
+        toastr.error("El día de pago no es válido.");
+        return;
+    }
+
+    // Iterar por los rangos y generar filas para amortización
     let currentMonth = fechaInicioGlobal.clone();
 
     $ranges.each(function () {
         const $range = $(this);
-        const rangeStart = dayjs($range.find(".start-date").val(), "YYYY-MM");
-        const rangeEnd = dayjs($range.find(".end-date").val(), "YYYY-MM");
+        const rangeStart = dayjs($range.find(".start-date").val(), "YYYY-MM-DD");
+        const rangeEnd = dayjs($range.find(".end-date").val(), "YYYY-MM-DD");
         const price = parseFloat($range.find(".price").val());
 
         if (!rangeStart.isValid() || !rangeEnd.isValid() || isNaN(price)) {
@@ -350,9 +394,9 @@ debugger
             return false; // Salir del bucle
         }
 
+        // Generar filas solo por mes
         while (currentMonth.isBefore(rangeEnd) || currentMonth.isSame(rangeEnd)) {
-
-            const fechaPagoMes = currentMonth.date(fechaPago);
+            const fechaPagoMes = currentMonth.date(fechaPago); // Fecha con día de pago dentro del mes
             $tableBody.append(`
                 <tr>
                     <td>${currentMonth.format("MMMM YYYY")}</td>
@@ -363,13 +407,19 @@ debugger
                     </td>
                 </tr>
             `);
-            currentMonth = currentMonth.add(1, "month");
+            currentMonth = currentMonth.add(1, "month"); // Pasar al siguiente mes
         }
     });
 
     if (currentMonth.isBefore(fechaFinGlobal)) {
-        toastr.error("La configuración no cubre todo el rango entre las fechas globales.");
+        toastr.error("La configuración no cubre todo el rango de fechas entre inicio y fin.");
     }
 });
 
 
+
+$('.solo-numeros').on('input', function () {
+    if (!/^\d*$/.test($(this).val())) {
+        $(this).val($(this).val().replace(/\D/g, '')); // Elimina caracteres no numéricos
+    }
+});

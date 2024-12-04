@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('rent_prices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             $table->foreignId('unidad_id')->constrained('unidades')->onDelete('cascade'); // Referencia a la tabla de locales
             $table->date('start_date'); // Fecha de inicio
             $table->date('end_date');   // Fecha de fin

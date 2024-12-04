@@ -10,7 +10,8 @@ class RentPrice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'local_id',
+        'unidad_id',
+        'cliente_id',
         'start_date',
         'end_date',
         'price',
@@ -20,4 +21,10 @@ class RentPrice extends Model
     {
         return $this->belongsTo(Unidad::class);
     }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
+
 }

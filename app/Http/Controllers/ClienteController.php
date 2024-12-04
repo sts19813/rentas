@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Proyecto;
+use App\Models\Unidad;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -40,18 +41,19 @@ class ClienteController extends Controller
 
         try {
             DB::beginTransaction();
+           
 
             $validatedData = $request->validate([
-                'mes_renta' => 'required|string',
                 'plaza' => 'required|string',
+                'local' => 'required|numeric',
                 'fecha_pago' => 'required|string',
                 'fecha_vencimiento' => 'required|date',
-                'local' => 'required|numeric',
-                'mensualidad' => 'required|numeric',
+                'fecha_inicio' => 'required|date',
+                'mensualidad' => 'nullable|numeric',
                 'nombre' => 'required|string',
                 'apellido' => 'nullable|string',
                 'fecha_nacimiento' => 'nullable|date',
-                'tipo_cliente' => 'required|string',
+                'tipo_cliente' => 'nullable|string',
                 'correo' => 'required|email',
                 'nacionalidad' => 'nullable|string',
                 'celular' => 'required|string',
@@ -64,40 +66,65 @@ class ClienteController extends Controller
                 'nombre_aval' => 'nullable|string',
                 'celular_aval' => 'nullable|string',
                 'relacion_aval' => 'nullable|string',
-                'nombreR1' => 'required|string',
-                'celularR1' => 'required|string',
-                'correoR1' => 'required|string',
+                'nombreR1' => 'nullable|string',
+                'celularR1' => 'nullable|string',
+                'correoR1' => 'nullable|string',
                 'relacionR1' => 'nullable|string',
-                'nombreR2' => 'required|string',
-                'celularR2' => 'required|string',
-                'correoR2' => 'required|string',
+                'nombreR2' => 'nullable|string',
+                'celularR2' => 'nullable|string',
+                'correoR2' => 'nullable|string',
                 'relacionR2' => 'nullable|string',
-                'nombreR3' => 'required|string',
-                'celularR3' => 'required|string',
-                'correoR3' => 'required|string',
-                'relacionR3' => 'nullable|string'
+                'nombreR3' => 'nullable|string',
+                'celularR3' => 'nullable|string',
+                'correoR3' => 'nullable|string',
+                'relacionR3' => 'nullable|string',
+                
             ]);
 
             $validatedDataNegocio = $request->validate([
-                'razon_social' => 'required|string',
-                'rfc' => 'required|string',
-                'uso_factura' => 'required|string',
-                'regimen_fiscal' => 'required|string',
-                'giro_negocio' => 'required|string',
-                'correo' => 'required|string',
-                'cp' => 'required|string',
-                'direccion_facturacion' => 'required|string',
-                'pais_facturacion' => 'required|string',
-                'estado_facturacion' => 'required|string',
-                'ciudad_facturacion' => 'required|string',
-                'cp_facturacion' => 'required|string',
-                'nombre_representante' => 'required|string',
-                'celular_representante' => 'required|string',
-                'relacion_representante' => 'required|string'
+                'razon_social' => 'nullable|string',
+                'rfc' => 'nullable|string',
+                'uso_factura' => 'nullable|string',
+                'regimen_fiscal' => 'nullable|string',
+                'giro_negocio' => 'nullable|string',
+                'correo' => 'nullable|string',
+                'cp' => 'nullable|string',
+                'direccion_facturacion' => 'nullable|string',
+                'pais_facturacion' => 'nullable|string',
+                'estado_facturacion' => 'nullable|string',
+                'ciudad_facturacion' => 'nullable|string',
+                'cp_facturacion' => 'nullable|string',
+                'nombre_representante' => 'nullable|string',
+                'celular_representante' => 'nullable|string',
+                'relacion_representante' => 'nullable|string'
             ]);
 
             $cliente = Cliente::create($validatedData);
             $cliente->negocio()->create($validatedDataNegocio);
+
+             // Guardar rangos de fechas
+             $rangos = $request->input('rangos'); 
+
+             if (!empty($rangos)) {
+                 foreach ($rangos as $rango) {
+                     // Decodifica el JSON de cada rango en un arreglo asociativo
+                     $rangoData = json_decode($rango, true);
+             
+                     if (is_array($rangoData)) {
+                         $cliente->RentPrice()->create([
+                             'start_date' => $rangoData['start_date'],
+                             'end_date' => $rangoData['end_date'],
+                             'price' => $rangoData['price'],
+                             'unidad_id' => $request->input('local'),
+                         ]);
+                     }
+                 }
+             }
+
+            $unidad = Unidad::find($request->input('local'));
+            if ($unidad) {
+                $unidad->update(['estatus' => Unidad::ESTATUS['COMPROMETIDO']]);
+            }
 
             foreach ($request->file('documentos', []) as $documento) {
                 $ruta = $documento->store('documentos');
@@ -112,7 +139,7 @@ class ClienteController extends Controller
             return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'Hubo un problema al guardar el cliente y el negocio. Intenta nuevamente.'], 500);
+            return response()->json(['success' => false, 'message' => $e], 500);
         }
     }
 

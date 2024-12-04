@@ -23,4 +23,10 @@ class Unidad extends Model
     {
         return $this->hasMany(RentPrice::class);
     }
+
+    const ESTATUS = [
+        'DISPONIBLE' => 'disponible',
+        'COMPROMETIDO' => 'comprometido',
+        'RENTADO' => 'rentado',
+    ];
 }

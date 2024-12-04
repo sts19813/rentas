@@ -15,6 +15,7 @@ class Cliente extends Model
         'plaza',
         'fecha_pago',
         'fecha_vencimiento',
+        'fecha_inicio',
         'local',
         'mensualidad',
         'nombre',
@@ -67,5 +68,10 @@ class Cliente extends Model
     public function plaza()
     {
         return $this->belongsTo(Unidad::class, 'plaza');
+    }
+
+    public function rentPrice()
+    {
+        return $this->hasMany(RentPrice::class, 'cliente_id');
     }
 }
