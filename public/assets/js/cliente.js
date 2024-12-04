@@ -51,6 +51,7 @@ $(document).ready(function () {
         formData.append('mensualidad', $('#mensualidad').val());
         formData.append('correo', $('#correo').val());
         formData.append('fecha_vencimiento', fechaVencimiento);
+        formData.append('tolerancia', $('#tolerancia').val());
         formData.append('fecha_inicio', fechaInicio);
         formData.append('tipo_cliente', $('#tipoCliente').val());
         formData.append('celular', $('#celular').val());
@@ -125,8 +126,6 @@ $(document).ready(function () {
             }
         });
 
-
-        debugger
         const documentos = document.getElementById('documentos').files;
         for (let i = 0; i < documentos.length; i++) {
             formData.append('documentos[]', documentos[i]);
@@ -210,9 +209,19 @@ $(document).ready(function () {
                     // Llenar el select de unidades con los datos recibidos
                     response['data'].forEach(function (unidad) {
 
-                        if (unidad.estatus == 'disponible')
+                        if (localId) {
                             $('#unidad').append('<option value="' + unidad.id + '">' + unidad.nombre + '</option>');
+                        }else{
+                            
+                            if (unidad.estatus == 'disponible')
+                                $('#unidad').append('<option value="' + unidad.id + '">' + unidad.nombre + '</option>');
+                        }
+                        
                     });
+
+                    if (localId) {
+                        $('#unidad').val(localId); 
+                    }
                 },
                 error: function () {
                     alert('Error al obtener las unidades.');
@@ -224,6 +233,8 @@ $(document).ready(function () {
             $('#unidad').append('<option value="">Selecciona una unidad</option>');
         }
     });
+
+    $('#proyecto_id').trigger('change');
 
 
     // Evento para obtener los datos de una unidad cuando se selecciona

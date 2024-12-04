@@ -134,7 +134,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="fechaTolerancia" class="form-label">Dias Tolerancia</label>
-                                        <input type="number" class="form-control" id="fechaTolerancia" value="0">
+                                        <input type="number" class="form-control" id="tolerancia" value="0">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -534,8 +534,13 @@
     </div>
 
     </div>
+    <div id="data-container" data-local-id="{{ $cliente->local ?? null }}"></div>
 
     <x-script />
+
+    <script>
+        let localId = document.getElementById('data-container').dataset.localId;
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs/locale/es.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/isSameOrBefore.js"></script>
@@ -544,8 +549,6 @@
     <script src="/assets/js/cliente.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-
 </body>
 
 </html>

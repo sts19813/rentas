@@ -21,6 +21,7 @@ return new class extends Migration
 
             $table->string('fecha_pago')->nullable();
             $table->date('fecha_vencimiento')->nullable();
+            $table->string('tolerancia')->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->decimal('mensualidad', 10, 2)->nullable();
             $table->date('fecha_nacimiento')->nullable();

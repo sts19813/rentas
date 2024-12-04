@@ -49,6 +49,7 @@ class ClienteController extends Controller
                 'fecha_pago' => 'required|string',
                 'fecha_vencimiento' => 'required|date',
                 'fecha_inicio' => 'required|date',
+                'tolerancia' => 'nullable|string',
                 'mensualidad' => 'nullable|numeric',
                 'nombre' => 'required|string',
                 'apellido' => 'nullable|string',
@@ -126,9 +127,14 @@ class ClienteController extends Controller
                 $unidad->update(['estatus' => Unidad::ESTATUS['COMPROMETIDO']]);
             }
 
-            foreach ($request->file('documentos', []) as $documento) {
-                $ruta = $documento->store('documentos');
-                $cliente->documentos()->create(['ruta' => $ruta]);
+            if ($request->hasFile('documentos')) {
+                foreach ($request->file('documentos') as $documento) {
+                    $originalName = pathinfo($documento->getClientOriginalName(), PATHINFO_FILENAME);
+                    $extension = $documento->getClientOriginalExtension();
+                    $filename = $originalName . '_' . now()->format('Ymd_His') . '.' . $extension;
+                    $documento->move(public_path('documentos'), $filename);
+                    $cliente->documentos()->create(['ruta' => 'documentos/' . $filename]);
+                }
             }
 
             DB::commit();
@@ -157,7 +163,7 @@ class ClienteController extends Controller
     // Mostrar un cliente específico
     public function show($id)
     {
-        $cliente = Cliente::with(['negocio'])->findOrFail($id);
+        $cliente = Cliente::with(relations: ['negocio', 'rentPrice', 'documentos'])->findOrFail($id);
         $proyectos = Proyecto::all();
         $isViewMode = true;
         $textTitle = 'Visualizar';

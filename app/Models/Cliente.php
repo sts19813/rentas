@@ -14,6 +14,7 @@ class Cliente extends Model
         'mes_renta',
         'plaza',
         'fecha_pago',
+        'tolerancia',
         'fecha_vencimiento',
         'fecha_inicio',
         'local',
