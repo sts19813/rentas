@@ -217,13 +217,20 @@ class ProyectoController extends Controller
             'terminos' => $validatedData['terminos'],
         ]);
 
-        // Actualizar las unidades del proyecto
         $unidades = json_decode($request->unidades, true);
-        $proyecto->unidades()->delete(); // Elimina las unidades existentes
-        foreach ($unidades as $unidad) {
-            $proyecto->unidades()->create($unidad); // Reagrega las nuevas unidades
-        }
 
+        foreach ($unidades as $unidadData) {
+            // Busca una unidad existente con el mismo proyecto_id y nombre (o cualquier identificador único)
+            $unidad = $proyecto->unidades()->where('nombre', $unidadData['nombre'])->first();
+
+            if ($unidad) {
+                // Si la unidad existe, actualiza sus datos
+                $unidad->update($unidadData);
+            } else {
+                // Si no existe, crea una nueva unidad
+                $proyecto->unidades()->create($unidadData);
+            }
+        }
         // Sincronizar las amenidades y servicios
         $proyecto->amenidades()->sync($request->input('amenidades', []));
         $proyecto->servicios()->sync($request->input('servicios', []));
@@ -262,7 +269,7 @@ class ProyectoController extends Controller
     {
         // Obtener el proyecto por su ID
         $proyecto = Proyecto::with(['unidades', 'servicios', 'amenidades'])->findOrFail($id);
-    
+
         // Obtener las unidades del proyecto
         $unidades = $proyecto->unidades->map(function ($unidad) use ($proyecto) {
             return [
@@ -275,18 +282,15 @@ class ProyectoController extends Controller
                 'estatus' => $unidad->estatus,
                 'id' => $unidad->id,
                 'servicios' => $proyecto->servicios->map(function ($servicio) {
-                    return $servicio->nombre; 
-                })->implode(','), 
+                    return $servicio->nombre;
+                })->implode(','),
                 'amenidades' => $proyecto->amenidades->map(function ($amenidad) {
-                    return $amenidad->nombre; 
-                })->implode(','), 
+                    return $amenidad->nombre;
+                })->implode(','),
             ];
         });
-    
+
         // Formatear la respuesta para DataTables
         return response()->json(['data' => $unidades]);
     }
-    
-
-
 }

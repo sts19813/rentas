@@ -249,10 +249,14 @@
                                     <div>
                                         <!-- Action Buttons -->
                                         <div class="d-flex justify-content-between mt-3">
-                                            <a href="/plantillas/Plantilla Unidades.xlsx"
-                                                class="btn btn-outline-secondary">Descargar Demo</a>
+                                            <a href="/plantillas/Plantilla Unidades.xlsx" class="btn btn-outline-secondary">
+                                                Descargar plantilla
+                                            </a>
                                             <div>
-                                                <input class="form-control" type="file" id="excelFile">
+                                                <label for="excelFile" class="btn btn-primary mb-0">
+                                                    Importar plantilla
+                                                </label>
+                                                <input class="form-control d-none" type="file" id="excelFile">
                                             </div>
                                         </div>
 

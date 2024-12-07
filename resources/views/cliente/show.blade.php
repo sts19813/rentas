@@ -135,7 +135,22 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @foreach ($cliente->rentPrice as $rango)
+                                    <tr>
+                                        <td>{{ $rango->start_date }}</td>
+                                        <td>{{ $rango->end_date }}</td>
+                                        <td>{{ $rango->price }}</td>
+                                        <td>
+                                            @if(!$isViewMode)
+                                            <button class="btn btn-danger btn-sm delete-row" data-id="{{ $rango->id }}">Eliminar</button>
+                                            @else
+                                            N/A
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
 
 
@@ -446,7 +461,7 @@
                                     <div class="col-md-6">
                                         <label for="nombreR2" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="nombreR2"
-                                            name="nombreR2" 
+                                            name="nombreR2"
                                             value="{{ $cliente->nombreR2 }}"
                                             @if ($isViewMode) disabled @endif>
                                     </div>
@@ -468,7 +483,7 @@
                                     <div class="col-md-6">
                                         <label for="relacionR2" class="form-label">Relación</label>
                                         <input type="text" class="form-control" id="relacionR2"
-                                            name="relacionR2" 
+                                            name="relacionR2"
                                             value="{{ $cliente->relacionR2 }}"
                                             @if ($isViewMode) disabled @endif>
                                     </div>
@@ -480,7 +495,7 @@
                                     <div class="col-md-6">
                                         <label for="nombreR3" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="nombreR3"
-                                            name="nombreR3" 
+                                            name="nombreR3"
                                             value="{{ $cliente->nombreR3 }}"
                                             @if ($isViewMode) disabled @endif>
                                     </div>
@@ -501,7 +516,7 @@
                                     <div class="col-md-6">
                                         <label for="relacionR3" class="form-label">Relación</label>
                                         <input type="text" class="form-control" id="relacionR3"
-                                            name="relacionR3" 
+                                            name="relacionR3"
                                             value="{{ $cliente->relacionR3 }}"
                                             @if ($isViewMode) disabled @endif>
                                     </div>
@@ -553,32 +568,6 @@
     <x-script />
 
     <script>
-        $(document).ready(function() {
-            // Obtener los datos de rentPrice desde el backend
-            let rentPrices = JSON.parse('{!! json_encode($cliente->rentPrice) !!}');
-
-            // Iterar sobre los precios de renta y agregarlos a la tabla
-            rentPrices.forEach(function(rango) {
-                $('#rangos-table tbody').append(`
-                <tr>
-                    <td>${rango.start_date}</td>
-                    <td>${rango.end_date}</td>
-                    <td>${rango.price}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm delete-row" data-id="${rango.id}">Eliminar</button>
-                    </td>
-                </tr>
-            `);
-            });
-
-            // Opcional: Manejar eventos de eliminación
-            $('#rangos-table').on('click', '.delete-row', function() {
-                let rowId = $(this).data('id');
-                // Aquí puedes realizar una solicitud AJAX para eliminar el rango en el backend
-                $(this).closest('tr').remove(); // Eliminar la fila del DOM
-            });
-        });
-
         let localId = document.getElementById('data-container').dataset.localId;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>

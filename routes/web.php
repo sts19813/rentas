@@ -7,6 +7,8 @@ use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\AmenidadesController;
+use App\Http\Controllers\ServiciosController;
 
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -40,6 +42,8 @@ Route::get('/cotizacion/create', [CotizacionController::class, 'create'])->name(
 Route::post('/cotizacion', [CotizacionController::class, 'store'])->name('cotizacion.store');
 Route::get('/cotizacionesList', [CotizacionController::class, 'getCotizaciones'])->name('cotizaciones.list');
 
+Route::resource('amenidades', AmenidadesController::class);
+Route::resource('servicios', ServiciosController::class);
 
 
 Route::get('/pdf', action: [PdfController::class, 'generarPDF'])->name('pdf.generarPDF');
