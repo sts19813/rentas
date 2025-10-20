@@ -1,363 +1,274 @@
-<!DOCTYPE html>
-<html lang="es">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyectos</title>
-    <x-link></x-link>
+@section('title', 'Nuevo Proyecto')
 
-    <style>
-        #reglamento,
-        #terminos {
-            height: 175px;
-        }
-    </style>
-</head>
+@section('content')
+    <div class="content d-flex flex-column flex-column-fluid">
+        <div class="d-flex flex-stack mb-5">
+            <h1 class="fw-bold text-gray-800 fs-2">Nuevo Proyecto</h1>
+            <a href="{{ route('proyectos.index') }}" class="btn btn-light btn-sm">
+                <i class="ki-outline ki-arrow-left fs-5"></i> Volver
+            </a>
+        </div>
 
-<body>
-    <x-header></x-header>
-    <div class="container mt-5">
-        <div class="content w-100">
-            <div class="d-flex justify-content-between align-items-center">
-                <h2>Proyecto</h2>
-            </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="general-tab" data-bs-toggle="tab"
-                                data-bs-target="#general" type="button" role="tab" aria-controls="general"
-                                aria-selected="true">General</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="caracteristicas-tab" data-bs-toggle="tab"
-                                data-bs-target="#caracteristicas" type="button" role="tab"
-                                aria-controls="caracteristicas" aria-selected="false">Características</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="unidades-tab" data-bs-toggle="tab" data-bs-target="#unidades"
-                                type="button" role="tab" aria-controls="unidades"
-                                aria-selected="false">Unidades</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="mapa-tab" data-bs-toggle="tab" data-bs-target="#mapa"
-                                type="button" role="tab" aria-controls="mapa" aria-selected="false">Mapa</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="reglas-tab" data-bs-toggle="tab" data-bs-target="#reglas"
-                                type="button" role="tab" aria-controls="reglas" aria-selected="false">Reglas</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="multimedia-tab" data-bs-toggle="tab"
-                                data-bs-target="#multimedia" type="button" role="tab" aria-controls="multimedia"
-                                aria-selected="false">Multimedia</button>
-                        </li>
-                    </ul>
+        <div class="card-header border-0 pb-0">
+            <ul class="nav nav-line-tabs nav-line-tabs-2x border-transparent fs-6 fw-bold" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#general"
+                        type="button">General</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#caracteristicas"
+                        type="button">Características</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#unidades" type="button">Unidades</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mapa" type="button">Mapa</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reglas" type="button">Reglas</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#multimedia"
+                        type="button">Multimedia</button>
+                </li>
+            </ul>
+        </div>
 
-                    <!-- Formulario completo -->
-                    <form action="{{ route('proyectos.store') }}" method="POST" id="formGuardarProyecto">
-                        @csrf
-                        <div class="tab-content" id="myTabContent">
-                            <!-- General Tab -->
-                            <div class="tab-pane fade show active" id="general" role="tabpanel"
-                                aria-labelledby="general-tab">
-                                <div class="container">
-                                    <h6>Información de la Plaza</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="nombrePlaza" class="form-label">Nombre de la plaza *</label>
-                                            <input type="text" class="form-control" id="nombrePlaza" name="nombrePlaza">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="cantidadLocales" class="form-label">Cantidad de Locales
-                                                *</label>
-                                            <input type="number" class="form-control" id="cantidadLocales"
-                                                name="cantidadLocales">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="cantidadCajones" class="form-label">Cantidad Cajones de
-                                                Estacionamiento *</label>
-                                            <input type="number" class="form-control" id="cantidadCajones"
-                                                name="cantidadCajones">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="precioRenta" class="form-label">Precio Renta Promedio</label>
-                                            <input type="text" class="form-control" id="precioRenta" name="precioRenta">
-                                        </div>
-                                    </div>
-                                    <!-- Más campos generales -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="cuotaMantenimiento" class="form-label">Cuota de Mantenimiento
-                                                *</label>
-                                            <input type="text" class="form-control" id="cuotaMantenimiento"
-                                                name="cuotaMantenimiento">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="nivelesPlaza" class="form-label">Niveles de la plaza *</label>
-                                            <input type="number" class="form-control" id="nivelesPlaza"
-                                                name="nivelesPlaza">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="horaApertura" class="form-label">Hora Apertura *</label>
-                                            <input type="time" class="form-control" id="horaApertura"
-                                                name="horaApertura">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="horaCierre" class="form-label">Hora Cierre *</label>
-                                            <input type="time" class="form-control" id="horaCierre" name="horaCierre">
-                                        </div>
-                                    </div>
-                                    <!-- Ubicación de la Plaza -->
-                                    <h6>Ubicación de la Plaza</h6>
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <label for="direccion1" class="form-label">Dirección línea 1 *</label>
-                                            <input type="text" class="form-control" id="direccion1" name="direccion1">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="pais" class="form-label">País *</label>
-                                            <input type="text" class="form-control" id="pais" name="pais">
-
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="estado" class="form-label">Estado *</label>
-                                            <input type="text" class="form-control" id="estado" name="estado" value="">
-
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="ciudad" class="form-label">Ciudad *</label>
-                                            <input type="text" class="form-control" id="ciudad" name="ciudad" value="">
-
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="codigoPostal" class="form-label">Código Postal *</label>
-                                            <input type="text" class="form-control" id="codigoPostal"
-                                                name="codigoPostal">
-                                        </div>
-                                    </div>
+        <div class="card-body pt-5">
+            <form action="{{ route('proyectos.store') }}" method="POST" id="formGuardarProyecto">
+                @csrf
+                <div class="tab-content" id="myTabContent">
+                    <!-- TAB GENERAL -->
+                    <div class="tab-pane fade show active" id="general" role="tabpanel">
+                        <div class="mb-5">
+                            <h5 class="fw-semibold mb-4 text-gray-700">Información de la Plaza</h5>
+                            <div class="row g-5">
+                                <div class="col-md-6">
+                                    <label class="required form-label">Nombre de la plaza</label>
+                                    <input type="text" class="form-control form-control-solid" name="nombrePlaza">
                                 </div>
-
-                                <div class="text-end mt-3">
-                                    <button type="button" id="btnSiguiente1" class="btn btn-primary">Siguiente</button>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Cantidad de Locales</label>
+                                    <input type="number" class="form-control form-control-solid" name="cantidadLocales">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Cajones de Estacionamiento</label>
+                                    <input type="number" class="form-control form-control-solid" name="cantidadCajones">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Precio Renta Promedio</label>
+                                    <input type="text" class="form-control form-control-solid" name="precioRenta">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Cuota de Mantenimiento</label>
+                                    <input type="text" class="form-control form-control-solid" name="cuotaMantenimiento">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Niveles de la Plaza</label>
+                                    <input type="number" class="form-control form-control-solid" name="nivelesPlaza">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Hora Apertura</label>
+                                    <input type="time" class="form-control form-control-solid" name="horaApertura">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Hora Cierre</label>
+                                    <input type="time" class="form-control form-control-solid" name="horaCierre">
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Características Tab -->
-                            <div class="tab-pane fade" id="caracteristicas" role="tabpanel"
-                                aria-labelledby="caracteristicas-tab">
-                                <div class="container mt-4">
+                        <div class="mt-8">
+                            <h5 class="fw-semibold mb-4 text-gray-700">Ubicación</h5>
+                            <div class="row g-5">
+                                <div class="col-md-12">
+                                    <label class="required form-label">Dirección línea 1</label>
+                                    <input type="text" class="form-control form-control-solid" name="direccion1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">País</label>
+                                    <input type="text" class="form-control form-control-solid" name="pais">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Estado</label>
+                                    <input type="text" class="form-control form-control-solid" name="estado">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Ciudad</label>
+                                    <input type="text" class="form-control form-control-solid" name="ciudad">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Código Postal</label>
+                                    <input type="text" class="form-control form-control-solid" name="codigoPostal">
+                                </div>
+                            </div>
+                        </div>
 
-                                    <!-- Sección de Amenidades -->
-                                    <div class="card mb-4" style="display:inline-block; width:49%">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="mb-0">Amenidades</h5>
-                                            <button type="button" class="btn btn-outline-primary btn-sm">
-                                                <i class="bi bi-plus"></i>
-                                            </button>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <table class="table table-borderless mb-0">
-                                                <thead class="table-light">
+                        <div class="text-end mt-5">
+                            <button type="button" id="btnSiguiente1" class="btn btn-primary">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB CARACTERÍSTICAS -->
+                    <div class="tab-pane fade" id="caracteristicas">
+                        <div class="row g-5">
+                            <div class="col-md-6">
+                                <div class="card border shadow-sm">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Amenidades</h5>
+                                        <button type="button" class="btn btn-light-primary btn-sm">
+                                            <i class="ki-outline ki-plus fs-5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body p-0 scroll-y" style="max-height:260px;">
+                                        <table class="table align-middle table-row-dashed mb-0">
+                                            <tbody>
+                                                @foreach ($amenidades as $amenidad)
                                                     <tr>
-                                                        <th scope="col">Nombre Amenidad</th>
-                                                        <th scope="col" class="text-end">Opciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
-                                                    @foreach ($amenidades as $amenidad)
-                                                    <tr>
-
-                                                        <td>
-                                                            <label class="form-check-label"
-                                                                for="amenidad{{ $amenidad->id }}">
-                                                                {{ $amenidad->nombre }}
-                                                            </label>
-
-                                                        </td>
+                                                        <td>{{ $amenidad->nombre }}</td>
                                                         <td class="text-end">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                name="amenidades[]" value="{{ $amenidad->id }}"
-                                                                id="amenidad{{ $amenidad->id }}">
+                                                            <div
+                                                                class="form-check form-check-sm form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="amenidades[]" value="{{ $amenidad->id }}">
+                                                            </div>
                                                         </td>
                                                     </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
+                                </div>
+                            </div>
 
-                                    <!-- Sección de servicios -->
-                                    <div class="card mb-4" style="display:inline-block; width:49%">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="mb-0">Servicios</h5>
-                                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                                id="btn-servicio">
-                                                <i class="bi bi-plus"></i>
-                                            </button>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <table class="table table-borderless mb-0">
-                                                <thead class="table-light">
+                            <div class="col-md-6">
+                                <div class="card border shadow-sm">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Servicios</h5>
+                                        <button type="button" class="btn btn-light-primary btn-sm" id="btn-servicio">
+                                            <i class="ki-outline ki-plus fs-5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body p-0 scroll-y" style="max-height:260px;">
+                                        <table class="table align-middle table-row-dashed mb-0">
+                                            <tbody>
+                                                @foreach ($servicios as $servicio)
                                                     <tr>
-                                                        <th scope="col">Nombre del Servicio</th>
-                                                        <th scope="col" class="text-end">Opciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody style="display:table-caption; height:200px; overflow-y: scroll;">
-                                                    @foreach ($servicios as $servicio)
-                                                    <tr>
-                                                        <td>
-                                                            <label class="form-check-label"
-                                                                for="servicio{{ $servicio->id }}">
-                                                                {{ $servicio->nombre }}
-                                                            </label>
-                                                        </td>
+                                                        <td>{{ $servicio->nombre }}</td>
                                                         <td class="text-end">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                name="servicios[]" value="{{ $servicio->id }}"
-                                                                id="servicio{{ $servicio->id }}">
+                                                            <div
+                                                                class="form-check form-check-sm form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="servicios[]" value="{{ $servicio->id }}">
+                                                            </div>
                                                         </td>
                                                     </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-end mt-3">
-                                        <button type="button" id="btnSiguiente2"
-                                            class="btn btn-primary">Siguiente</button>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!-- Unidades Tab -->
-                            <div class="tab-pane fade" id="unidades" role="tabpanel" aria-labelledby="unidades-tab">
-                                <div class="container mt-4">
-                                    <div>
-                                        <!-- Action Buttons -->
-                                        <div class="d-flex justify-content-between mt-3">
-                                            <a href="/plantillas/Plantilla Unidades.xlsx" class="btn btn-outline-secondary">
-                                                Descargar plantilla
-                                            </a>
-                                            <div>
-                                                <label for="excelFile" class="btn btn-primary mb-0">
-                                                    Importar plantilla
-                                                </label>
-                                                <input class="form-control d-none" type="file" id="excelFile">
-                                            </div>
-                                        </div>
-
-                                        <!-- Unidades Table -->
-                                        <div class="table-responsive mt-4">
-                                            <table id="unidadesTable" class="table table-bordered">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>M2</th>
-                                                        <th>Precio x Hora</th>
-                                                        <th>Precio x Mes</th>
-                                                        <th>Precio primer pago</th>
-                                                        <th>Nivel</th>
-                                                        <th>Estatus</th>
-                                                        <th>Opciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="button" id="btnSiguiente3" class="btn btn-primary">Siguiente</button>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="mapa" role="tabpanel" aria-labelledby="mapa-tab">
-                                <div class="container">
-                                    <h5 class="card-title">subir mapa</h5>
-                                    <!-- Upload Section -->
-                                    <div class="card mt-4">
-                                        <div class="card-body text-center">
-                                            <div>
-                                                <h5 class="card-title">Nueva Imagen o Imágenes</h5>
-                                                <input class="form-control" type="file" id="mapas" name="mapas[]"
-                                                    multiple>
-                                            </div>
-                                            <div>
-                                                <div id="preview" class="mt-2 d-flex flex-wrap"></div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="button" id="btnSiguiente4" class="btn btn-primary">Siguiente</button>
-                                </div>
-                            </div>
-
-                            <!-- Contenido de la pestaña Reglas -->
-                            <div class="tab-pane fade" id="reglas" role="tabpanel" aria-labelledby="reglas-tab">
-
-                                <div>
-                                    <div class="mb-4">
-                                        <label for="reglamento" class="form-label">Reglamento</label>
-                                        <div id="reglamento" class="quill-editor"></div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="terminos" class="form-label">Términos y Condiciones</label>
-                                        <div id="terminos" class="quill-editor"></div>
-                                    </div>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="button" id="btnSiguiente5" class="btn btn-primary">Siguiente</button>
-                                </div>
-                            </div>
-                            <!-- Contenido de la pestaña Multimedia -->
-                            <div class="tab-pane fade" id="multimedia" role="tabpanel" aria-labelledby="multimedia-tab">
-                                <div class="container mt-5">
-                                    <!-- Upload Section -->
-                                    <div class="card mt-4">
-                                        <div class="card-body text-center">
-                                            <div>
-                                                <h5 class="card-title">sube las imagenes de multimedia</h5>
-                                                <input class="form-control" type="file" id="multimedias"
-                                                    name="multimedias[]" multiple>
-                                            </div>
-                                            <div>
-                                                <div id="preview-multimedias" class="mt-2 d-flex flex-wrap"></div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="text-end mt-3">
-                                        <button type="submit" class="btn btn-primary">Guardar Proyecto</button>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+
+                        <div class="text-end mt-5">
+                            <button type="button" id="btnSiguiente2" class="btn btn-primary">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB UNIDADES -->
+                    <div class="tab-pane fade" id="unidades">
+                        <div class="d-flex justify-content-between mt-3">
+                            <a href="/plantillas/Plantilla Unidades.xlsx" class="btn btn-light-primary">
+                                <i class="ki-outline ki-file fs-5 me-2"></i> Descargar plantilla
+                            </a>
+                            <label for="excelFile" class="btn btn-primary mb-0">
+                                <i class="ki-outline ki-upload fs-5 me-2"></i> Importar plantilla
+                            </label>
+                            <input class="form-control d-none" type="file" id="excelFile">
+                        </div>
+
+                        <div class="table-responsive mt-5">
+                            <table id="unidadesTable" class="table align-middle table-row-dashed">
+                                <thead class="text-gray-600 fw-semibold">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>M2</th>
+                                        <th>Precio x Hora</th>
+                                        <th>Precio x Mes</th>
+                                        <th>Primer Pago</th>
+                                        <th>Nivel</th>
+                                        <th>Estatus</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-end mt-5">
+                            <button type="button" id="btnSiguiente3" class="btn btn-primary">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB MAPA -->
+                    <div class="tab-pane fade" id="mapa">
+                        <div class="card mt-4 border shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="fw-semibold text-gray-700 mb-3">Subir Mapa</h5>
+                                <input class="form-control form-control-solid" type="file" name="mapas[]" multiple>
+                                <div id="preview" class="mt-4 d-flex flex-wrap gap-3 justify-content-center"></div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-5">
+                            <button type="button" id="btnSiguiente4" class="btn btn-primary">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB REGLAS -->
+                    <div class="tab-pane fade" id="reglas">
+                        <div class="mb-5">
+                            <label class="form-label">Reglamento</label>
+                            <div id="reglamento" class="quill-editor border rounded"></div>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label">Términos y Condiciones</label>
+                            <div id="terminos" class="quill-editor border rounded"></div>
+                        </div>
+
+                        <div class="text-end mt-5">
+                            <button type="button" id="btnSiguiente5" class="btn btn-primary">Siguiente</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB MULTIMEDIA -->
+                    <div class="tab-pane fade" id="multimedia">
+                        <div class="card mt-4 border shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="fw-semibold text-gray-700 mb-3">Sube las imágenes de multimedia</h5>
+                                <input class="form-control form-control-solid" type="file" name="multimedias[]" multiple>
+                                <div id="preview-multimedias" class="mt-4 d-flex flex-wrap gap-3 justify-content-center">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end mt-5">
+                            <button type="submit" class="btn btn-success">
+                                <i class="ki-outline ki-check fs-5 me-2"></i> Guardar Proyecto
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
+
     </div>
 
     <x-script />
     <script src="/assets/js/proyecto.js"></script>
-</body>
-
-</html>
+@endsection

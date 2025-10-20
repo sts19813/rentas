@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.admin')
+
+@section('content')
 
 <x-link></x-link>
 <div class="container mt-5">
@@ -40,4 +42,4 @@
 </div>
 
    
-</x-app-layout>
+@endsection
