@@ -18,6 +18,15 @@
             </ul>
             <div class="d-flex">
                 <img src="#" class="rounded-circle" alt="User Profile">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="configuracionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        user
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="configuracionesDropdown">
+                        <li><a class="dropdown-item" href="/profile">perfil</a></li>
+                        <li><a class="dropdown-item" href="/logout">salir</a></li>
+                    </ul>
+                </li>
             </div>
         </div>
     </div>

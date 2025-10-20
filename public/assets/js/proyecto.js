@@ -26,11 +26,11 @@ $(document).ready(function () {
         $('#multimedia-tab').tab('show');
     });
 
-/*
-
-    showToast("warning", "Check your inputs!", "bottom-left");
-    showToast("info", "Loading data...", "top-end", 5000);
-*/
+    /*
+    
+        showToast("warning", "Check your inputs!", "bottom-left");
+        showToast("info", "Loading data...", "top-end", 5000);
+    */
 
 
     // Enviar formulario y extraer los datos de las unidades
@@ -70,17 +70,17 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                
+
                 showToast("success", "Proyecto guardado correctamente");
 
                 setTimeout(function () {
-                    window.location.href = '/proyectos'; 
+                    window.location.href = '/proyectos';
                 }, 2000);
-               
+
             },
             error: function (error) {
                 debugger
-                showToast("error", error.responseJSON.message,'top-end' , 5000);
+                showToast("error", error.responseJSON.message, 'top-end', 5000);
 
                 console.log(error);
             }
@@ -90,7 +90,7 @@ $(document).ready(function () {
     //envia el form para actualizar la info de un proyecto
     $('#formActualizarProyecto').on('submit', function (e) {
         e.preventDefault();
-        
+
 
         let formData = new FormData(this);
         let reglamento = $('#reglamento .ql-editor').html();
@@ -101,10 +101,10 @@ $(document).ready(function () {
         $('#unidadesTable tbody tr').each(function () {
             let unidad = {
                 nombre: $(this).find('.nombre').text().trim(),
-                metros_cuadrados: $(this).find('.metros_cuadrados').text().trim(),
-                precio_por_hora: $(this).find('.precio_por_hora').text().trim().replace('$', '').replace(',', ''),
-                precio_por_mes: $(this).find('.precio_por_mes').text().trim().replace('$', '').replace(',', ''),
-                precio_primer_pago: $(this).find('.precio_primer_pago').text().trim().replace('$', '').replace(',', ''),
+                metros_cuadrados: parseFloat($(this).find('.metros_cuadrados').text().trim()) || 0,
+                precio_por_hora: parseFloat($(this).find('.precio_por_hora').text().trim().replace('$', '').replace(',', '')) || 0,
+                precio_por_mes: parseFloat($(this).find('.precio_por_mes').text().trim().replace('$', '').replace(',', '')) || 0,
+                precio_primer_pago: parseFloat($(this).find('.precio_primer_pago').text().trim().replace('$', '').replace(',', '')) || 0,
                 nivel: $(this).find('.nivel').text().trim(),
                 estatus: $(this).find('.estatus').text().trim()
             };
@@ -126,9 +126,14 @@ $(document).ready(function () {
                 alert('Proyecto actualizado exitosamente.');
                 window.location.href = '/proyectos'; // Redirigir a la lista de proyectos
             },
-            error: function (error) {
-                console.log(error);
-                alert('Error al actualizar el proyecto.');
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    let errores = xhr.responseJSON.errors;
+                    let mensajes = Object.values(errores).map(arr => arr.join(', ')).join('\n');
+                    alert('Errores de validación:\n' + mensajes);
+                } else {
+                    alert('Error al actualizar el proyecto.');
+                }
             }
         });
     });
