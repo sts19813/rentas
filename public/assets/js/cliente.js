@@ -209,7 +209,7 @@ $(document).ready(function () {
                     // Llenar el select de unidades con los datos recibidos
                     response['data'].forEach(function (unidad) {
 
-                        if (localId) {
+                        if (unidad) {
                             $('#unidad').append('<option value="' + unidad.id + '">' + unidad.nombre + '</option>');
                         }else{
                             
@@ -219,8 +219,8 @@ $(document).ready(function () {
                         
                     });
 
-                    if (localId) {
-                        $('#unidad').val(localId); 
+                    if (unidad) {
+                        $('#unidad').val(unidad); 
                     }
                 },
                 error: function () {
@@ -349,35 +349,27 @@ $("#amortizacion").on("click", function () {
     // Validar rangos configurados
     if (!validateRanges()) return;
 
-    const $tableBody = $("#amortizacion-table tbody");
-    $tableBody.empty();
+    const $amortBody = $("#amortizacion-table tbody");
+    $amortBody.empty();
 
-    // Obtener fechas mínimas y máximas de los rangos configurados
     const $ranges = $("#rangos-table tbody tr");
     if ($ranges.length === 0) {
         toastr.error("No hay rangos de fechas configurados.");
         return;
     }
 
-    // Calcular fecha mínima (inicio global) y máxima (fin global) de los rangos
+    // Calcular fecha mínima y máxima global
     let fechaInicioGlobal = null;
     let fechaFinGlobal = null;
 
     $ranges.each(function () {
-        const rangeStart = dayjs($(this).find(".start-date").val(), "YYYY-MM-DD");
-        const rangeEnd = dayjs($(this).find(".end-date").val(), "YYYY-MM-DD");
+        const start = dayjs($(this).find(".start-date").val(), "YYYY-MM-DD");
+        const end = dayjs($(this).find(".end-date").val(), "YYYY-MM-DD");
 
-        if (!rangeStart.isValid() || !rangeEnd.isValid()) {
-            toastr.error("Hay errores en los rangos de fechas configurados.");
-            return false; // Salir del bucle
-        }
+        if (!start.isValid() || !end.isValid()) return false;
 
-        if (!fechaInicioGlobal || rangeStart.isBefore(fechaInicioGlobal)) {
-            fechaInicioGlobal = rangeStart;
-        }
-        if (!fechaFinGlobal || rangeEnd.isAfter(fechaFinGlobal)) {
-            fechaFinGlobal = rangeEnd;
-        }
+        if (!fechaInicioGlobal || start.isBefore(fechaInicioGlobal)) fechaInicioGlobal = start;
+        if (!fechaFinGlobal || end.isAfter(fechaFinGlobal)) fechaFinGlobal = end;
     });
 
     if (!fechaInicioGlobal || !fechaFinGlobal) {
@@ -385,46 +377,59 @@ $("#amortizacion").on("click", function () {
         return;
     }
 
-    const fechaPago = parseInt($("#fechaPago").val(), 10); // Día de pago (ejemplo: 1, 15, 30)
-    if (isNaN(fechaPago)) {
-        toastr.error("El día de pago no es válido.");
+    const diaPago = parseInt($("#fechaPago").val(), 10);
+    if (isNaN(diaPago) || diaPago < 1 || diaPago > 31) {
+        toastr.error("El día de pago ingresado no es válido (1 al 31).");
         return;
     }
 
-    // Iterar por los rangos y generar filas para amortización
-    let currentMonth = fechaInicioGlobal.clone();
-
+    // Generar amortización mensual
     $ranges.each(function () {
-        const $range = $(this);
-        const rangeStart = dayjs($range.find(".start-date").val(), "YYYY-MM-DD");
-        const rangeEnd = dayjs($range.find(".end-date").val(), "YYYY-MM-DD");
-        const price = parseFloat($range.find(".price").val());
+        const $r = $(this);
+        const inicioRango = dayjs($r.find(".start-date").val(), "YYYY-MM-DD");
+        const finRango = dayjs($r.find(".end-date").val(), "YYYY-MM-DD");
+        const precio = parseFloat($r.find(".price").val());
 
-        if (!rangeStart.isValid() || !rangeEnd.isValid() || isNaN(price)) {
-            toastr.error("Hay errores en los rangos de fechas o precios.");
-            return false; // Salir del bucle
-        }
+        if (!inicioRango.isValid() || !finRango.isValid() || isNaN(precio)) return true;
 
-        // Generar filas solo por mes
-        while (currentMonth.isBefore(rangeEnd) || currentMonth.isSame(rangeEnd)) {
-            const fechaPagoMes = currentMonth.date(fechaPago); // Fecha con día de pago dentro del mes
-            $tableBody.append(`
-                <tr>
-                    <td>${currentMonth.format("MMMM YYYY")}</td>
-                    <td>${price.toFixed(2)}</td>
-                    <td>${fechaPagoMes.format("DD/MM/YYYY")}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button>
-                    </td>
-                </tr>
-            `);
-            currentMonth = currentMonth.add(1, "month"); // Pasar al siguiente mes
+        // Copia local del mes actual (para recorrer el rango)
+        let mesActual = inicioRango.startOf("month");
+
+        while (mesActual.isSameOrBefore(finRango, "month")) {
+            // Crear fecha de pago dentro de este mes
+            let fechaPagoMes = mesActual.date(diaPago);
+
+            // Si el día no existe en el mes (ej: 30/02), usa el último día del mes
+            if (!fechaPagoMes.isValid() || fechaPagoMes.month() !== mesActual.month()) {
+                fechaPagoMes = mesActual.endOf("month");
+            }
+
+            // Solo mostrar si cae dentro del rango válido
+            if (fechaPagoMes.isBetween(inicioRango, finRango, "day", "[]")) {
+                $amortBody.append(`
+                    <tr>
+                        <td>${mesActual.format("MMMM YYYY")}</td>
+                        <td>$${precio.toFixed(2)}</td>
+                        <td>${fechaPagoMes.format("DD/MM/YYYY")}</td>
+                        <td><button class="btn btn-danger btn-sm delete-row-btn">Eliminar</button></td>
+                    </tr>
+                `);
+            }
+
+            mesActual = mesActual.add(1, "month");
         }
     });
 
-    if (currentMonth.isBefore(fechaFinGlobal)) {
-        toastr.error("La configuración no cubre todo el rango de fechas entre inicio y fin.");
+    if ($amortBody.children().length === 0) {
+        toastr.warning("No se generaron filas de amortización. Verifica tus rangos y fechas de pago.");
+    } else {
+        toastr.success("Tabla de amortización generada correctamente.");
     }
+});
+
+// Evento para eliminar filas de amortización dinámicas
+$(document).on("click", ".delete-row-btn", function () {
+    $(this).closest("tr").remove();
 });
 
 

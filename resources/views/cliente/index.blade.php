@@ -1,73 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
-    <x-link></x-link>
-</head>
+@section('content')
 
-<body>
-    <x-header />
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+        <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+            <h1 class="page-heading d-flex text-dark fw-bold fs-3 my-0">Clientes</h1>
 
-
-
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Clientes</h2>
-            <a type="button" class="btn btn-dark" href="/clientes/create">
-                + Nuevo Cliente
-            </a>
-        </div>
-
-        <div class="mb-3">
-            <button class="btn btn-outline-secondary">Descargar</button>
-        </div>
-
-        <div class="table-responsive">
-            <table id="clientsTable" class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Cliente</th>
-                        <th>Negocio</th>
-                        <th>Plaza</th>
-                        <th>Local</th>
-                        <th>Estatus</th>
-                        <th>Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <a href="/clientes/create" class="btn btn-dark">
+                    <i class="ki-duotone ki-plus fs-2"></i>
+                    Nuevo Cliente
+                </a>
+            </div>
         </div>
     </div>
+    <!--end::Toolbar-->
 
 
 
+    <!--begin::Card-->
+    <div class="card card-flush shadow-sm">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <!--begin::Card header-->
+        <div class="card-header align-items-center py-5 gap-2 gap-md-5 border-0">
+            <div class="card-title">
+                <h3 class="fw-bold mb-0">Listado de Clientes</h3>
+            </div>
+            <div class="card-toolbar">
+                <button class="btn btn-light-secondary">
+                    <i class="ki-duotone ki-download fs-3"></i>
+                    Descargar
+                </button>
+            </div>
+        </div>
+        <!--end::Card header-->
+
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <div class="table-responsive">
+                <table id="clientsTable" class="table table-row-dashed table-row-gray-300 align-middle gy-4">
+                    <thead class="fw-semibold fs-7 text-uppercase bg-light text-gray-500">
+                        <tr>
+                            <th></th>
+                            <th>Cliente</th>
+                            <th>Negocio</th>
+                            <th>Plaza</th>
+                            <th>Local</th>
+                            <th>Estatus</th>
+                            <th class="text-end">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-semibold text-gray-600"></tbody>
+                </table>
+            </div>
+        </div>
+        <!--end::Card body-->
+
+    </div>
+    <!--end::Card-->
+
+
+
+@endsection
+
+@push('scripts')
     <script>
-        $(document).ready(function() {
-            let clientsTable = $('#clientsTable').DataTable({
+        $(document).ready(function () {
+            $('#clientsTable').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 8,
                 lengthChange: false,
-                order: [
-                    [1, "asc"]
-                ],
+                order: [[1, "asc"]],
                 language: {
                     "lengthMenu": "Mostrar _MENU_ clientes por página",
                     "zeroRecords": "No se encontraron resultados",
                     "info": "Mostrando _START_ a _END_ de _TOTAL_ clientes",
                     "infoEmpty": "No hay clientes disponibles",
-                    "infoFiltered": "",
                     "search": "Buscar:",
                     "paginate": {
                         "first": "Primero",
@@ -81,58 +91,43 @@
                     method: 'GET',
                     dataSrc: 'data',
                 },
-                columns: [{
-                        data: 'id',
-                        title: ''
-                    }, // Columna de selección si es necesario
-                    {
-                        data: 'nombre',
-                        title: 'Cliente'
-                    },
-                    {
-                        data: 'negocio.razon_social',
-                        title: 'Negocio'
-                    },
-                    {
-                        data: 'plaza.nombre',
-                        title: 'Plaza'
-                    },
-                    {
-                        data: 'local',
-                        title: 'Local'
-                    },
-                    {
-                        data: 'status',
-                        title: 'Estatus'
-                    },
+                columns: [
+                    { data: 'id', title: '' },
+                    { data: 'nombre', title: 'Cliente' },
+                    { data: 'negocio.razon_social', title: 'Negocio' },
+                    { data: 'plaza.nombre', title: 'Plaza' },
+                    { data: 'local', title: 'Local' },
+                    { data: 'status', title: 'Estatus' },
                     {
                         data: null,
                         title: 'Opciones',
-                        render: function(data) {
+                        className: "text-end",
+                        render: function (data) {
                             let btnClass = '';
                             let disabled = '';
 
                             switch (data.estatus) {
                                 case 'activo':
-                                    btnClass = 'btn-success'; 
+                                    btnClass = 'btn-success';
                                     break;
                                 case 'inactivo':
-                                    btnClass = 'btn-danger'; 
-                                    disabled = 'disabled'; 
+                                    btnClass = 'btn-danger';
+                                    disabled = 'disabled';
                                     break;
                                 default:
                                     btnClass = 'btn-secondary';
                             }
 
-                            return `<a href="cliente/${data.id}" class="btn ${btnClass} 
-                    btn-sm seleccionar-cliente" data-id="${data.id}"
-                    data-cliente="${data.cliente}" ${disabled}>ver</a>`;
+                            return `
+                                <a href="/cliente/${data.id}" 
+                                   class="btn ${btnClass} btn-sm seleccionar-cliente"
+                                   data-id="${data.id}" ${disabled}>
+                                   Ver
+                                </a>`;
                         }
                     }
                 ]
             });
         });
     </script>
-</body>
-
-</html>
+@endpush
